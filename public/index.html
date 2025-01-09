@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <!-- Font-Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- AOS CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
+    <link rel="stylesheet" href="css/index_style.css">
+</head>
+<body>
+
+    <!-- Background Section -->
+    <div class="background-section">
+        <h1 data-aos="fade-up">Smart Weather System with X</h1>
+        <div class="scroll-down">
+            <a href="#login" id="scroll-link">
+                <span>Scroll Down</span>
+            </a>
+            <div class="arrow"></div>
+        </div>
+    </div>
+
+    <!-- Login Section -->
+    <section class="card-section" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200" data-aos-offset="300" id="login">
+        <div class="slider-section">
+            <div class="slide" style="background-image: url('https://images.pexels.com/photos/1287145/pexels-photo-1287145.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');"></div>
+        </div>
+        <div class="login-container">
+            <div class="login-form">
+                <h1>เข้าสู่ระบบ</h1>
+                <form action="/api/auth/login" method="post">
+                    <div class="input-group">
+                        <input type="text" placeholder="Username or Email" required>
+                    </div>
+                    <div class="input-group password-group">
+                        <input type="password" id="login-password" placeholder="Password" required>
+                        <span class="show-password"><i class="fa fa-eye-slash" id="login-toggle-password"></i></span>
+                    </div>
+                    <button type="submit" class="btn">Sign In</button>
+                    <div class="options">
+                        <a href="#register" class="forgot-password" id="login-goto-reg">สมัครบัญชี</a>
+                        <a href="#forgot" class="forgot-password" id="login-goto-forgot">ลืมรหัสผ่าน</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+   
+    <!-- Register Section -->
+    <section class="card-section" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200" data-aos-offset="300" id="register">
+        <div class="slider-section">
+            <div class="slide" style="background-image: url('https://cdn.pixabay.com/photo/2023/10/20/23/16/mountain-8330401_1280.jpg');"></div>
+        </div>
+        <div class="login-container">
+            <div class="login-form">
+                <h1>สร้างบัญชี</h1>
+                <form action="/api/auth/register" method="post">
+                    <div class="input-group">
+                        <input type="text" name="user_name" placeholder="Username" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="email" name="email" placeholder="Email" required>
+                    </div>
+                    <div class="input-group password-group">
+                        <input type="password" name="password" id="register-password" placeholder="Password" required>
+                        <span class="show-password"><i class="fa fa-eye-slash" id="register-toggle-password"></i></span>
+                    </div>
+                    <div class="input-group password-group">
+                        <input type="password" id="register-confirm-password" placeholder="Confirm Password" required>
+                        <span class="show-password"><i class="fa fa-eye-slash" id="register-toggle-confirm-password"></i></span>
+                    </div>
+                    <button type="submit" class="btn">Sign Up</button>
+                    <div class="options">
+                        <a href="#login" class="forgot-password" id="reg-goto-login">มีบัญชีอยู่เเล้ว?</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+   
+    <!-- Forgot Password Section -->
+    <section class="card-section" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200" data-aos-offset="300" id="forgot">
+        <div class="slider-section">
+            <div class="slide" style="background-image: url('https://cdn.pixabay.com/photo/2017/03/27/04/37/sunset-2177324_960_720.jpg');"></div>
+        </div>
+        <div class="login-container">
+            <div class="login-form">
+                <h1>ลืมรหัสผ่าน</h1>
+                <p>ใส่อีเมลคุณเพื่อเปลี่ยนรหัสผ่าน</p>
+                <form action="/api/auth/forgetPassword" method="post">
+                    <div class="input-group">
+                        <input type="email" placeholder="Email Address" required>
+                    </div>
+                    <button type="submit" class="btn">Submit</button>
+                    <div class="options">
+                        <a href="#login" class="forgot-password" id="forgot-goto-login">มีบัญชีอยู่เเล้ว?</a>
+                        <a href="#register" class="forgot-password" id="forgot-goto-reg">สมัครบัญชี</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+   
+    <!-- AOS JS -->
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+    <script src="javascript/index_script.js"></script>
+</body>
+</html>

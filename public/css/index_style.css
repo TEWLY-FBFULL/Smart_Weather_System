@@ -1,0 +1,248 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Prompt", sans-serif;
+    scroll-behavior: smooth;
+}
+
+body {
+  background-image: url('https://cdn.pixabay.com/photo/2021/08/11/20/39/sunset-6539401_1280.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+/* Background Section */
+.background-section {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex-wrap: wrap;
+  color: #ff7e67;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  h1{
+    font-size: 5rem;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* Scroll Down Section */
+.scroll-down {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #fff;
+  font-size: 1.2rem;
+  animation: fadeIn 2s infinite alternate;
+  a{
+    text-decoration: none;
+    font-size: 1.8rem;
+    color: white;
+  }
+}
+
+.scroll-down span {
+  margin-bottom: 10px;
+}
+
+.scroll-down .arrow {
+  width: 24px;
+  height: 24px;
+  border-left: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  transform: rotate(-45deg);
+  animation: bounce 1.5s infinite;
+}
+
+@keyframes fadeIn {
+  0% {
+      opacity: 1;
+  }
+  100% {
+      opacity: 0.5;
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0) rotate(-45deg);
+  }
+  40% {
+      transform: translateY(10px) rotate(-45deg);
+  }
+  60% {
+      transform: translateY(5px) rotate(-45deg);
+  }
+}
+
+/* Card Sections */
+.card-section {
+  display: flex;
+  width: 80%;
+  height: 80vh;
+  margin: 10rem auto;
+}
+
+.slider-section ,.login-container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slider-section {
+  width: 60%;
+  position: relative;
+  overflow: hidden;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+  opacity: 1;
+}
+
+.login-container {
+  width: 40%;
+  height: 100%;
+  padding: 2rem;
+  background-color: rgba(223, 223, 223, 0.2);
+  backdrop-filter: blur(3px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.login-form {
+  align-content: center;
+  text-align: center;
+  color: #fff;
+  width: 70%;
+}
+
+.login-form h1 {
+  color: #ff7e67;
+  font-size: 2rem;
+  margin-bottom: 4rem;
+}
+
+.login-form p {
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.input-group {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 25px;
+  outline: none;
+  font-size: 1rem;
+  background: rgba(255, 235, 235, 0.8);
+  color: #333;
+}
+
+.input-group input:hover {
+  background: rgb(179, 179, 179); 
+}
+
+.password-group {
+  position: relative;
+}
+
+.password-group .show-password {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.btn {
+  width: 100%;
+  padding: 0.8rem;
+  margin-top: 1rem;
+  border: none;
+  border-radius: 25px;
+  font-size: 1rem;
+  background-color: #ffa99c;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #ff7e67;
+}
+
+.options {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #fff;
+}
+
+.options a {
+  text-decoration: none;
+  color: #000000;
+  transition: color 0.3s ease;
+}
+
+.options a:hover {
+  color: #ffa99c;
+}
+
+
+/* Responsive */
+@media screen and (max-width: 1000px) {
+  .card-section{
+    width: 90%;
+  }
+}
+
+@media screen and (max-width: 850px) {
+  .slider-section{
+    display: none;
+  }
+  .login-container{
+    width: 400px;
+    border-radius: 20px;
+    margin: 0 auto;
+  }
+  .login-form{
+    width: 80%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .background-section{
+    h1{
+      font-size: 3rem;
+    }
+  }
+}

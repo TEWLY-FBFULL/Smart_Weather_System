@@ -1,0 +1,541 @@
+[
+  {
+    "id": 1,
+    "city_nameTH": "กรุงเทพมหานคร",
+    "city_nameEN": "Bangkok",
+    "lon": "100.4935089",
+    "lat": "13.7524938"
+  },
+  {
+    "id": 2,
+    "city_nameTH": "สมุทรปราการ",
+    "city_nameEN": "Samut Prakan",
+    "lon": "100.601175651299",
+    "lat": "13.5981041"
+  },
+  {
+    "id": 3,
+    "city_nameTH": "นนทบุรี",
+    "city_nameEN": "Nonthaburi",
+    "lon": "100.4937886",
+    "lat": "13.8428962"
+  },
+  {
+    "id": 4,
+    "city_nameTH": "ปทุมธานี",
+    "city_nameEN": "Pathum Thani",
+    "lon": "100.5340426",
+    "lat": "14.0203964"
+  },
+  {
+    "id": 5,
+    "city_nameTH": "พระนครศรีอยุธยา",
+    "city_nameEN": "Phra Nakhon Si Ayutthaya",
+    "lon": "100.5645684",
+    "lat": "14.3535427"
+  },
+  {
+    "id": 6,
+    "city_nameTH": "อ่างทอง",
+    "city_nameEN": "Ang Thong",
+    "lon": "100.4513754",
+    "lat": "14.5924644"
+  },
+  {
+    "id": 7,
+    "city_nameTH": "ลพบุรี",
+    "city_nameEN": "Lopburi",
+    "lon": "100.6146858",
+    "lat": "14.8023289"
+  },
+  {
+    "id": 8,
+    "city_nameTH": "สิงห์บุรี",
+    "city_nameEN": "Sing Buri",
+    "lon": "100.3984227",
+    "lat": "14.8935284"
+  },
+  {
+    "id": 9,
+    "city_nameTH": "ชัยนาท",
+    "city_nameEN": "Chai Nat",
+    "lon": "100.1250568",
+    "lat": "15.1853305"
+  },
+  {
+    "id": 10,
+    "city_nameTH": "สระบุรี",
+    "city_nameEN": "Saraburi",
+    "lon": "100.9160757",
+    "lat": "14.5249471"
+  },
+  {
+    "id": 11,
+    "city_nameTH": "ชลบุรี",
+    "city_nameEN": "Chon Buri",
+    "lon": "100.9872185",
+    "lat": "13.3662087"
+  },
+  {
+    "id": 12,
+    "city_nameTH": "ระยอง",
+    "city_nameEN": "Rayong",
+    "lon": "101.277765",
+    "lat": "12.6817905"
+  },
+  {
+    "id": 13,
+    "city_nameTH": "จันทบุรี",
+    "city_nameEN": "Chanthaburi",
+    "lon": "102.0996672",
+    "lat": "12.6064515"
+  },
+  {
+    "id": 14,
+    "city_nameTH": "ตราด",
+    "city_nameEN": "Trat",
+    "lon": "102.5122822",
+    "lat": "12.2440564"
+  },
+  {
+    "id": 15,
+    "city_nameTH": "ฉะเชิงเทรา",
+    "city_nameEN": "Chachoengsao",
+    "lon": "101.0708268",
+    "lat": "13.6891784"
+  },
+  {
+    "id": 16,
+    "city_nameTH": "ปราจีนบุรี",
+    "city_nameEN": "Prachin Buri",
+    "lon": "101.3724276",
+    "lat": "14.0541467"
+  },
+  {
+    "id": 17,
+    "city_nameTH": "นครนายก",
+    "city_nameEN": "Nakhon Nayok",
+    "lon": "101.2147087",
+    "lat": "14.203647"
+  },
+  {
+    "id": 18,
+    "city_nameTH": "สระแก้ว",
+    "city_nameEN": "Sa Kaeo",
+    "lon": "102.0702537",
+    "lat": "13.8194901"
+  },
+  {
+    "id": 19,
+    "city_nameTH": "นครราชสีมา",
+    "city_nameEN": "Nakhon Ratchasima",
+    "lon": "102.0981161",
+    "lat": "14.9747339"
+  },
+  {
+    "id": 20,
+    "city_nameTH": "บุรีรัมย์",
+    "city_nameEN": "Buri Ram",
+    "lon": "103.1079187",
+    "lat": "14.9955693"
+  },
+  {
+    "id": 21,
+    "city_nameTH": "สุรินทร์",
+    "city_nameEN": "Surin",
+    "lon": "103.4906232",
+    "lat": "14.8841804"
+  },
+  {
+    "id": 22,
+    "city_nameTH": "ศรีสะเกษ",
+    "city_nameEN": "Si Sa Ket",
+    "lon": "104.4439596",
+    "lat": "14.9222"
+  },
+  {
+    "id": 23,
+    "city_nameTH": "อุบลราชธานี",
+    "city_nameEN": "Ubon Ratchathani",
+    "lon": "104.8589462",
+    "lat": "15.2274235"
+  },
+  {
+    "id": 24,
+    "city_nameTH": "ยโสธร",
+    "city_nameEN": "Yasothon",
+    "lon": "104.1452903",
+    "lat": "15.7926751"
+  },
+  {
+    "id": 25,
+    "city_nameTH": "ชัยภูมิ",
+    "city_nameEN": "Chaiyaphum",
+    "lon": "102.0315003",
+    "lat": "15.8068082"
+  },
+  {
+    "id": 26,
+    "city_nameTH": "อำนาจเจริญ",
+    "city_nameEN": "Amnat Charoen",
+    "lon": "104.6278059",
+    "lat": "15.8640232"
+  },
+  {
+    "id": 27,
+    "city_nameTH": "หนองบัวลำภู",
+    "city_nameEN": "Nong Bua Lam Phu",
+    "lon": "102.440702",
+    "lat": "17.2022252"
+  },
+  {
+    "id": 28,
+    "city_nameTH": "ขอนแก่น",
+    "city_nameEN": "Khon Kaen",
+    "lon": "102.8355904",
+    "lat": "16.4303916"
+  },
+  {
+    "id": 29,
+    "city_nameTH": "อุดรธานี",
+    "city_nameEN": "Udon Thani",
+    "lon": "102.7868105",
+    "lat": "17.4082448"
+  },
+  {
+    "id": 30,
+    "city_nameTH": "เลย",
+    "city_nameEN": "Loei",
+    "lon": "101.7286456",
+    "lat": "17.490375"
+  },
+  {
+    "id": 31,
+    "city_nameTH": "หนองคาย",
+    "city_nameEN": "Nong Khai",
+    "lon": "102.7482277",
+    "lat": "17.8825057"
+  },
+  {
+    "id": 32,
+    "city_nameTH": "มหาสารคาม",
+    "city_nameEN": "Maha Sarakham",
+    "lon": "103.2987346",
+    "lat": "16.1880948"
+  },
+  {
+    "id": 33,
+    "city_nameTH": "ร้อยเอ็ด",
+    "city_nameEN": "Roi Et",
+    "lon": "103.6514286",
+    "lat": "16.0568089"
+  },
+  {
+    "id": 34,
+    "city_nameTH": "กาฬสินธุ์",
+    "city_nameEN": "Kalasin",
+    "lon": "103.5059403",
+    "lat": "16.434034"
+  },
+  {
+    "id": 35,
+    "city_nameTH": "สกลนคร",
+    "city_nameEN": "Sakon Nakhon",
+    "lon": "104.1500731",
+    "lat": "17.1651224"
+  },
+  {
+    "id": 36,
+    "city_nameTH": "นครพนม",
+    "city_nameEN": "Nakhon Phanom",
+    "lon": "104.7853098",
+    "lat": "17.4032326"
+  },
+  {
+    "id": 37,
+    "city_nameTH": "มุกดาหาร",
+    "city_nameEN": "Mukdahan",
+    "lon": "104.7290699",
+    "lat": "16.5414065"
+  },
+  {
+    "id": 38,
+    "city_nameTH": "เชียงใหม่",
+    "city_nameEN": "Chiang Mai",
+    "lon": "98.9858802",
+    "lat": "18.7882778"
+  },
+  {
+    "id": 39,
+    "city_nameTH": "ลำพูน",
+    "city_nameEN": "Lamphun",
+    "lon": "99.0069034",
+    "lat": "18.5776383"
+  },
+  {
+    "id": 40,
+    "city_nameTH": "ลำปาง",
+    "city_nameEN": "Lampang",
+    "lon": "99.4958526",
+    "lat": "18.2899489"
+  },
+  {
+    "id": 41,
+    "city_nameTH": "อุตรดิตถ์",
+    "city_nameEN": "Uttaradit",
+    "lon": "100.0981816",
+    "lat": "17.6217255"
+  },
+  {
+    "id": 42,
+    "city_nameTH": "แพร่",
+    "city_nameEN": "Phrae",
+    "lon": "100.1425639",
+    "lat": "18.14177"
+  },
+  {
+    "id": 43,
+    "city_nameTH": "น่าน",
+    "city_nameEN": "Nan",
+    "lon": "100.773732",
+    "lat": "18.7778874"
+  },
+  {
+    "id": 44,
+    "city_nameTH": "พะเยา",
+    "city_nameEN": "Phayao",
+    "lon": "99.9019423",
+    "lat": "19.1666313"
+  },
+  {
+    "id": 45,
+    "city_nameTH": "เชียงราย",
+    "city_nameEN": "Chiang Rai",
+    "lon": "99.8332739",
+    "lat": "19.9068867"
+  },
+  {
+    "id": 46,
+    "city_nameTH": "แม่ฮ่องสอน",
+    "city_nameEN": "Mae Hong Son",
+    "lon": "97.9666073",
+    "lat": "19.3015068"
+  },
+  {
+    "id": 47,
+    "city_nameTH": "นครสวรรค์",
+    "city_nameEN": "Nakhon Sawan",
+    "lon": "100.1330046",
+    "lat": "15.705783"
+  },
+  {
+    "id": 48,
+    "city_nameTH": "อุทัยธานี",
+    "city_nameEN": "Uthai Thani",
+    "lon": "100.0277754",
+    "lat": "15.3824774"
+  },
+  {
+    "id": 49,
+    "city_nameTH": "กำแพงเพชร",
+    "city_nameEN": "Kamphaeng Phet",
+    "lon": "99.5280072",
+    "lat": "16.4748045"
+  },
+  {
+    "id": 50,
+    "city_nameTH": "ตาก",
+    "city_nameEN": "Tak",
+    "lon": "99.1248355",
+    "lat": "16.8722576"
+  },
+  {
+    "id": 51,
+    "city_nameTH": "สุโขทัย",
+    "city_nameEN": "Sukhothai",
+    "lon": "99.8203682",
+    "lat": "17.010918"
+  },
+  {
+    "id": 52,
+    "city_nameTH": "พิษณุโลก",
+    "city_nameEN": "Phitsanulok",
+    "lon": "100.2634423",
+    "lat": "16.8157611"
+  },
+  {
+    "id": 53,
+    "city_nameTH": "พิจิตร",
+    "city_nameEN": "Phichit",
+    "lon": "100.3438228",
+    "lat": "16.4428085"
+  },
+  {
+    "id": 54,
+    "city_nameTH": "เพชรบูรณ์",
+    "city_nameEN": "Phetchabun",
+    "lon": "101.1556825",
+    "lat": "16.418027"
+  },
+  {
+    "id": 55,
+    "city_nameTH": "ราชบุรี",
+    "city_nameEN": "Ratchaburi",
+    "lon": "99.8197035",
+    "lat": "13.539067"
+  },
+  {
+    "id": 56,
+    "city_nameTH": "กาญจนบุรี",
+    "city_nameEN": "Kanchanaburi",
+    "lon": "99.5323173",
+    "lat": "14.0227073"
+  },
+  {
+    "id": 57,
+    "city_nameTH": "สุพรรณบุรี",
+    "city_nameEN": "Suphan Buri",
+    "lon": "100.1164984",
+    "lat": "14.4699051"
+  },
+  {
+    "id": 58,
+    "city_nameTH": "นครปฐม",
+    "city_nameEN": "Nakhon Pathom",
+    "lon": "100.0639917",
+    "lat": "13.8190071"
+  },
+  {
+    "id": 59,
+    "city_nameTH": "สมุทรสาคร",
+    "city_nameEN": "Samut Sakhon",
+    "lon": "100.2742813",
+    "lat": "13.5497782"
+  },
+  {
+    "id": 60,
+    "city_nameTH": "สมุทรสงคราม",
+    "city_nameEN": "Samut Songkhram",
+    "lon": "100.000494",
+    "lat": "13.4086617"
+  },
+  {
+    "id": 61,
+    "city_nameTH": "เพชรบุรี",
+    "city_nameEN": "Phetchaburi",
+    "lon": "99.9475297",
+    "lat": "13.1052914"
+  },
+  {
+    "id": 62,
+    "city_nameTH": "ประจวบคีรีขันธ์",
+    "city_nameEN": "Prachuap Khiri Khan",
+    "lon": "99.7967271",
+    "lat": "11.8057688"
+  },
+  {
+    "id": 63,
+    "city_nameTH": "นครศรีธรรมราช",
+    "city_nameEN": "Nakhon Si Thammarat",
+    "lon": "99.9627967",
+    "lat": "8.4327951"
+  },
+  {
+    "id": 64,
+    "city_nameTH": "กระบี่",
+    "city_nameEN": "Krabi",
+    "lon": "98.9162345",
+    "lat": "8.0634637"
+  },
+  {
+    "id": 65,
+    "city_nameTH": "พังงา",
+    "city_nameEN": "Phangnga",
+    "lon": "98.5313023",
+    "lat": "8.4612037"
+  },
+  {
+    "id": 66,
+    "city_nameTH": "ภูเก็ต",
+    "city_nameEN": "Phuket",
+    "lon": "98.3891503",
+    "lat": "7.8847901"
+  },
+  {
+    "id": 67,
+    "city_nameTH": "สุราษฎร์ธานี",
+    "city_nameEN": "Surat Thani",
+    "lon": "99.3241347",
+    "lat": "9.1404136"
+  },
+  {
+    "id": 68,
+    "city_nameTH": "ระนอง",
+    "city_nameEN": "Ranong",
+    "lon": "98.6340038",
+    "lat": "9.964128"
+  },
+  {
+    "id": 69,
+    "city_nameTH": "ชุมพร",
+    "city_nameEN": "Chumphon",
+    "lon": "99.1778731",
+    "lat": "10.4961355"
+  },
+  {
+    "id": 70,
+    "city_nameTH": "สงขลา",
+    "city_nameEN": "Songkhla",
+    "lon": "100.593205",
+    "lat": "7.1973429"
+  },
+  {
+    "id": 71,
+    "city_nameTH": "สตูล",
+    "city_nameEN": "Satun",
+    "lon": "100.0664441",
+    "lat": "6.6151578"
+  },
+  {
+    "id": 72,
+    "city_nameTH": "ตรัง",
+    "city_nameEN": "Trang",
+    "lon": "99.6076502",
+    "lat": "7.5557778"
+  },
+  {
+    "id": 73,
+    "city_nameTH": "พัทลุง",
+    "city_nameEN": "Phatthalung",
+    "lon": "100.0857001",
+    "lat": "7.6209574"
+  },
+  {
+    "id": 74,
+    "city_nameTH": "ปัตตานี",
+    "city_nameEN": "Pattani",
+    "lon": "101.2498138",
+    "lat": "6.8676239"
+  },
+  {
+    "id": 75,
+    "city_nameTH": "ยะลา",
+    "city_nameEN": "Yala",
+    "lon": "101.2902517",
+    "lat": "6.5567245"
+  },
+  {
+    "id": 76,
+    "city_nameTH": "นราธิวาส",
+    "city_nameEN": "Narathiwat",
+    "lon": "101.8228923",
+    "lat": "6.4350352"
+  },
+  {
+    "id": 77,
+    "city_nameTH": "บึงกาฬ",
+    "city_nameEN": "Bueng Kan",
+    "lon": "103.6515916",
+    "lat": "18.3673678"
+  }
+]
