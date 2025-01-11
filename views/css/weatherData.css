@@ -432,6 +432,36 @@ header {
 .swiper-pagination-bullet-active {
     background-color: var(--primary-color);;
 }
+
+.forecast-section {
+    display: none;
+}
+
+.forecast-section.active {
+    display: block;
+}
+
+.forecast-toggle{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 8rem auto 0 auto;
+}
+
+.forecast-toggle button {
+    padding: 10px 20px; 
+    cursor: pointer;
+    border: none;
+    background-color: var(--background-sec);
+    border-radius: 5px;
+    font-size: 16px;
+    color: var(--text-color);
+}
+
+.forecast-toggle button.active {
+    background-color: var(--primary-color);
+    color: var(--background);
+}
 /* Main-swiper-container */
 
 /* Container City swiper  */
@@ -503,14 +533,6 @@ header {
     transition: 1s ease;
 }
 /* Container City swiper  */
-
-/* Class animation */
-.revealUp {
-    opacity: 0; 
-    transform: translateY(100px); 
-    transition: opacity 1.25s ease-out, transform 1.25s ease-out;
-}
-/* Class animation */
 
 
 /* Responsive */
@@ -689,6 +711,16 @@ header {
         margin: 0 auto;
     }
     /* Header */
+
+    .main-swiper-container{
+        h1{
+            font-size: 2.3rem;
+        }
+    }
+    .forecast-toggle button{
+        padding: 0.5rem;
+    }
+
 
     /* Container City swiper  */
     .city-text{

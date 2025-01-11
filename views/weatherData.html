@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
     <!-- Animate CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <!-- AOS CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
     <!-- Main CSS -->
     <link rel="stylesheet" href="css/weatherData.css">
     <title>Weather data</title>
@@ -55,7 +57,7 @@
                         <p class="updatetime-fromAPI">อัปเดตเมื่อ 2:45 น.</p>
                     </div>
                 </div>
-                <div class="header-city-weather animate__animated animate__slideInLeft">
+                <div class="header-city-weather" data-aos="zoom-in-up">
                     <p class="hum-fromAPI"><i class="fas fa-tint fa-2x"></i> ความชื้น 80%</p>
                     <p class="wind-fromAPI"><i class="fas fa-wind fa-2x"></i> ลม 15 km/h</p>
                     <p class="desc-fromAPI"><i class="fas fa-sun fa-2x"></i> เเดดจัด</p>
@@ -64,7 +66,7 @@
                     </a>
                 </div>
             </div>
-            <div class="header-icon animate__animated animate__slideInRight">
+            <div class="header-icon" data-aos="zoom-in-down">
                 <p class="header-icon-p">วันนี้</p>
                 <img src="img/sunny.png" alt="cloud" class="weather-icon-fromAPI">
                 <h1 class="tem-fromAPI">23°C</h1>
@@ -74,10 +76,15 @@
     </header>
     <!-- Header -->
 
+    <div class="forecast-toggle">
+        <button id="today-btn" class="active">พยากรณ์อากาศวันนี้</button>
+        <button id="five-days-btn">พยากรณ์อากาศ 5 วัน</button>
+    </div>
     <!-- Container swiper -->
-    <section class="main-swiper-container">
-        <div class="card__container swiper">
-            <div class="swiper-container card__content revealUp">
+    <!-- Today Forecast -->
+    <section class="main-swiper-container forecast-section active" id="today-forecast">
+        <div class="card__container swiper" data-aos="fade-up">
+            <div class="swiper-container card__content">
                 <div class="swiper-wrapper">
                     <article class="card__article swiper-slide">
                         <div class="card__image">
@@ -252,15 +259,167 @@
             <div class="swiper-pagination"></div>
         </div>
     </section>
+
+    <!-- Forecast 5 day -->
+    <!-- <section class="main-swiper-container forecast-section" id="five-days-forecast">
+        <div class="card__container swiper" data-aos="fade-up">
+            <div class="swiper-container card__content">
+                <div class="swiper-wrapper">
+                    <article class="card__article swiper-slide">
+                        <div class="card__image">
+                            <img src="img/sunny.png" alt="image" class="card__img">
+                            <div class="card__shadow"></div>
+                        </div>
+                        <div class="card__data">
+                            <h3 class="card__name">6:00 น.</h3>
+                            <div class="card__description">
+                                <div class="info">
+                                    <i class="fas fa-thermometer-half fa-1x"></i>
+                                    <span>23°C</span>
+                                </div>
+                                <div class="info">
+                                    <i class="fas fa-tint fa-1x"></i>
+                                    <span>80%</span>
+                                </div>
+                                <div class="info">
+                                    <i class="fas fa-wind fa-1x"></i>
+                                    <span>15 km/h</span>
+                                </div>
+                                <div class="info">
+                                    <i class="fas fa-sun fa-1x"></i>
+                                    <span>แดดจัด</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="card__article swiper-slide">
+                        <div class="card__image">
+                            <img src="img/clouds.png" alt="image" class="card__img">
+                            <div class="card__shadow"></div>
+                        </div>
+                        <div class="card__data">
+                            <h3 class="card__name">9:00 น.</h3>
+                            <div class="card__description">
+                                <div class="info">
+                                    <i class="fas fa-thermometer-half fa-1x"></i>
+                                    <span>23°C</span>
+                                </div>
+                                <div class="info">
+                                    <i class="fas fa-tint fa-1x"></i>
+                                    <span>80%</span>
+                                </div>
+                                <div class="info">
+                                    <i class="fas fa-wind fa-1x"></i>
+                                    <span>15 km/h</span>
+                                </div>
+                                <div class="info">
+                                    <i class="fas fa-sun fa-1x"></i>
+                                    <span>แดดจัด</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="card__article swiper-slide">
+                        <div class="card__image">
+                            <img src="img/rain.png" alt="image" class="card__img">
+                            <div class="card__shadow"></div>
+                        </div>
+                        <div class="card__data">
+                            <h3 class="card__name">12:00 น.</h3>
+                            <div class="card__description">
+                                <div class="info">
+                                    <i class="fas fa-thermometer-half fa-1x"></i>
+                                    <span>23°C</span>
+                                </div>
+                                <div class="info">
+                                    <i class="fas fa-tint fa-1x"></i>
+                                    <span>80%</span>
+                                </div>
+                                <div class="info">
+                                    <i class="fas fa-wind fa-1x"></i>
+                                    <span>15 km/h</span>
+                                </div>
+                                <div class="info">
+                                    <i class="fas fa-sun fa-1x"></i>
+                                    <span>แดดจัด</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="card__article swiper-slide">
+                        <div class="card__image">
+                            <img src="img/storm.png" alt="image" class="card__img">
+                            <div class="card__shadow"></div>
+                        </div>
+                        <div class="card__data">
+                            <h3 class="card__name">15:00 น.</h3>
+                            <div class="card__description">
+                                <div class="info">
+                                    <i class="fas fa-thermometer-half fa-1x"></i>
+                                    <span>23°C</span>
+                                </div>
+                                <div class="info">
+                                    <i class="fas fa-tint fa-1x"></i>
+                                    <span>80%</span>
+                                </div>
+                                <div class="info">
+                                    <i class="fas fa-wind fa-1x"></i>
+                                    <span>15 km/h</span>
+                                </div>
+                                <div class="info">
+                                    <i class="fas fa-sun fa-1x"></i>
+                                    <span>แดดจัด</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="card__article swiper-slide">
+                        <div class="card__image">
+                            <img src="img/sunny.png" alt="image" class="card__img">
+                            <div class="card__shadow"></div>
+                        </div>
+                        <div class="card__data">
+                            <h3 class="card__name">18:00 น.</h3>
+                            <div class="card__description">
+                                <div class="info">
+                                    <i class="fas fa-thermometer-half fa-1x"></i>
+                                    <span>23°C</span>
+                                </div>
+                                <div class="info">
+                                    <i class="fas fa-tint fa-1x"></i>
+                                    <span>80%</span>
+                                </div>
+                                <div class="info">
+                                    <i class="fas fa-wind fa-1x"></i>
+                                    <span>15 km/h</span>
+                                </div>
+                                <div class="info">
+                                    <i class="fas fa-sun fa-1x"></i>
+                                    <span>แดดจัด</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+            <div class="swiper-button-next">
+                <i class="ri-arrow-right-s-line"></i>
+            </div>
+            <div class="swiper-button-prev">
+                <i class="ri-arrow-left-s-line"></i>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </section> -->
     <!-- Container swiper -->
 
     <!-- Container City swiper -->
     <div class="main-city-swiper-container">
-        <div class="city-text revealUp">
+        <div class="city-text" data-aos="fade-right">
             <h1>ค้นหาจังหวัดที่ต้องการ</h1>
             <p>จังหวัดยอดนิยมในประเทศไทย</p>
         </div>
-        <div class="swiper-container city-swiper revealUp">
+        <div class="swiper-container city-swiper" data-aos="fade-down">
             <div class="swiper-wrapper">
                 <div class="swiper-slide city-swiper-slide" style="background: url(https://www.agoda.com/wp-content/uploads/2019/10/Wat-Arun-Bangkok-sightseeing.jpg); background-size: cover; background-position: center; background-repeat: no-repeat;">
                     <img src="img/sunny.png" alt="image">
@@ -303,7 +462,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.0/gsap.min.js"></script>
     <!-- ScrollTrigger Plugin -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.0/ScrollTrigger.min.js"></script>
+    <!-- AOS JS -->
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+    </script>
     <!-- Main Script -->
-    <script src="javascript/weatherDataScript.js"></script>
+    <script src="javascript/navbar.js"></script>
+    <script src="javascript/containerSwiper.js"></script>
+    <script src="javascript/citySwiper.js"></script>
 </body>
 </html>
