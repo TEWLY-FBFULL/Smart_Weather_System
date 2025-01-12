@@ -84,7 +84,7 @@
     <!-- Today Forecast -->
     <section class="main-swiper-container forecast-section active" id="today-forecast">
         <div class="card__container swiper" data-aos="fade-up">
-            <div class="swiper-container card__content">
+            <div class="swiper-container card__content today-swiper">
                 <div class="swiper-wrapper">
                     <article class="card__article swiper-slide">
                         <div class="card__image">
@@ -250,20 +250,20 @@
                     </article>
                 </div>
             </div>
-            <div class="swiper-button-next">
+            <div class="swiper-button-next today-next">
                 <i class="ri-arrow-right-s-line"></i>
             </div>
-            <div class="swiper-button-prev">
+            <div class="swiper-button-prev today-prev">
                 <i class="ri-arrow-left-s-line"></i>
             </div>
-            <div class="swiper-pagination"></div>
+            <div class="swiper-pagination today-pagination"></div>
         </div>
     </section>
 
     <!-- Forecast 5 day -->
-    <!-- <section class="main-swiper-container forecast-section" id="five-days-forecast">
+    <section class="main-swiper-container forecast-section" id="five-days-forecast">
         <div class="card__container swiper" data-aos="fade-up">
-            <div class="swiper-container card__content">
+            <div class="swiper-container card__content five-days-swiper">
                 <div class="swiper-wrapper">
                     <article class="card__article swiper-slide">
                         <div class="card__image">
@@ -271,7 +271,7 @@
                             <div class="card__shadow"></div>
                         </div>
                         <div class="card__data">
-                            <h3 class="card__name">6:00 น.</h3>
+                            <h3 class="card__name">16:00 น.</h3>
                             <div class="card__description">
                                 <div class="info">
                                     <i class="fas fa-thermometer-half fa-1x"></i>
@@ -294,65 +294,11 @@
                     </article>
                     <article class="card__article swiper-slide">
                         <div class="card__image">
-                            <img src="img/clouds.png" alt="image" class="card__img">
+                            <img src="img/sunny.png" alt="image" class="card__img">
                             <div class="card__shadow"></div>
                         </div>
                         <div class="card__data">
-                            <h3 class="card__name">9:00 น.</h3>
-                            <div class="card__description">
-                                <div class="info">
-                                    <i class="fas fa-thermometer-half fa-1x"></i>
-                                    <span>23°C</span>
-                                </div>
-                                <div class="info">
-                                    <i class="fas fa-tint fa-1x"></i>
-                                    <span>80%</span>
-                                </div>
-                                <div class="info">
-                                    <i class="fas fa-wind fa-1x"></i>
-                                    <span>15 km/h</span>
-                                </div>
-                                <div class="info">
-                                    <i class="fas fa-sun fa-1x"></i>
-                                    <span>แดดจัด</span>
-                                </div>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="card__article swiper-slide">
-                        <div class="card__image">
-                            <img src="img/rain.png" alt="image" class="card__img">
-                            <div class="card__shadow"></div>
-                        </div>
-                        <div class="card__data">
-                            <h3 class="card__name">12:00 น.</h3>
-                            <div class="card__description">
-                                <div class="info">
-                                    <i class="fas fa-thermometer-half fa-1x"></i>
-                                    <span>23°C</span>
-                                </div>
-                                <div class="info">
-                                    <i class="fas fa-tint fa-1x"></i>
-                                    <span>80%</span>
-                                </div>
-                                <div class="info">
-                                    <i class="fas fa-wind fa-1x"></i>
-                                    <span>15 km/h</span>
-                                </div>
-                                <div class="info">
-                                    <i class="fas fa-sun fa-1x"></i>
-                                    <span>แดดจัด</span>
-                                </div>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="card__article swiper-slide">
-                        <div class="card__image">
-                            <img src="img/storm.png" alt="image" class="card__img">
-                            <div class="card__shadow"></div>
-                        </div>
-                        <div class="card__data">
-                            <h3 class="card__name">15:00 น.</h3>
+                            <h3 class="card__name">17:00 น.</h3>
                             <div class="card__description">
                                 <div class="info">
                                     <i class="fas fa-thermometer-half fa-1x"></i>
@@ -400,17 +346,71 @@
                             </div>
                         </div>
                     </article>
+                    <article class="card__article swiper-slide">
+                        <div class="card__image">
+                            <img src="img/sunny.png" alt="image" class="card__img">
+                            <div class="card__shadow"></div>
+                        </div>
+                        <div class="card__data">
+                            <h3 class="card__name">19:00 น.</h3>
+                            <div class="card__description">
+                                <div class="info">
+                                    <i class="fas fa-thermometer-half fa-1x"></i>
+                                    <span>23°C</span>
+                                </div>
+                                <div class="info">
+                                    <i class="fas fa-tint fa-1x"></i>
+                                    <span>80%</span>
+                                </div>
+                                <div class="info">
+                                    <i class="fas fa-wind fa-1x"></i>
+                                    <span>15 km/h</span>
+                                </div>
+                                <div class="info">
+                                    <i class="fas fa-sun fa-1x"></i>
+                                    <span>แดดจัด</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="card__article swiper-slide">
+                        <div class="card__image">
+                            <img src="img/sunny.png" alt="image" class="card__img">
+                            <div class="card__shadow"></div>
+                        </div>
+                        <div class="card__data">
+                            <h3 class="card__name">20:00 น.</h3>
+                            <div class="card__description">
+                                <div class="info">
+                                    <i class="fas fa-thermometer-half fa-1x"></i>
+                                    <span>23°C</span>
+                                </div>
+                                <div class="info">
+                                    <i class="fas fa-tint fa-1x"></i>
+                                    <span>80%</span>
+                                </div>
+                                <div class="info">
+                                    <i class="fas fa-wind fa-1x"></i>
+                                    <span>15 km/h</span>
+                                </div>
+                                <div class="info">
+                                    <i class="fas fa-sun fa-1x"></i>
+                                    <span>แดดจัด</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
                 </div>
             </div>
-            <div class="swiper-button-next">
+            <div class="swiper-button-next five-days-next">
                 <i class="ri-arrow-right-s-line"></i>
             </div>
-            <div class="swiper-button-prev">
+            <div class="swiper-button-prev five-days-prev">
                 <i class="ri-arrow-left-s-line"></i>
             </div>
-            <div class="swiper-pagination"></div>
+            <div class="swiper-pagination five-days-pagination"></div>
         </div>
-    </section> -->
+    </section>
     <!-- Container swiper -->
 
     <!-- Container City swiper -->

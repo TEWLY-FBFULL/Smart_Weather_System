@@ -19,18 +19,45 @@ fiveDaysBtn.addEventListener("click", () => {
     todayBtn.classList.remove("active");
 });
 
-let swiperCards = new Swiper(".card__content", {
+// Swiper Cards (Today Forecast)
+let swiperCards = new Swiper(".today-swiper", {
     loop: true,
     spaceBetween: 32,
     grabCursor: true,
     pagination: {
-        el: ".swiper-pagination",
+        el: ".today-pagination",
         clickable: true,
         dynamicBullets: true,
     },
     navigation: {
-        nextEl: ".swiper-button-next",
-        prevEl: ".swiper-button-prev",
+        nextEl: ".today-next",
+        prevEl: ".today-prev",
+    },
+    breakpoints: {
+        600: {
+            slidesPerView: 2,
+        },
+        968: {
+            slidesPerView: 3,
+        },
+    },
+    observer: true,
+    observeParents: true,
+});
+
+// Swiper 5 Days Forecast
+let fiveDaysSwiper = new Swiper(".five-days-swiper", {
+    loop: false,
+    spaceBetween: 32,
+    grabCursor: true,
+    pagination: {
+        el: ".five-days-pagination",
+        clickable: true,
+        dynamicBullets: true,
+    },
+    navigation: {
+        nextEl: ".five-days-next", 
+        prevEl: ".five-days-prev",
     },
     breakpoints: {
         600: {
@@ -46,6 +73,7 @@ let swiperCards = new Swiper(".card__content", {
 
 // Resize swiper when window resize
 window.addEventListener('resize', () => {
-    swiperCards.update(); 
+    swiperCards.update();
+    fiveDaysSwiper.update();
 });
 // Container swiper ----------------------------------------------------------------->
