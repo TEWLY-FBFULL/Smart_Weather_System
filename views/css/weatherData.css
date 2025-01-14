@@ -5,6 +5,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: "Prompt", sans-serif;
+    scroll-behavior: smooth;
 }
 
 :root {
@@ -541,7 +542,7 @@ header {
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    padding: 5rem;
+    padding: 5rem 1.5rem;
     background-color: var(--background);
     min-height: 30rem;
 }
@@ -551,6 +552,7 @@ header {
         font-size: 2.5rem;
         color: var(--primary-color-sec);
         margin-bottom: 3rem;
+        text-align: center;
     }
 }
 
@@ -648,19 +650,6 @@ header {
     }
     /* Container City swiper  */
 }
- 
-/* @media screen and (max-width: 1250px) {  */
-    /* X Post Container */
-    /* .x-post-articles {
-        grid-template-columns: repeat(2, 1fr); 
-        gap: 16px; 
-        article{
-            max-width: 400px;
-        }
-
-    } */
-    /* X Post Container */ 
-/* } */
 
 @media screen and (max-width: 1120px) {
     /* Container City swiper  */
@@ -685,6 +674,25 @@ header {
         height: 250px;
     }
     /* Container City swiper  */
+
+    /* X Post Container */
+    .main-x-post-container {
+        padding: 4rem 1rem;
+    }
+    .x-post-text h1 {
+        font-size: 2rem;
+    }
+    .x-post-articles {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+    article h2 {
+        font-size: 1.6rem;
+    }
+    .x-post-body {
+        padding: 16px;
+    }
+    /* X Post Container */ 
 }
 
 @media screen and (max-width: 960px) {
@@ -780,6 +788,13 @@ header {
         margin: 0;
     }
     /* Container City swiper  */
+
+    /* X Post Container */
+    .x-post-articles {
+        grid-template-columns: repeat(1, 1fr);
+        gap: 16px;
+    }
+    /* X Post Container */
 }
 
 @media screen and (max-width: 450px) {
@@ -839,7 +854,6 @@ header {
         padding: 0.5rem;
     }
 
-
     /* Container City swiper  */
     .city-text{
         h1{
@@ -847,6 +861,15 @@ header {
         }
     }
     /* Container City swiper  */
+
+    /* X Post Container */
+    .main-x-post-container {
+        padding: 3rem 0;
+    }
+    .x-post-body{
+        padding: 0; 
+    }
+    /* X Post Container */
 }
 
 /* main-swiper-container */
