@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <!-- AOS CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
+    <!-- Leaflet CSS Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <!-- Main CSS -->
     <link rel="stylesheet" href="css/weatherData.css">
     <title>Weather data</title>
@@ -464,6 +466,12 @@
     </div>
     <!-- Container City swiper -->
 
+    <!-- City Map in Thailand -->
+    <div class="city-map-container">
+        <div id="map"></div>
+    </div>
+    <!-- City Map in Thailand -->
+
     <!-- X Post Container -->
     <div class="main-x-post-container" id="X">
         <div class="x-post-text">
@@ -550,9 +558,12 @@
             once: true
         });
     </script>
+    <!-- Leaflet JS Map -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <!-- Main Script -->
     <script src="javascript/navbar.js"></script>
     <script src="javascript/containerSwiper.js"></script>
     <script src="javascript/citySwiper.js"></script>
+    <script src="javascript/cityMap.js"></script>
 </body>
 </html>
