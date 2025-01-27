@@ -1,9 +1,30 @@
 const { checkEmailAndUsername,insertUser,checkEmailToken,updateEmailVerified } = require('../models/usersModel'); // DBMS
-const { hashpassword, generateToken, sendEmail, validateUser } = require('../utils'); // Utils
+const { hashpassword, generateToken, sendEmail, validateUser, comparePassword, generateJWTtoken } = require('../utils'); // Utils
 
 // Login
-exports.login = (req,res) => {
-    res.json({message: 'Hello from login'});
+exports.login = async (req,res) => {
+    // Get data from request
+    const {user_nameORemail,password} = req.body;
+    try{
+        // Check email or user_name
+        const user = await checkEmailAndUsername(user_nameORemail, user_nameORemail);
+        if (user.length !== 1){
+            return res.status(400).json({error: 'ไม่มีชื่อผู้ใช้หรืออีเมลนี้'});
+        }
+        // Check password
+        const dbUser = user[0];
+        const passwordMatch = await comparePassword(password, dbUser.user_password);
+        if (!passwordMatch){
+            return res.status(400).json({error: 'รหัสผ่านไม่ถูกต้อง'});
+        }
+        // Success -> Send JWT token
+        const token = await generateJWTtoken(dbUser.user_id,dbUser.user_name,dbUser.email,dbUser.role_id);
+        res.cookie('token', token, { httpOnly: true, secure: true });
+        return res.status(200).json({ message: 'เข้าสู่ระบบสำเร็จ' , token, user_role: dbUser.role_id});
+    }catch(error){
+        console.log(error);
+        res.status(500).json({error: 'Server error'});
+    }
 };
 
 // Register
@@ -46,7 +67,7 @@ exports.register = async (req,res) => {
             });  
         }                      
         // Success
-        res.status(200).json({ message: 'การลงทะเบียนสำเร็จ! กรุณายืนยันอีเมลของคุณ' });
+        res.status(201).json({ message: 'การลงทะเบียนสำเร็จ! กรุณายืนยันอีเมลของคุณ' });
     }catch(error){
         console.log(error);
         res.status(500).json({error: 'Server error'});

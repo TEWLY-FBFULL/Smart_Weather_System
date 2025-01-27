@@ -31,12 +31,12 @@
         <div class="login-container">
             <div class="login-form">
                 <h1>เข้าสู่ระบบ</h1>
-                <form action="/api/auth/login" method="post">
+                <form id="loginForm" action="/api/auth/login" method="post">
                     <div class="input-group">
-                        <input type="text" placeholder="Username or Email" required>
+                        <input type="text" name="user_nameORemail" placeholder="Username or Email" required>
                     </div>
                     <div class="input-group password-group">
-                        <input type="password" id="login-password" placeholder="Password" required>
+                        <input type="password" id="login-password" name="password" placeholder="Password" required>
                         <span class="show-password"><i class="fa fa-eye-slash" id="login-toggle-password"></i></span>
                     </div>
                     <button type="submit" class="btn">Sign In</button>
@@ -57,7 +57,7 @@
         <div class="login-container">
             <div class="login-form">
                 <h1>สร้างบัญชี</h1>
-                <form action="/api/auth/register" method="post">
+                <form id="registerForm" action="/api/auth/register" method="post">
                     <div class="input-group">
                         <input type="text" name="user_name" placeholder="Username" required>
                     </div>
@@ -109,6 +109,11 @@
     <script>
         AOS.init();
     </script>
+    <!-- Sweetalert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Custom JS -->
     <script src="javascript/index_script.js"></script>
+    <script src="javascript/registerForm.js"></script>
+    <script src="javascript/loginForm.js"></script>
 </body>
 </html>
