@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const { verifyToken } = require('../middleware/jwtCheckRole');
 const { userHome } = require('../controllers/main_user');
-// ,verifyToken
-router.get('/user/index',userHome);
+
+router.get('/user/index',verifyToken,userHome); // manage user home
 
 module.exports = router;

@@ -19,8 +19,8 @@ exports.login = async (req,res) => {
         }
         // Success -> Send JWT token
         const token = await generateJWTtoken(dbUser.user_id,dbUser.user_name,dbUser.email,dbUser.role_id);
-        res.cookie('token', token, { httpOnly: true, secure: true });
-        return res.status(200).json({ message: 'เข้าสู่ระบบสำเร็จ' , token, user_role: dbUser.role_id});
+        res.cookie('token', token, { httpOnly: true, secure: true, sameSite: "Strict" });
+        return res.status(200).json({ message: 'เข้าสู่ระบบสำเร็จ', user_role: dbUser.role_id});
     }catch(error){
         console.log(error);
         res.status(500).json({error: 'Server error'});
