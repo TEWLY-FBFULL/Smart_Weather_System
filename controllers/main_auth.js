@@ -11,11 +11,14 @@ exports.login = async (req,res) => {
         if (user.length !== 1){
             return res.status(400).json({error: 'ไม่มีชื่อผู้ใช้หรืออีเมลนี้'});
         }
-        // Check password
+        // Check password and email_verified
         const dbUser = user[0];
         const passwordMatch = await comparePassword(password, dbUser.user_password);
         if (!passwordMatch){
             return res.status(400).json({error: 'รหัสผ่านไม่ถูกต้อง'});
+        }
+        else if (!dbUser.email_verified){
+            return res.status(400).json({error: 'กรุณายืนยันอีเมลของคุณก่อนเข้าสู่ระบบ'});
         }
         // Success -> Send JWT token
         const token = await generateJWTtoken(dbUser.user_id,dbUser.user_name,dbUser.email,dbUser.role_id);
@@ -105,7 +108,7 @@ exports.verifyEmail = async (req, res) => {
             return res.status(400).json({ error: 'ไม่สามารถยืนยันอีเมลของคุณได้' });
         }
         // Success
-        res.status(200).json({ message: 'ยืนยันอีเมลสำเร็จ! คุณสามารถเข้าสู่ระบบได้แล้ว' });
+        res.status(200).send('<h1>ยืนยันอีเมลสำเร็จ!</h1><p>คุณสามารถเข้าสู่ระบบได้แล้ว</p>');
     } catch (err) {
         console.error('Server error:', err);
         res.status(500).json({ error: 'Server error' });
