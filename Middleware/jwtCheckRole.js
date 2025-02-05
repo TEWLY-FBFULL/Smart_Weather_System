@@ -18,4 +18,26 @@ const verifyToken = (req, res, next) => {
     }
 };
 
-module.exports = { verifyToken };
+// Middleware for User
+const verifyUser = (req, res, next) => {
+    verifyToken(req, res, () => {
+        if (req.user.role_id === 2) {
+            next();
+        } else {
+            return res.status(403).json({ error: "ไม่มีสิทธิ์เข้าถึง" });
+        }
+    });
+};
+
+// Middleware for Admin
+const verifyAdmin = (req, res, next) => {
+    verifyToken(req, res, () => {
+        if (req.user.role_id === 1) {
+            next();
+        } else {
+            return res.status(403).json({ error: "ต้องเป็น Admin เท่านั้น!" });
+        }
+    });
+};
+
+module.exports = { verifyToken, verifyUser, verifyAdmin };

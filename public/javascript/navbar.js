@@ -75,6 +75,7 @@ function swtemMode() {
 // Toggle dropdown visibility
 accountIcon.addEventListener('click', () => {
     dropdownMenu.classList.toggle('active');
+    getUserProfile();
 });
 
 document.addEventListener('click', (e) => {
@@ -88,4 +89,24 @@ logout.addEventListener('click', () => {
     alert('You have logged out.');
     // Add your logout logic here
 });
+
+// API
+async function getUserProfile() {
+    try {
+        const response = await fetch("http://localhost:3000/api/user/profile", {
+            method: "GET",
+            credentials: "include", // Cookie (JWT)
+        });
+        const result = await response.json();
+        if (result.success) {
+            document.getElementById("user_name").innerText = result.user.user_name;
+            document.getElementById("user_email").innerText = result.user.email;
+        } else {
+            alert("โหลดข้อมูลไม่สำเร็จ!");
+        }
+    } catch (error) {
+        console.error("Error fetching profile:", error);
+    }
+}
+// API
 // Navbar ----------------------------------------------------------------->

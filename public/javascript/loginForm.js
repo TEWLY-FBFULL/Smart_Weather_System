@@ -23,11 +23,9 @@ document.querySelector("#loginForm").addEventListener("submit", async function (
                 confirmButtonText: "ตกลง",
             }).then(() => {
                 // Check role
-                console.log(result.user_role);
-                // console.log("User Role:", result.user_role, "Type:", typeof result.user_role);
-                if (result.user_role === 1) {
+                if (result.role_id === 1) {
                     window.location.href = "http://localhost:3000/api/admin/index";
-                } else if (result.user_role === 2) {
+                } else if (result.role_id === 2) {
                     window.location.href = "http://localhost:3000/api/user/index";
                 }
                 else{
