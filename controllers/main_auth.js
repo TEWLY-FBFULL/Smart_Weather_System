@@ -22,7 +22,7 @@ exports.login = async (req,res) => {
         }
         // Success -> Send JWT token
         const token = await generateJWTtoken(dbUser.user_id,dbUser.user_name,dbUser.email,dbUser.role_id);
-        res.cookie('token', token, { httpOnly: true, secure: true, sameSite: "Strict" });
+        res.cookie('token', token, { httpOnly: true, secure: false, sameSite: "Lax", path: "/" });
         return res.status(200).json({ message: 'เข้าสู่ระบบสำเร็จ', role_id: dbUser.role_id});
     }catch(error){
         console.log(error);
@@ -79,7 +79,13 @@ exports.register = async (req,res) => {
 
 // Logout
 exports.logout = (req,res) => {
-    res.json({message: 'Hello from logout'});
+    res.clearCookie("token", {
+        httpOnly: true,
+        secure: false,
+        sameSite: "Lax",
+        path: "/"
+    });
+    res.status(200).json({ message: "ออกจากระบบสำเร็จ" });
 };
 
 // Forget Password
