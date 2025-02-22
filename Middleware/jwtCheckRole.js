@@ -12,7 +12,7 @@ const verifyToken = (req, res, next) => {
         next(); // next route
     } catch (error) {
         if (error.name === "TokenExpiredError") {
-            return res.status(401).json({ error: "Session หมดอายุ กรุณา Login ใหม่" });
+            return res.status(401).send('<h1>Session หมดอายุ</h1><p>กรุณาเข้าสู่ระบบใหม่</p>');
         }
         return res.status(403).json({ error: "Token ไม่ถูกต้อง!" });
     }
