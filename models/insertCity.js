@@ -31,6 +31,3 @@ for (let i = 0; i<77; i++){
         console.log(`Add to ${cities[i].city_nameTH}`);
     });
 }
-
-
-

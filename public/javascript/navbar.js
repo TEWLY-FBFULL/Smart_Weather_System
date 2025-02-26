@@ -135,5 +135,65 @@ async function logoutUser() {
         console.error("Error fetching profile:", error);
     }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    const searchInput = document.getElementById("searchInput");
+    const suggestionsList = document.getElementById("suggestions");
+    const forecastDiv = document.getElementById("forecast");
+
+    searchInput.addEventListener("input", async () => {
+        const query = searchInput.value.trim();
+        if (!query) {
+            suggestionsList.innerHTML = "";
+            return;
+        }
+
+        try {
+            const res = await fetch(`http://localhost:3000/api/search?q=${query}`);
+            const cities = await res.json();
+            showSuggestions(cities);
+        } catch (err) {
+            console.error("Error fetching cities:", err);
+        }
+    });
+
+    function showSuggestions(cities) {
+        suggestionsList.innerHTML = "";
+        if (cities.length === 0) return;
+
+        cities.forEach(city => {
+            const li = document.createElement("li");
+            li.textContent = city.city_name;
+            li.addEventListener("click", () => {
+                searchInput.value = city.city_name;
+                fetchForecast(city.city_name);
+                suggestionsList.innerHTML = "";
+            });
+            suggestionsList.appendChild(li);
+        });
+    }
+
+    async function fetchForecast(city) {
+        try {
+            const res = await fetch(`/api/forecast?city=${city}`);
+            const data = await res.json();
+
+            if (data.message) {
+                forecastDiv.innerHTML = `<p>${data.message}</p>`;
+            } else {
+                forecastDiv.innerHTML = `
+                    <h3>Weather Forecast for ${data[0].city_name}</h3>
+                    <p>Date: ${data[0].forecast_date}</p>
+                    <p>Temperature: ${data[0].fore_temp}°C</p>
+                    <p>Humidity: ${data[0].fore_humidity}%</p>
+                    <p>Condition: ${data[0].description}</p>
+                `;
+            }
+        } catch (err) {
+            console.error("Error fetching forecast:", err);
+        }
+    }
+});
+
 // API
 // Navbar ----------------------------------------------------------------->

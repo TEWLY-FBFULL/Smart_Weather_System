@@ -17,3 +17,15 @@ exports.userProfile = async (req, res) => {
         res.status(500).json({ error: "เกิดข้อผิดพลาดในการดึงข้อมูลผู้ใช้" });
     }
 }
+
+exports.searchCity = async (req, res) => {
+    try {
+        const query = req.query.q;
+        if (!query) return res.json([]);
+        // Search city from database
+        
+
+    } catch (error) {
+        res.status(500).json({ error: "เกิดข้อผิดพลาดในการค้นหาข้อมูล" });
+    }
+}

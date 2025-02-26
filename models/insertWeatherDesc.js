@@ -23,10 +23,10 @@ const db = mysql.createConnection({
 
 db.connect(err => {
     if (err) {
-        console.error('❌ Error connecting to MySQL:', err);
+        console.error('Error connecting to MySQL:', err);
         return;
     }
-    console.log(`✅ Connected to MySQL Database!`);
+    console.log(`Connected to MySQL Database!`);
 });
 
 const query = `INSERT INTO weather_desc (weather_desc_th, weather_desc_en) VALUES (? , ?)`;
@@ -34,10 +34,10 @@ const query = `INSERT INTO weather_desc (weather_desc_th, weather_desc_en) VALUE
 for (let i = 0; i < weather_descriptions_en.length; i++) {
     db.query(query, [weather_descriptions_th[i], weather_descriptions_en[i]], (err, result) => {
         if (err) {
-            console.error(`❌ Error inserting: ${weather_descriptions_th[i]} - ${err}`);
+            console.error(`Error inserting: ${weather_descriptions_th[i]} - ${err}`);
             return;
         }
-        console.log(`✅ Added: ${weather_descriptions_th[i]} - ${weather_descriptions_en[i]}`);
+        console.log(`Added: ${weather_descriptions_th[i]} - ${weather_descriptions_en[i]}`);
     });
 }
 

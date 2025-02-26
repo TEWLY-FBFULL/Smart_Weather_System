@@ -1,35 +1,4 @@
-const fetch = require("node-fetch");
 const db = require("./connectDB");
-require("dotenv").config();
-
-const OPENWEATHER_API_KEY = process.env.OPENWEATHER_API_KEY;
-
-// Search for city in database
-const selectCityID = (city) => {
-    return new Promise((resolve, reject) => {
-        const query = 'SELECT city_id FROM cities WHERE city_name_en = ?';
-        db.query(query, city, (err, result) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(result);
-            }
-        });
-    });
-};
-
-// Get data from OpenWeatherMap API
-const getdataFromOpenWeatherMapAPI = async (city) => {
-    try {
-        const apiResponse = await fetch(
-            `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${OPENWEATHER_API_KEY}`
-        );
-        const weatherData = await apiResponse.json();
-        return weatherData;
-    } catch (error) {
-        console.error("เกิดข้อผิดพลาด:", error);
-    }
-}
 
 // Search for weather description in database
 const selectWeatherDescriptionID = (description) => {
@@ -45,7 +14,7 @@ const selectWeatherDescriptionID = (description) => {
     });
 };
 
-// Insert data to weather report table
+// Insert data to weather_reports table
 const insertWeatherReport = (weatherReportData) => {
     return new Promise((resolve, reject) => {
         const query = `INSERT INTO weather_reports 
@@ -65,4 +34,4 @@ const insertWeatherReport = (weatherReportData) => {
 };
 
 
-module.exports = { selectCityID, getdataFromOpenWeatherMapAPI, selectWeatherDescriptionID, insertWeatherReport };
+module.exports = { selectWeatherDescriptionID, insertWeatherReport };
