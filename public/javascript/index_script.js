@@ -131,3 +131,63 @@ document.getElementById("forgot-goto-reg").addEventListener("click", function (e
     }
 });
 
+const canvas = document.getElementById("snowCanvas");
+        const ctx = canvas.getContext("2d");
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let snowflakes = [];
+
+        function createSnowflakes() {
+            for (let i = 0; i < 100; i++) {
+                snowflakes.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 3 + 1,
+                    speed: Math.random() * 2 + 1,
+                    opacity: Math.random()
+                });
+            }
+        }
+
+        function drawSnowflakes() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#ffa99c";
+            ctx.beginPath();
+
+            for (let flake of snowflakes) {
+                ctx.globalAlpha = flake.opacity;
+                ctx.moveTo(flake.x, flake.y);
+                ctx.arc(flake.x, flake.y, flake.radius, 0, Math.PI * 2);
+            }
+
+            ctx.fill();
+            moveSnowflakes();
+        }
+
+        function moveSnowflakes() {
+            for (let flake of snowflakes) {
+                flake.y += flake.speed;
+                if (flake.y > canvas.height) {
+                    flake.y = 0;
+                    flake.x = Math.random() * canvas.width;
+                }
+            }
+        }
+
+        function updateSnowfall() {
+            drawSnowflakes();
+            requestAnimationFrame(updateSnowfall);
+        }
+
+        createSnowflakes();
+        updateSnowfall();
+
+        window.addEventListener("resize", () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            snowflakes = [];
+            createSnowflakes();
+        });
+

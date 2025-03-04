@@ -9,10 +9,19 @@
 }
 
 body {
-  background-image: url('https://cdn.pixabay.com/photo/2021/08/11/20/39/sunset-6539401_1280.jpg');
+  background: url('https://cdn.pixabay.com/photo/2019/10/18/13/08/rain-4559068_1280.jpg');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
+}
+
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
 }
 
 /* Background Section */

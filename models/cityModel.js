@@ -17,7 +17,21 @@ const selectCityNameWithID = (city_id) => {
 // Search city by city name
 const searchCityWithName = (city_name) => {
     return new Promise((resolve, reject) => {
-        const query = 'SELECT city_id, city_name FROM cities WHERE city_name LIKE ?';
+        const query = 'SELECT city_name_th FROM cities WHERE city_name_th LIKE ?';
+        db.query(query, [`${city_name}%`], (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result.map(row => row.city_name_th));
+            }
+        });
+    });
+};
+
+// Search city by city full name
+const searchCityWithFullName = (city_name) => {
+    return new Promise((resolve, reject) => {
+        const query = 'SELECT city_id,city_name_th FROM cities WHERE city_name_th = ?';
         db.query(query, city_name, (err, result) => {
             if (err) {
                 reject(err);
@@ -29,4 +43,4 @@ const searchCityWithName = (city_name) => {
 };
 
 
-module.exports = { selectCityNameWithID };
+module.exports = { selectCityNameWithID,searchCityWithName,searchCityWithFullName };

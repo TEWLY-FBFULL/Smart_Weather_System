@@ -172,7 +172,10 @@ nav.sticky {
     color: var(--text-color);
     cursor: pointer;
     font-size: 14px;
-    border-bottom: 1px solid var(--primary-color-sec);
+    border-bottom: 1px solid var(--text-color-sec);
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .dropdown-menu .menu-item:last-child {
@@ -191,9 +194,34 @@ nav.sticky {
     border-radius: 10px;
     background-color: var(--background-sec);
     color: var(--text-color);
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* Navbar */
+
+/* Suggestions */ 
+#suggestionsdiv {
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    flex-wrap: wrap;
+    padding: 1rem 0;
+    background-color: var(--background);
+    display: none;
+    ul{
+        list-style-type: none;
+        text-align: center;
+    }
+    li{
+        color: var(--text-color);
+        cursor: pointer;
+        font-size: 1rem;
+        margin: 0.5rem 0;
+    }
+}
+/* Suggestions */ 
 
 /* Header */
 header {

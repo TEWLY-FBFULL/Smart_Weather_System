@@ -1,4 +1,8 @@
 const path = require('path');
+const { searchCityWithName, searchCityWithFullName } = require('../models/cityModel');
+const { selectWeatherDescriptionID, insertWeatherReport, getLatestWeatherReportWithCityID } = require('../models/weatherModel');
+const { filterForecastData, processForecastEntry,getLatestWeatherForecastWithCityID } = require('../models/forecastModel');
+const { openweathermapAPI,youtubeV3API,XpostV2API } = require("../utils/allExternalAPI");
 
 exports.userHome = async (req, res) => {
     res.sendFile(path.join(__dirname, '../views/user/weatherData.html'));
@@ -23,9 +27,91 @@ exports.searchCity = async (req, res) => {
         const query = req.query.q;
         if (!query) return res.json([]);
         // Search city from database
-        
-
+        const cities = await searchCityWithName(query);
+        res.json(cities);
     } catch (error) {
         res.status(500).json({ error: "เกิดข้อผิดพลาดในการค้นหาข้อมูล" });
     }
 }
+
+exports.getWeatherdataWithCityname = async (req, res) => {
+    try {
+        const query = req.query.q;
+        if (!query) return res.status(400).json({ error: "กรุณาระบุชื่อเมือง" });
+
+        // Search city from database
+        const city = await searchCityWithFullName(query);
+        if (city.length === 0) return res.status(404).json({ error: "ไม่พบข้อมูลเมือง" });
+
+        const city_id = city[0].city_id;
+        const city_name = city[0].city_name_th;
+
+        // Get current data for weather_reports and weather_forecasts
+        const latestWeather = await getLatestWeatherReportWithCityID(city_id);
+        const latestForecast = await getLatestWeatherForecastWithCityID(city_id);
+        console.log("latestWeather:", latestWeather);
+        console.log("latestForecast:", latestForecast);
+
+        // Check current data with time
+        const now = new Date();
+        let weatherData = latestWeather;
+        let forecastData = latestForecast;
+
+        // Check if weather or forecast is outdated
+        const lastWeatherUpdate = latestWeather ? new Date(latestWeather.local_time) : null;
+        const lastForecastUpdate = latestForecast ? new Date(latestForecast[0].local_datetime) : null;
+        const isWeatherOutdated = !lastWeatherUpdate || (now - lastWeatherUpdate) / (1000 * 60 * 60) >= 1;
+        const isForecastOutdated = !lastForecastUpdate || (now - lastForecastUpdate) / (1000 * 60 * 60 * 24) >= 1;
+
+        if (isWeatherOutdated) {
+            // Get data from OpenWeatherMap API
+            const pathapi = `http://api.openweathermap.org/data/2.5/weather?q=${city_name}&units=metric&appid=`;
+            const newWeatherData = await openweathermapAPI(pathapi);
+            const description = newWeatherData.weather[0].description;
+
+            // Search for weather description in database
+            const weatherDescResult = await selectWeatherDescriptionID(description);
+            if (weatherDescResult.length === 0) {
+                return res.status(500).json({ error: `ไม่พบสภาพอากาศ ${description} ในฐานข้อมูล` });
+            }
+            const desc_id = weatherDescResult[0].wedesc_id;
+
+            // Insert data to weather report
+            const weatherReportData = {
+                city_id,
+                desc_id,
+                temp: newWeatherData.main.temp,
+                humidity: newWeatherData.main.humidity,
+                temp_min: newWeatherData.main.temp_min,
+                temp_max: newWeatherData.main.temp_max,
+                windspeed: newWeatherData.wind.speed
+            };
+            await insertWeatherReport(weatherReportData);
+            weatherData = weatherReportData;
+        }
+
+        if (isForecastOutdated) {
+            // Get forecast data from OpenWeatherMap API
+            const pathapi = `http://api.openweathermap.org/data/2.5/forecast?q=${city_name}&units=metric&appid=`;
+            const weatherData = await openweathermapAPI(pathapi);
+
+            // Filter forecast data
+            const filteredForecasts = await filterForecastData(weatherData.list);
+
+            // Manage forecast data
+            for (const forecast of filteredForecasts) {
+                await processForecastEntry(city_id, forecast);
+            }
+            forecastData = filteredForecasts;
+        }
+        // Response data
+        res.json({
+            city: city_name,
+            weather: weatherData,
+            forecast: forecastData
+        });
+    } catch (error) {
+        console.error("เกิดข้อผิดพลาด:", error);
+        res.status(500).json({ error: "Server error" });
+    }
+};

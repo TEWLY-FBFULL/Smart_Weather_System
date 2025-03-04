@@ -84,5 +84,26 @@ async function deleteOldForecasts() {
     }
 }
 
+// Check time for city
+const getLatestWeatherForecastWithCityID = (cityID) => {
+    return new Promise((resolve, reject) => {
+        const query = `
+            SELECT CONVERT_TZ(forecast_created_at, '+00:00', '+07:00') AS local_datetime,
+                CAST(forecast_date AS CHAR) AS local_date,
+                forecast_time, fore_temp, fore_temp_min, fore_temp_max, fore_humidity, fore_wind_speed
+            FROM weather_forecasts 
+            WHERE city_id = ?  
+            AND DATE(CONVERT_TZ(forecast_created_at, '+00:00', '+07:00')) = 
+            (SELECT DATE(CONVERT_TZ(MAX(forecast_created_at), '+00:00', '+07:00')) 
+            FROM weather_forecasts WHERE city_id = ?)  
+            ORDER BY forecast_date ASC, CAST(forecast_time AS TIME) ASC;
+        `;
+        db.query(query, [cityID, cityID], (err, results) => {
+            if (err) return reject(err);
+            resolve(results.length ? results : null);
+        });
+    });
+};
 
-module.exports = { filterForecastData, processForecastEntry, deleteOldForecasts };
+
+module.exports = { filterForecastData, processForecastEntry, deleteOldForecasts, getLatestWeatherForecastWithCityID };

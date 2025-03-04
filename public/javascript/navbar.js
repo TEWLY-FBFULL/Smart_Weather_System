@@ -136,63 +136,89 @@ async function logoutUser() {
     }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     const searchInput = document.getElementById("searchInput");
+    const suggestionsdiv = document.getElementById("suggestionsdiv");
     const suggestionsList = document.getElementById("suggestions");
-    const forecastDiv = document.getElementById("forecast");
+    let selectedCity = "กรุงเทพมหานคร"; // Default
 
-    searchInput.addEventListener("input", async () => {
-        const query = searchInput.value.trim();
-        if (!query) {
+    // when load web will get weather data of default city
+    await fetchWeatherData(selectedCity);
+
+    // default data in search input
+    searchInput.value = selectedCity;
+
+    // Get weather data of city
+    async function fetchWeatherData(city) {
+        try {
+            const response = await fetch(`http://localhost:3000/api/user/weatherdataofcity?q=${encodeURIComponent(city)}`);
+            const result = await response.json();
+            console.log("ผลลัพธ์:", result);
+        } catch (error) {
+            console.error("เกิดข้อผิดพลาด:", error);
+        }
+    }
+
+    // Search city
+    searchInput.addEventListener("input", async function () {
+        const query = this.value.trim();
+
+        if (query.length === 0) {
             suggestionsList.innerHTML = "";
+            suggestionsdiv.style.display = "none";
             return;
         }
 
         try {
-            const res = await fetch(`http://localhost:3000/api/search?q=${query}`);
-            const cities = await res.json();
-            showSuggestions(cities);
-        } catch (err) {
-            console.error("Error fetching cities:", err);
+            const response = await fetch(`http://localhost:3000/api/user/search?q=${query}`);
+            const cities = await response.json();
+            renderSuggestions(cities);
+            suggestionsdiv.style.display = cities.length > 0 ? "block" : "none"; // Show or Hide suggestions
+        } catch (error) {
+            console.error("เกิดข้อผิดพลาด:", error);
+            suggestionsdiv.style.display = "none";
         }
     });
 
-    function showSuggestions(cities) {
+    // Show suggestions
+    function renderSuggestions(cities) {
         suggestionsList.innerHTML = "";
-        if (cities.length === 0) return;
-
         cities.forEach(city => {
             const li = document.createElement("li");
-            li.textContent = city.city_name;
+            li.textContent = city;
             li.addEventListener("click", () => {
-                searchInput.value = city.city_name;
-                fetchForecast(city.city_name);
+                searchInput.value = city;
+                selectedCity = city;
                 suggestionsList.innerHTML = "";
+                fetchWeatherData(selectedCity); // get weather data of selected city
+                suggestionsdiv.style.display = "none";
             });
             suggestionsList.appendChild(li);
         });
-    }
-
-    async function fetchForecast(city) {
-        try {
-            const res = await fetch(`/api/forecast?city=${city}`);
-            const data = await res.json();
-
-            if (data.message) {
-                forecastDiv.innerHTML = `<p>${data.message}</p>`;
-            } else {
-                forecastDiv.innerHTML = `
-                    <h3>Weather Forecast for ${data[0].city_name}</h3>
-                    <p>Date: ${data[0].forecast_date}</p>
-                    <p>Temperature: ${data[0].fore_temp}°C</p>
-                    <p>Humidity: ${data[0].fore_humidity}%</p>
-                    <p>Condition: ${data[0].description}</p>
-                `;
-            }
-        } catch (err) {
-            console.error("Error fetching forecast:", err);
+        // ตรวจสอบจำนวน li ใน suggestionsList
+        if (suggestionsList.children.length > 0) {
+            suggestionsdiv.style.display = "block";
+        } else {
+            suggestionsdiv.style.display = "none";
         }
     }
+
+    // When push enter button
+    searchInput.addEventListener("keypress", async function (e) {
+        if (e.key === "Enter") {
+            selectedCity = searchInput.value.trim() || "กรุงเทพมหานคร"; // Default
+            console.log("จังหวัดที่เลือก:", selectedCity);
+            fetchWeatherData(selectedCity); // get weather data of selected city
+            suggestionsdiv.style.display = "none";
+        }
+    });
+
+    // Hide suggestions when click outside
+    document.addEventListener("click", (event) => {
+        if (!suggestionsdiv.contains(event.target) && event.target !== searchInput) {
+            suggestionsdiv.style.display = "none";
+        }
+    });
 });
 
 // API
