@@ -88,15 +88,23 @@ async function deleteOldForecasts() {
 const getLatestWeatherForecastWithCityID = (cityID) => {
     return new Promise((resolve, reject) => {
         const query = `
-            SELECT CONVERT_TZ(forecast_created_at, '+00:00', '+07:00') AS local_datetime,
-                CAST(forecast_date AS CHAR) AS local_date,
-                forecast_time, fore_temp, fore_temp_min, fore_temp_max, fore_humidity, fore_wind_speed
-            FROM weather_forecasts 
-            WHERE city_id = ?  
-            AND DATE(CONVERT_TZ(forecast_created_at, '+00:00', '+07:00')) = 
-            (SELECT DATE(CONVERT_TZ(MAX(forecast_created_at), '+00:00', '+07:00')) 
-            FROM weather_forecasts WHERE city_id = ?)  
-            ORDER BY forecast_date ASC, CAST(forecast_time AS TIME) ASC;
+            SELECT 
+            CONVERT_TZ(wf.forecast_created_at, '+00:00', '+07:00') AS local_datetime,
+            CAST(wf.forecast_date AS CHAR) AS local_date,
+            wd.weather_desc_th,
+            wf.forecast_time, 
+            wf.fore_temp, 
+            wf.fore_temp_min, 
+            wf.fore_temp_max, 
+            wf.fore_humidity, 
+            wf.fore_wind_speed
+            FROM weather_forecasts wf
+            INNER JOIN weather_desc wd ON wf.wedesc_id = wd.wedesc_id 
+            WHERE wf.city_id = ?  
+            AND DATE(CONVERT_TZ(wf.forecast_created_at, '+00:00', '+07:00')) = 
+            (SELECT DATE(CONVERT_TZ(MAX(wf.forecast_created_at), '+00:00', '+07:00')) 
+            FROM weather_forecasts wf WHERE wf.city_id = ?)  
+            ORDER BY wf.forecast_date ASC, CAST(wf.forecast_time AS TIME) ASC;
         `;
         db.query(query, [cityID, cityID], (err, results) => {
             if (err) return reject(err);

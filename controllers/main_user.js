@@ -45,6 +45,15 @@ exports.getWeatherdataWithCityname = async (req, res) => {
 
         const city_id = city[0].city_id;
         const city_name = city[0].city_name_th;
+        const lon = city[0].lon;
+        const lat = city[0].lat;
+
+        const cityData = {
+            city_id,
+            city_name,
+            lon,
+            lat
+        }
 
         // Get current data for weather_reports and weather_forecasts
         const latestWeather = await getLatestWeatherReportWithCityID(city_id);
@@ -87,7 +96,7 @@ exports.getWeatherdataWithCityname = async (req, res) => {
                 windspeed: newWeatherData.wind.speed
             };
             await insertWeatherReport(weatherReportData);
-            weatherData = weatherReportData;
+            weatherData = await getLatestWeatherReportWithCityID(city_id);
         }
 
         if (isForecastOutdated) {
@@ -102,11 +111,11 @@ exports.getWeatherdataWithCityname = async (req, res) => {
             for (const forecast of filteredForecasts) {
                 await processForecastEntry(city_id, forecast);
             }
-            forecastData = filteredForecasts;
+            forecastData = await getLatestWeatherForecastWithCityID(city_id);
         }
         // Response data
         res.json({
-            city: city_name,
+            city: cityData,
             weather: weatherData,
             forecast: forecastData
         });

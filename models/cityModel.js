@@ -31,7 +31,7 @@ const searchCityWithName = (city_name) => {
 // Search city by city full name
 const searchCityWithFullName = (city_name) => {
     return new Promise((resolve, reject) => {
-        const query = 'SELECT city_id,city_name_th FROM cities WHERE city_name_th = ?';
+        const query = 'SELECT city_id,city_name_th,lon,lat FROM cities WHERE city_name_th = ?';
         db.query(query, city_name, (err, result) => {
             if (err) {
                 reject(err);

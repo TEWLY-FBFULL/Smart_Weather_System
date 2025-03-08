@@ -42,12 +42,19 @@ const insertWeatherReport = (weatherReportData) => {
 const getLatestWeatherReportWithCityID = (cityID) => {
     return new Promise((resolve, reject) => {
         const query = `
-            SELECT CONVERT_TZ(report_created_at, '+00:00', '+07:00') AS local_time,
-                   rep_temp,rep_humidity,rep_temp_min,rep_temp_max,rep_wind_speed
-            FROM weather_reports 
-            WHERE city_id = ? 
-            AND CONVERT_TZ(report_created_at, '+00:00', '+07:00') >= NOW() - INTERVAL 1 HOUR
-            ORDER BY report_created_at DESC 
+            SELECT 
+            CONVERT_TZ(wr.report_created_at, '+00:00', '+07:00') AS local_time,
+            wd.weather_desc_th,
+            wr.rep_temp,
+            wr.rep_humidity,
+            wr.rep_temp_min,
+            wr.rep_temp_max,
+            wr.rep_wind_speed
+            FROM weather_reports wr
+            INNER JOIN weather_desc wd ON wr.wedesc_id = wd.wedesc_id 
+            WHERE wr.city_id = ? 
+            AND CONVERT_TZ(wr.report_created_at, '+00:00', '+07:00') >= NOW() - INTERVAL 1 HOUR
+            ORDER BY wr.report_created_at DESC 
             LIMIT 1;
         `;
         db.query(query, [cityID], (err, results) => {

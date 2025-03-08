@@ -76,4 +76,35 @@ window.addEventListener('resize', () => {
     swiperCards.update();
     fiveDaysSwiper.update();
 });
+
+// Resize swiper when window load
+window.addEventListener("load", () => {
+    swiperCards.update();
+    fiveDaysSwiper.update();
+});
+
+// Reset and Update Swiper Slides
+const updateSlidesPerView = async (swiperInstance, totalSlides) => {
+    if (swiperInstance === 0) {
+        resetSwiper(swiperCards);
+        swiperCards.params.slidesPerView = Math.min(totalSlides, 3); 
+        swiperCards.update();     
+    }
+    else if (swiperInstance === 1) {
+        resetSwiper(fiveDaysSwiper);
+        fiveDaysSwiper.params.slidesPerView = Math.min(totalSlides, 3); 
+        fiveDaysSwiper.update();
+    }
+};
+
+const resetSwiper = (swiperInstance) => {
+    while (swiperInstance.slides.length > 0) {
+        swiperInstance.removeSlide(0);
+    }
+    swiperInstance.update();
+};
+
+
+export { updateSlidesPerView };
+
 // Container swiper ----------------------------------------------------------------->

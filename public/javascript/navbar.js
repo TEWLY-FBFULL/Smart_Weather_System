@@ -1,13 +1,11 @@
+import {showAllData} from './main.js'; // import the function
+
 // Navbar ----------------------------------------------------------------->
 const navbar = document.querySelector('nav');
 const ham = document.getElementById('ham-icon');
 const links = document.getElementById('nav-responsive');
-const toggle = document.getElementById('toggle-icon');
-const toggle_tem = document.getElementById('toggle-tem-icon');
 const accountIcon = document.querySelector('.account-icon');
 const dropdownMenu = document.getElementById('account-dropdownMenu');
-let isDarkMode = false;
-let isTemMode = false;
 
 // Navbar scroll
 window.addEventListener('scroll', () => {
@@ -30,45 +28,6 @@ function responsiveHam() {
         links.className += ' responsive';
     } else {
         links.className = 'links';
-    }
-}
-
-// Light - Dark Mode
-toggle.addEventListener('click', swMode);
-
-if (localStorage.getItem('theme') === 'dark') {
-    isDarkMode = true;
-    document.documentElement.setAttribute('data-theme', 'dark');
-    toggle.className = "fa-regular fa-sun";
-} else {
-    document.documentElement.setAttribute('data-theme', 'light');
-    toggle.className = "fa-regular fa-moon";
-}
-
-function swMode() {
-    isDarkMode = !isDarkMode;
-    if (isDarkMode) {
-        document.documentElement.setAttribute('data-theme', 'dark');
-        toggle.className = "fa-regular fa-sun";
-        localStorage.setItem('theme', 'dark');
-    }
-    else {
-        document.documentElement.setAttribute('data-theme', 'light');
-        toggle.className = "fa-regular fa-moon";
-        localStorage.setItem('theme', 'light');
-    }
-}
-
-// Temperature Mode
-toggle_tem.addEventListener('click', swtemMode);
-
-function swtemMode() {
-    isTemMode = !isTemMode;
-    if (isTemMode) {
-        toggle_tem.innerText = "°F";
-    }
-    else {
-        toggle_tem.innerText = "°C";
     }
 }
 
@@ -154,6 +113,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const response = await fetch(`http://localhost:3000/api/user/weatherdataofcity?q=${encodeURIComponent(city)}`);
             const result = await response.json();
             console.log("ผลลัพธ์:", result);
+            await showAllData(result);
         } catch (error) {
             console.error("เกิดข้อผิดพลาด:", error);
         }

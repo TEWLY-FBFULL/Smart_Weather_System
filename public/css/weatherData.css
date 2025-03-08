@@ -257,6 +257,9 @@ header {
     h1 {
         font-size: 4rem;
         margin-bottom: 0.3rem;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        white-space: normal;
     }
 
     .header-city-text-p {
@@ -265,6 +268,9 @@ header {
         p {
             margin-right: 3rem;
             font-size: 1.2rem;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
         }
     }
 }
@@ -426,6 +432,9 @@ header {
 .info span {
     font-size: 1.3rem;
     color: var(--text-color);
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .swiper-button-prev:after {
@@ -842,6 +851,45 @@ header {
     /* X Post Container */
 }
 
+@media screen and (max-width: 500px) {
+    /* Header */
+    .header-container {
+        justify-content: center;
+    }
+
+    .header-city-text,
+    .header-city-weather {
+        margin: 0 auto;
+    }
+
+    .header-city-text{
+        h1{
+            font-size: 3rem;
+        }
+    }
+
+    .header-city-text-p {
+        flex-direction: column;
+        margin-bottom: 2rem;
+        text-align: center;
+        p {
+            display: block;
+            font-size: 1rem;
+        }
+    }
+
+    .header-city-weather {
+        grid-template-columns: 1fr;
+        padding: 3rem;
+    }
+
+    .header-icon {
+        width: 95%;
+        margin: 0 auto;
+    }
+    /* Header */
+}
+
 @media screen and (max-width: 450px) {
     /* Navbar */
     .mode {
@@ -859,37 +907,6 @@ header {
     }
     /* Navbar */
 
-    /* Header */
-    .header-container {
-        justify-content: center;
-    }
-
-    .header-city-text,
-    .header-city-weather {
-        margin: 0 auto;
-    }
-
-    .header-city-text-p {
-        flex-direction: column;
-        margin-bottom: 2rem;
-
-        p {
-            display: block;
-            margin: 0 auto;
-        }
-    }
-
-    .header-city-weather {
-        grid-template-columns: 1fr;
-        padding: 3rem;
-    }
-
-    .header-icon {
-        width: 95%;
-        margin: 0 auto;
-    }
-    /* Header */
-
     .main-swiper-container{
         h1{
             font-size: 2.3rem;
@@ -898,6 +915,14 @@ header {
     .forecast-toggle button{
         padding: 0.5rem;
     }
+
+     /* Header */
+    .header-city-text{
+        h1{
+            font-size: 2.5rem;
+        }
+    }
+     /* Header */
 
     /* Container City swiper  */
     .city-text{
