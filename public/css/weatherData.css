@@ -554,7 +554,7 @@ header {
         object-position: 15% 100%;
     }
     p{
-        font-size: 2rem;
+        font-size: 1.3rem;
         font-weight: bold;
     }
     i{
@@ -678,22 +678,97 @@ header {
 }
 /* X Post Container */
 
-/* City Map Container */
+/* Main Weather Detail Containner */
+.main-weather-detail-containner{
+    background: url("https://images.pexels.com/photos/10828633/pexels-photo-10828633.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2");
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 3rem;
+    h1{
+        text-align: center;
+        font-size: 3rem;
+        color: var(--text-color-sec);
+        margin-bottom: 3rem;
+    }
+}
+
+.main-weather-detail{
+    min-height: 35rem;
+    width: 95%;
+    border: 1px solid red;
+    margin: 0 auto;
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chart-container{
+    width: 50%;
+    min-height: 25rem;
+    background-color: var(--background-sec);
+    border-radius: 20px;
+}
+
+.weather-detail{
+    width: 50%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.weather-detail-city{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+}
+
+.weather-detail-city-img{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--primary-color-sec);
+    min-height: 15rem;
+    margin: 0.5rem 0.5rem;
+    border-radius: 20px;
+}
+
 .city-map-container {
-    max-width: 1500px;
-    margin: 1rem auto;
-    padding: 2rem;
+    margin: 0.5rem 0.5rem;
 }
 
 #map {
-    height: 400px;
+    min-height: 15rem;
     width: 100%;
     max-width: 100%;
     overflow: hidden;
-    border-radius: 20px;
     z-index: 0;
+    border-radius: 20px;
 }
-/* City Map Container */
+
+.weather-detail-temp{
+    display: flex;
+    flex-direction: column;
+    background-color: var(--primary-color-sec);
+    width: 50%;
+    border-radius: 20px;
+    padding: 2rem 0;
+    align-items: center;
+    img{
+        margin: 0 auto;
+        width: 220px;
+        height: 220px;
+        object-fit: cover;
+        object-position: 15% 100%;
+    }
+    h2{
+        text-align: center;
+        font-size: 2rem;
+        color: var(--background);
+        margin: 1rem 0;
+    }
+}
+
+/* Main Weather Detail Containner */
 
 
 /* Responsive */

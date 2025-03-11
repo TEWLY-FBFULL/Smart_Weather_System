@@ -1,3 +1,7 @@
+import { getWeatherIcon } from "./getWeatherIcon.js";
+import { createWeatherCard } from "./createWeatherCards.js";
+import { formatDate } from "./formatDate.js";
+
 // Container swiper ----------------------------------------------------------------->
 const todayBtn = document.getElementById("today-btn");
 const fiveDaysBtn = document.getElementById("five-days-btn");
@@ -83,28 +87,59 @@ window.addEventListener("load", () => {
     fiveDaysSwiper.update();
 });
 
-// Reset and Update Swiper Slides
-const updateSlidesPerView = async (swiperInstance, totalSlides) => {
-    if (swiperInstance === 0) {
-        resetSwiper(swiperCards);
-        swiperCards.params.slidesPerView = Math.min(totalSlides, 3); 
-        swiperCards.update();     
-    }
-    else if (swiperInstance === 1) {
-        resetSwiper(fiveDaysSwiper);
-        fiveDaysSwiper.params.slidesPerView = Math.min(totalSlides, 3); 
-        fiveDaysSwiper.update();
-    }
+// Update Weather Slides
+const updateWeatherSlides = (todayForecast, next5DaysForecast) => {
+    // Create fragment
+    const todayFragment = document.createDocumentFragment();
+    const fiveDaysFragment = document.createDocumentFragment();
+
+    // Insert data to Today Swiper
+    todayForecast.forEach(item => {
+        const card = createWeatherCard(
+            item.forecast_time.slice(0, 5),
+            item.fore_temp,      
+            item.fore_humidity,  
+            (item.fore_wind_speed ? item.fore_wind_speed.toFixed(0) : "0"), 
+            item.weather_desc_th,
+            getWeatherIcon(item.weather_desc_th) 
+        );
+        if (card instanceof Node) todayFragment.appendChild(card);
+    });
+
+    // Insert data to 5 Days Swiper
+    next5DaysForecast.forEach(item => {
+        const card = createWeatherCard(
+            formatDate(item.local_date),
+            item.fore_temp,     
+            item.fore_humidity,  
+            (item.fore_wind_speed ? item.fore_wind_speed.toFixed(0) : "0"), 
+            item.weather_desc_th, 
+            getWeatherIcon(item.weather_desc_th) 
+        );
+        if (card instanceof Node) fiveDaysFragment.appendChild(card);
+    });
+
+    console.log("Today Slides:", todayFragment.children.length);
+    console.log("Five Days Slides:", fiveDaysFragment.children.length);
+
+    // Clear old slides 
+    swiperCards.removeAllSlides();
+    fiveDaysSwiper.removeAllSlides();
+
+    // Add new slides
+    swiperCards.appendSlide([...todayFragment.children]);
+    fiveDaysSwiper.appendSlide([...fiveDaysFragment.children]);
+
+    // Update Swiper
+    swiperCards.update();
+    fiveDaysSwiper.update();
 };
 
-const resetSwiper = (swiperInstance) => {
-    while (swiperInstance.slides.length > 0) {
-        swiperInstance.removeSlide(0);
-    }
-    swiperInstance.update();
-};
+document.addEventListener("DOMContentLoaded", () => {
+    swiperCards.update();
+    fiveDaysSwiper.update();
+});
 
 
-export { updateSlidesPerView };
-
+export { updateWeatherSlides };
 // Container swiper ----------------------------------------------------------------->

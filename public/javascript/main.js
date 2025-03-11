@@ -1,20 +1,25 @@
-import { createWeatherCard } from "./createWeatherCards.js";
 import { getWeatherIcon } from "./getWeatherIcon.js";
-import { formatDate } from "./formatDate.js";
-import { updateSlidesPerView } from "./containerSwiper.js";
+import { updateWeatherSlides } from "./containerSwiper.js";
 import { createCityMap } from "./cityMap.js";
-import { updateTemperature, getTemperatureMode, convertToFahrenheit } from "./temperatureMode.js"; 
+import { updateTemperature, getTemperatureMode, convertToFahrenheit, updatePopularCitiesTemperature } from "./temperatureMode.js"; 
+import { createGraph } from "./temperatureGraph.js";
 
 async function showAllData(result) {
+    // Check if the result is valid
+    if (!result || !result.city || !result.weather || !result.popularCity || !result.forecast) {
+        console.error("Invalid result data:", result);
+        return;
+    }
     window.latestResult = result;
 
     // Temperature class
     updateTemperature(result);
+    updatePopularCitiesTemperature(result);
 
     // City name class
     const cityname = document.getElementsByClassName("city-name-fromAPI");
-    cityname[0].innerText = result.city.city_name.trim();
-    cityname[1].innerHTML = `<i class="fas fa-map-marker-alt fa-2x"></i> ${result.city.city_name.trim()}`;
+    if (cityname.length > 0) cityname[0].textContent = result?.city?.city_name?.trim() || "Unknown";
+    if (cityname.length > 1) cityname[1].innerHTML = `<i class="fas fa-map-marker-alt fa-2x"></i> ${result?.city?.city_name?.trim() || "Unknown"}`;
 
     // Date and Time ID
     const dateOptions = { weekday: "long", day: "numeric", month: "long" };
@@ -23,8 +28,8 @@ async function showAllData(result) {
     const currentTimeID = document.getElementById("current-time-th");
     const dateShow = new Date().toLocaleDateString("th-TH", dateOptions);
     const currentTimeShow = `อัปเดตเมื่อ ${new Date().toLocaleTimeString("th-TH", timeOptions)} น.`;
-    dateID.innerHTML = dateShow;
-    currentTimeID.innerHTML = currentTimeShow;
+    dateID.textContent = dateShow;
+    currentTimeID.textContent = currentTimeShow;
 
     // Humidity class
     const humidity = document.getElementsByClassName("hum-fromAPI");
@@ -45,7 +50,10 @@ async function showAllData(result) {
     // Weather icon class
     const weatherIcon = document.getElementsByClassName("weather-icon-fromAPI");
     weatherIcon[0].src = getWeatherIcon(result.weather.weather_desc_th);
-
+    for (let i = 1; i <= 6; i++) { 
+        weatherIcon[i].src = getWeatherIcon(result.popularCity[i - 1].weather_desc_th);
+    }
+    
     // Culculate temperature for map
     const tempMode = getTemperatureMode();
     const tempForMap = tempMode === "F" ? convertToFahrenheit(result.weather.rep_temp).toFixed(0) : result.weather.rep_temp.toFixed(0);
@@ -55,8 +63,8 @@ async function showAllData(result) {
         result.weather.weather_desc_th, tempForMap, result.weather.rep_humidity);
 
     // Forecast Today and 5 days
-    // Forecast Today
     const showWeatherForecastSlide = document.getElementsByClassName("swiper-wrapper");
+    // Forecast Today
     const today = new Date().toISOString().split("T")[0]; // Today
     const todayForecast = result.forecast.filter(item => item.local_date === today);
     todayForecast.sort((a, b) => a.forecast_time.localeCompare(b.forecast_time)); // 06:00 → 21:00
@@ -66,41 +74,14 @@ async function showAllData(result) {
     .filter(item => item.local_date > today && item.forecast_time === "06:00:00")
     .sort((a, b) => a.local_date.localeCompare(b.local_date));
 
-    // Clear the old slides
-    showWeatherForecastSlide[0].innerHTML = ""; // Forecast Today
-    showWeatherForecastSlide[1].innerHTML = ""; // Forecast 5 Days
+    // Create Weather Cards
+    updateWeatherSlides(todayForecast, next5DaysForecast);
+    // Create Wather Graph
+    createGraph();
 
-    // Update Slides of Swiper
-    console.log("Today Forecast:", todayForecast.length);
-    console.log("Next 5 Days Forecast:", next5DaysForecast.length);
-    await updateSlidesPerView(0, todayForecast.length);
-    await updateSlidesPerView(1, next5DaysForecast.length);
-
-    // Create new slides
-    todayForecast.forEach(item => {
-        showWeatherForecastSlide[0].innerHTML += createWeatherCard(
-            item.forecast_time.slice(0, 5), // 06:00:00 → 06:00 
-            item.fore_temp,      
-            item.fore_humidity,  
-            (item.fore_wind_speed).toFixed(0), 
-            item.weather_desc_th,
-            getWeatherIcon(item.weather_desc_th) 
-        );
-    });
-    
-    next5DaysForecast.forEach(item => {
-        showWeatherForecastSlide[1].innerHTML += createWeatherCard(
-            formatDate(item.local_date), // 2021-01-01 → 1 มกราคม   
-            item.fore_temp,     
-            item.fore_humidity,  
-            (item.fore_wind_speed).toFixed(0), 
-            item.weather_desc_th, 
-            getWeatherIcon(item.weather_desc_th) 
-        );
-    });
     // Update temperature when the temperature mode is changed
     document.addEventListener("temperatureModeChanged", () => {
-        // **เพิ่มการอัปเดตข้อมูลแสดงผลทั้งหมด**
+        // Update All Data
         showAllData(window.latestResult);
     });
 }

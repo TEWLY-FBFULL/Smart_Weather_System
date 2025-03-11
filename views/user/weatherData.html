@@ -135,50 +135,68 @@
             <div class="swiper-wrapper">
                 <div class="swiper-slide city-swiper-slide"
                     style="background: url(https://www.agoda.com/wp-content/uploads/2019/10/Wat-Arun-Bangkok-sightseeing.jpg); background-size: cover; background-position: center; background-repeat: no-repeat;">
-                    <img src="/img/sunny.png" alt="image">
-                    <p>กรุงเทพ</p>
-                    <i class="fas fa-thermometer-half fa-1x"> 23°C</i>
+                    <img src="/img/sunny.png" alt="image" class="weather-icon-fromAPI">
+                    <p>กรุงเทพมหานคร</p>
+                    <i class="fas fa-thermometer-half fa-1x pop-tem-fromAPI" data-city-id="1"></i>
                 </div>
                 <div class="swiper-slide city-swiper-slide"
                     style="background: url(https://www.ananda.co.th/blog/thegenc/wp-content/uploads/2024/02/%E0%B9%84%E0%B8%A1%E0%B9%88%E0%B8%A1%E0%B8%B5%E0%B8%8A%E0%B8%B7%E0%B9%88%E0%B8%AD-1145-x-550-px-17-1.png); background-size: cover; background-position: center; background-repeat: no-repeat;">
-                    <img src="/img/sunny.png" alt="image">
+                    <img src="/img/sunny.png" alt="image" class="weather-icon-fromAPI">
                     <p>เชียงใหม่</p>
-                    <i class="fas fa-thermometer-half fa-1x"> 23°C</i>
+                    <i class="fas fa-thermometer-half fa-1x pop-tem-fromAPI" data-city-id="38"></i>
                 </div>
                 <div class="swiper-slide city-swiper-slide"
                     style="background: url(https://www.ananda.co.th/blog/thegenc/wp-content/uploads/2024/05/%E0%B8%94%E0%B8%B5%E0%B9%84%E0%B8%8B%E0%B8%99%E0%B9%8C%E0%B8%97%E0%B8%B5%E0%B9%88%E0%B8%A2%E0%B8%B1%E0%B8%87%E0%B9%84%E0%B8%A1%E0%B9%88%E0%B9%84%E0%B8%94%E0%B9%89%E0%B8%95%E0%B8%B1%E0%B9%89%E0%B8%87%E0%B8%8A%E0%B8%B7%E0%B9%88%E0%B8%AD-2024-05-20T120256.309.png); background-size: cover; background-position: center; background-repeat: no-repeat;">
-                    <img src="/img/sunny.png" alt="image">
+                    <img src="/img/sunny.png" alt="image" class="weather-icon-fromAPI">
                     <p>ภูเก็ต</p>
-                    <i class="fas fa-thermometer-half fa-1x"> 23°C</i>
+                    <i class="fas fa-thermometer-half fa-1x pop-tem-fromAPI" data-city-id="66"></i>
                 </div>
                 <div class="swiper-slide city-swiper-slide"
                     style="background: url(https://www.songkhla.go.th/tmp/a2a61e48ce64b7c0bab1b3e550fe7fb8.jpg); background-size: cover; background-position: center; background-repeat: no-repeat;">
-                    <img src="/img/sunny.png" alt="image">
+                    <img src="/img/sunny.png" alt="image" class="weather-icon-fromAPI">
                     <p>สงขลา</p>
-                    <i class="fas fa-thermometer-half fa-1x"> 23°C</i>
+                    <i class="fas fa-thermometer-half fa-1x pop-tem-fromAPI" data-city-id="70"></i>
                 </div>
                 <div class="swiper-slide city-swiper-slide"
                     style="background: url(https://img.kapook.com/u/2018/supattra_wat/Udon/don.jpg); background-size: cover; background-position: center; background-repeat: no-repeat;">
-                    <img src="/img/sunny.png" alt="image">
+                    <img src="/img/sunny.png" alt="image" class="weather-icon-fromAPI">
                     <p>อุดรธานี</p>
-                    <i class="fas fa-thermometer-half fa-1x"> 23°C</i>
+                    <i class="fas fa-thermometer-half fa-1x pop-tem-fromAPI" data-city-id="29"></i>
                 </div>
                 <div class="swiper-slide city-swiper-slide"
                     style="background: url(https://jeeor.com/wp-content/uploads/2020/03/%E0%B9%80%E0%B8%81%E0%B8%B2%E0%B8%B0%E0%B8%9E%E0%B8%B5%E0%B8%9E%E0%B8%B5.jpg); background-size: cover; background-position: center; background-repeat: no-repeat;">
-                    <img src="/img/sunny.png" alt="image">
+                    <img src="/img/sunny.png" alt="image" class="weather-icon-fromAPI">
                     <p>กระบี่</p>
-                    <i class="fas fa-thermometer-half fa-1x"> 23°C</i>
+                    <i class="fas fa-thermometer-half fa-1x pop-tem-fromAPI" data-city-id="64"></i>
                 </div>
             </div>
         </div>
     </div>
     <!-- Container City swiper -->
 
-    <!-- City Map in Thailand -->
-    <div class="city-map-container" data-aos="fade-up">
-        <div id="map"></div>
+    <!-- Weather Detail -->
+    <div class="main-weather-detail-containner">
+        <h1>รายละเอียดสภาพอากาศวันนี้</h1>
+        <div class="main-weather-detail">
+            <div class="weather-detail" data-aos="zoom-in-down">
+                <div class="weather-detail-city">
+                    <div class="weather-detail-city-img"  style="background: url(https://www.agoda.com/wp-content/uploads/2019/10/Wat-Arun-Bangkok-sightseeing.jpg); background-size: cover; background-position: center; background-repeat: no-repeat;"></div>
+                    <div class="city-map-container" data-aos="fade-up">
+                        <div id="map"></div>
+                    </div>
+                </div>
+                <div class="weather-detail-temp">
+                    <img src="/img/sunny.png" alt="image" class="">
+                    <h2 class="tem-fromAPI"><i class="fas fa-thermometer-half fa-1x"></i></h2>
+                    <h2 id="min-max-tem-fromAPI"><i class="fas fa-thermometer-half fa-1x"></i> 45C - 50C</h2>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="weatherChart"></canvas>
+            </div>
+        </div>
     </div>
-    <!-- City Map in Thailand -->
+    <!-- Weather Detail -->
 
     <!-- X Post Container -->
     <div class="main-x-post-container" id="X">
@@ -310,12 +328,16 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <!-- Sweetalert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Main Script -->
     <script type="module" src="/javascript/navbar.js"></script>
-    <script src="/javascript/containerSwiper.js"></script>
+    <script type="module" src="/javascript/containerSwiper.js"></script>
     <script src="/javascript/citySwiper.js"></script>
-    <script src="/javascript/cityMap.js"></script>
+    <script type="module" src="/javascript/cityMap.js"></script>
     <script type="module" src="/javascript/main.js"></script>
     <script src="/javascript/darkMode.js"></script>
+    <script src="/javascript/temperatureGraph.js"></script>
+    <script type="module" src="/javascript/temperatureGraph"></script>
 </body>
 </html>

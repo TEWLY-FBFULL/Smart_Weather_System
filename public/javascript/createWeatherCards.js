@@ -5,7 +5,9 @@ function createWeatherCard(time, tempCelsius, humidity, wind, desc, imgSrc) {
     const temp = mode === "F" ? convertToFahrenheit(tempCelsius).toFixed(0) : tempCelsius.toFixed(0);
     const unit = mode === "F" ? "°F" : "°C";
 
-    return `
+    // Created template element
+    const template = document.createElement("template");
+    template.innerHTML = `
         <article class="card__article swiper-slide">
             <div class="card__image">
                 <img src=${imgSrc} alt="weather" class="card__img">
@@ -33,7 +35,9 @@ function createWeatherCard(time, tempCelsius, humidity, wind, desc, imgSrc) {
                 </div>
             </div>
         </article>
-    `;
+    `.trim();
+    // Return Node
+    return template.content.firstElementChild;
 }
 
 export { createWeatherCard }; // export the function

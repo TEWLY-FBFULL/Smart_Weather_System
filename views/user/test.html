@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chart.js with CSS</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Import Chart.js -->
+    <style>
+        .chart-container {
+            width: 80%; /* ปรับขนาดความกว้าง */
+            max-width: 600px; /* กำหนดขนาดสูงสุด */
+            height: 300px; /* กำหนดความสูง */
+            margin: auto; /* จัดกึ่งกลาง */
+            border: 5px solid #333; /* เส้นขอบ */
+            border-radius: 10px; /* มนวนเส้นขอบ */
+        }
+    </style>
+</head>
+<body>
+    <div class="chart-container">
+        <canvas id="myChart"></canvas> <!-- ไม่ต้องกำหนด width/height ที่นี่ -->
+    </div>
+
+    <script>
+        const ctx = document.getElementById('myChart').getContext('2d');
+
+        const myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+                datasets: [{
+                    label: 'Revenue',
+                    data: [30, 50, 70, 40, 90],
+                    backgroundColor: 'blue',
+                    borderColor: 'darkblue',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true, // ทำให้กราฟปรับขนาดอัตโนมัติ
+                maintainAspectRatio: false // ให้ขนาดขึ้นกับ CSS ไม่ใช่อัตราส่วนเริ่มต้น
+            }
+        });
+    </script>
+</body>
+</html>

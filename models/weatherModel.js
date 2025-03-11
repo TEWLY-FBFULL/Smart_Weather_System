@@ -49,7 +49,8 @@ const getLatestWeatherReportWithCityID = (cityID) => {
             wr.rep_humidity,
             wr.rep_temp_min,
             wr.rep_temp_max,
-            wr.rep_wind_speed
+            wr.rep_wind_speed,
+            wr.city_id
             FROM weather_reports wr
             INNER JOIN weather_desc wd ON wr.wedesc_id = wd.wedesc_id 
             WHERE wr.city_id = ? 
