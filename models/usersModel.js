@@ -59,4 +59,18 @@ const updateEmailVerified = (user_id) => {
     });
 };
 
-module.exports = { checkEmailAndUsername,insertUser,checkEmailToken,updateEmailVerified };
+// Update last seen time
+const updateLastSeenTime = (user_id,timestamp) => {
+    return new Promise((resolve, reject) => {
+        const query = 'UPDATE users SET last_seen = ? WHERE user_id = ?';
+        db.query(query, [timestamp, user_id], (err, result) => {
+            if (err){
+                reject(err);
+            }
+            resolve(result);
+        });
+    });
+};
+
+
+module.exports = { checkEmailAndUsername,insertUser,checkEmailToken,updateEmailVerified,updateLastSeenTime };

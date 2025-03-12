@@ -178,20 +178,25 @@
     <div class="main-weather-detail-containner">
         <h1>รายละเอียดสภาพอากาศวันนี้</h1>
         <div class="main-weather-detail">
-            <div class="weather-detail" data-aos="zoom-in-down">
+            <div class="weather-detail">
                 <div class="weather-detail-city">
-                    <div class="weather-detail-city-img"  style="background: url(https://www.agoda.com/wp-content/uploads/2019/10/Wat-Arun-Bangkok-sightseeing.jpg); background-size: cover; background-position: center; background-repeat: no-repeat;"></div>
-                    <div class="city-map-container" data-aos="fade-up">
+                    <div class="weather-detail-city-img" data-aos="fade-right" style="background: url(https://www.agoda.com/wp-content/uploads/2019/10/Wat-Arun-Bangkok-sightseeing.jpg); background-size: cover; background-position: center; background-repeat: no-repeat;"></div>
+                    <div class="city-map-container" data-aos="fade-right">
                         <div id="map"></div>
                     </div>
                 </div>
-                <div class="weather-detail-temp">
-                    <img src="/img/sunny.png" alt="image" class="">
-                    <h2 class="tem-fromAPI"><i class="fas fa-thermometer-half fa-1x"></i></h2>
-                    <h2 id="min-max-tem-fromAPI"><i class="fas fa-thermometer-half fa-1x"></i> 45C - 50C</h2>
+                <div class="weather-detail-temp" data-aos="fade-up">
+                    <div class="weather-detail-temp-res-img">
+                        <img src="/img/sunny.png" alt="image" class="weather-icon-fromAPI">
+                    </div>
+                    <div class="weather-detail-temp-res-text">
+                        <h2><i class="fas fa-thermometer-half fa-1x"></i> <span class="tem-fromAPI"></span></h2>
+                        <h2><i class="fas fa-thermometer-half fa-1x"></i> <span class="min-max-tem-fromAPI"></span></h2>
+                        <h2 class="city-name-fromAPI"></h2>
+                    </div>
                 </div>
             </div>
-            <div class="chart-container">
+            <div class="chart-container" data-aos="zoom-in-down">
                 <canvas id="weatherChart"></canvas>
             </div>
         </div>
@@ -337,7 +342,6 @@
     <script type="module" src="/javascript/cityMap.js"></script>
     <script type="module" src="/javascript/main.js"></script>
     <script src="/javascript/darkMode.js"></script>
-    <script src="/javascript/temperatureGraph.js"></script>
-    <script type="module" src="/javascript/temperatureGraph"></script>
+    <script type="module" src="/javascript/temperatureGraph.js"></script>
 </body>
 </html>

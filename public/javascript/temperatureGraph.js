@@ -1,33 +1,44 @@
-async function createGraph(data) {
-    const ctx = document.getElementById('myChart').getContext('2d');
+import {convertToFahrenheit, getTemperatureMode} from "./temperatureMode.js";
 
-    if (!ctx) {
-        console.error("Canvas not found!");
-        return;
-    }
+async function createGraph(todayForecast) {
+    const mode = getTemperatureMode();
+    const ctx = document.getElementById('weatherChart').getContext('2d');
+
+    if (!ctx) {console.error("Canvas not found!");return;}
+
+    const labels = todayForecast.map(item => item.forecast_time.slice(0, 5));
+    const data = mode === "F" ? todayForecast.map(item => convertToFahrenheit(item.fore_temp)) 
+    : todayForecast.map(item => item.fore_temp);
 
     // Delete old chart if exists
-    if (window.myChart instanceof Chart) {
-        window.myChart.destroy();
-    }
+    if (window.myChart instanceof Chart) {window.myChart.destroy();}
 
     // Create new chart
     window.myChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: ["06:00", "09:00", "12:00", "15:00", "18:00", "21:00"], // รับ labels จาก data 
+            labels: labels,
             datasets: [{
-                label: 'ช่วงเวลาสภาพอากาศ',
-                data: [20,30,40,50,60], // รับค่าอุณหภูมิจาก data
-                backgroundColor: 'rgba(255, 126, 103, 0.2)',
+                label: 'ช่วงเวลาสภาพอากาศวันนี้',
+                data: data,
+                backgroundColor: '#ffa99c',
                 borderColor: '#ff7e67',
                 borderWidth: 2,
-                fill: true
+                fill: false
             }]
         },
         options: {
             responsive: true, 
-            maintainAspectRatio: false 
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: true, // แสดง legend
+                    labels: {
+                        color: "#ffa99c", 
+                        font: { size: 18 } 
+                    }
+                }
+            } 
         }
     });
 }

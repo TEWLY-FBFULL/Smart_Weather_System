@@ -12,6 +12,7 @@ function getTemperatureMode() {
 function updateTemperature(result) {
     const mode = getTemperatureMode();
     const temperatureEls = document.querySelectorAll(".tem-fromAPI"); // All elements with class "tem-fromAPI"
+    const min_max_temp = document.querySelector(".min-max-tem-fromAPI"); 
 
     temperatureEls.forEach((el) => {
         const temp = mode === "F" 
@@ -22,6 +23,16 @@ function updateTemperature(result) {
         el.textContent = `${temp}${unit}`;
     });
 
+    if (min_max_temp) {
+        if (mode === "F") {
+            min_max_temp.textContent = `${convertToFahrenheit(result.weather.rep_temp_min
+            ).toFixed(0)}°F - ${convertToFahrenheit(result.weather.rep_temp_max
+            ).toFixed(0)}°F`;
+        } else {
+            min_max_temp.textContent = `${result.weather.rep_temp_min.toFixed(0)}°C - 
+            ${result.weather.rep_temp_max.toFixed(0)}°C`;
+        }
+    }
     document.dispatchEvent(new Event("temperatureUpdated"));
 }
 

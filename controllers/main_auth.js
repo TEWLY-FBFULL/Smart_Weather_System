@@ -1,4 +1,4 @@
-const { checkEmailAndUsername,insertUser,checkEmailToken,updateEmailVerified } = require('../models/usersModel'); // DBMS
+const { checkEmailAndUsername,insertUser,checkEmailToken,updateEmailVerified,updateLastSeenTime } = require('../models/usersModel'); // DBMS
 const { hashpassword, generateToken, sendEmail, validateUser, comparePassword, generateJWTtoken } = require('../utils'); // Utils
 
 // Login
@@ -20,6 +20,10 @@ exports.login = async (req,res) => {
         else if (!dbUser.email_verified){
             return res.status(400).json({error: 'กรุณายืนยันอีเมลของคุณก่อนเข้าสู่ระบบ'});
         }
+        // Update last seen time
+        const date = new Date(); date.setHours(date.getHours() + 7); // GMT +7
+        const timestamp = date.toISOString().slice(0, 19).replace("T", " ");
+        await updateLastSeenTime(dbUser.user_id, timestamp);
         // Success -> Send JWT token
         const token = await generateJWTtoken(dbUser.user_id,dbUser.user_name,dbUser.email,dbUser.role_id);
         res.cookie('token', token, { httpOnly: true, secure: false, sameSite: "Lax", path: "/" });
@@ -114,7 +118,7 @@ exports.verifyEmail = async (req, res) => {
             return res.status(400).json({ error: 'ไม่สามารถยืนยันอีเมลของคุณได้' });
         }
         // Success
-        res.status(200).send('<h1>ยืนยันอีเมลสำเร็จ!</h1><p>คุณสามารถเข้าสู่ระบบได้แล้ว</p>');
+        res.status(200).send('<h1>ยืนยันอีเมลสำเร็จ!</h1><p>คุณสามารถเข้าสู่ระบบได้แล้ว</p><a href="http://localhost:3000/">เข้าสู่ระบบ</a>');
     } catch (err) {
         console.error('Server error:', err);
         res.status(500).json({ error: 'Server error' });

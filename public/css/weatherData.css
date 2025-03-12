@@ -695,7 +695,6 @@ header {
 .main-weather-detail{
     min-height: 35rem;
     width: 95%;
-    border: 1px solid red;
     margin: 0 auto;
     display: flex;
     gap: 10px;
@@ -706,7 +705,7 @@ header {
 .chart-container{
     width: 50%;
     min-height: 25rem;
-    background-color: var(--background-sec);
+    background-color: var(--background);
     border-radius: 20px;
 }
 
@@ -746,28 +745,35 @@ header {
 }
 
 .weather-detail-temp{
-    display: flex;
-    flex-direction: column;
     background-color: var(--primary-color-sec);
     width: 50%;
     border-radius: 20px;
     padding: 2rem 0;
     align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.weather-detail-temp-res-img{
     img{
         margin: 0 auto;
-        width: 220px;
-        height: 220px;
+        width: 200px;
+        height: 200px;
         object-fit: cover;
         object-position: 15% 100%;
     }
+}
+
+.weather-detail-temp-res-text{
+    display: flex;
+    flex-direction: column;
     h2{
         text-align: center;
         font-size: 2rem;
-        color: var(--background);
+        color: var(--text-color);
         margin: 1rem 0;
     }
 }
-
 /* Main Weather Detail Containner */
 
 
@@ -778,6 +784,47 @@ header {
         padding-left: 10rem;
     }
     /* Container City swiper  */
+}
+
+@media screen and (max-width: 1200px) {
+    /* Main Weather Detail Containner */
+    .main-weather-detail{
+        flex-direction: column;
+    }
+    .weather-detail{
+        width: 100%;
+    }
+    .weather-detail-city{
+        width: 40%;
+    }
+    .weather-detail-temp{
+        width: 60%;
+        flex-direction: row;
+        padding: 2rem;
+    }
+    .weather-detail-city-img{
+        min-height: 10rem;
+    }
+    #map{
+        min-height: 10rem;
+    }
+    .weather-detail-temp-res-img{
+        width: 40%;
+    }
+    .weather-detail-temp-res-text{
+        width: 60%;
+        flex-direction:column;
+        h2{
+            font-size: 2.5rem;
+            margin: 0.5rem 0;
+            text-align: left;
+        }
+    }
+    .chart-container{
+        width: 100%;
+        min-height: 15rem;
+    }
+    /* Main Weather Detail Containner */
 }
 
 @media screen and (max-width: 1120px) {
@@ -822,6 +869,29 @@ header {
         padding: 16px;
     }
     /* X Post Container */ 
+
+    /* Main Weather Detail Containner */
+    .weather-detail-temp-res-img{
+        img{
+            width: 150px;
+            height: 150px;
+        }
+    }
+    /* Main Weather Detail Containner */
+}
+
+@media screen and (max-width: 1000px) {
+    .weather-detail-temp-res-text{
+        h2{
+            font-size: 1.8rem;
+        }
+    }
+    .weather-detail-temp-res-img{
+        img{
+            width: 120px;
+            height: 120px;
+        }
+    }
 }
 
 @media screen and (max-width: 960px) {
@@ -845,6 +915,24 @@ header {
         padding: 2rem;
     }
     /* Header */
+}
+
+@media screen and (max-width: 800px) {
+    /* Main Weather Detail Containner */
+    .weather-detail-temp{
+        flex-direction: column;
+        width: 50%;
+    }
+    .weather-detail-city{
+        width: 50%;
+    }
+    .weather-detail-temp-res-text{
+        width: 100%;
+    }
+    .weather-detail-temp-res-img{
+        width: 100%;
+    }
+    /* Main Weather Detail Containner */
 }
 
 @media screen and (max-width: 720px) {
@@ -924,6 +1012,45 @@ header {
         gap: 16px;
     }
     /* X Post Container */
+
+    /* Main Weather Detail Containner */
+    .main-weather-detail-containner{
+        h1{
+            font-size: 2.5rem;
+        }
+    }
+    /* Main Weather Detail Containner */
+}
+
+@media screen and (max-width: 650px) {
+    /* Main Weather Detail Containner */
+    .weather-detail-temp-res-text{
+        h2{
+            font-size: 1.5rem;
+        }
+    }
+    .weather-detail-temp-res-img{
+        img{
+            width: 100px;
+            height: 100px;
+        }
+    }
+    /* Main Weather Detail Containner */
+}
+
+@media screen and (max-width: 580px) {
+    /* Main Weather Detail Containner */
+    .main-weather-detail-containner{
+        h1{
+            font-size: 1.8rem;
+        }
+    }
+    .weather-detail-temp-res-text{
+        h2{
+            font-size: 1.2rem;
+        }
+    }
+    /* Main Weather Detail Containner */
 }
 
 @media screen and (max-width: 500px) {
@@ -963,6 +1090,22 @@ header {
         margin: 0 auto;
     }
     /* Header */
+
+    /* Main Weather Detail Containner */
+    .weather-detail{
+        flex-direction: column;
+    }
+
+    .weather-detail-city{
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .weather-detail-temp{
+        flex-direction: row;
+        width: 100%;
+    }
+    /* Main Weather Detail Containner */
 }
 
 @media screen and (max-width: 450px) {
@@ -1015,6 +1158,37 @@ header {
         padding: 0; 
     }
     /* X Post Container */
+
+    /* Main Weather Detail Containner */
+    .main-weather-detail-containner{
+        padding: 3rem 0.5rem;
+    }
+    .main-weather-detail{
+        width: 100%;
+    }
+    .chart-container{
+        width: 100%;
+        min-height: 12rem;
+    }
+    .weather-detail{
+        width: 100%;
+    }
+    .weather-detail-city{
+        width: 100%;
+    }
+    .weather-detail-temp{
+        width: 100%;
+    }
+    .weather-detail-city-img{
+        width: 100%;
+        margin: 0.5rem 0;
+    }
+    .city-map-container{
+        width: 100%;
+        margin: 0.5rem 0;
+    }
+    
+    /* Main Weather Detail Containner */
 }
 
 /* main-swiper-container */

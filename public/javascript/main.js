@@ -20,6 +20,7 @@ async function showAllData(result) {
     const cityname = document.getElementsByClassName("city-name-fromAPI");
     if (cityname.length > 0) cityname[0].textContent = result?.city?.city_name?.trim() || "Unknown";
     if (cityname.length > 1) cityname[1].innerHTML = `<i class="fas fa-map-marker-alt fa-2x"></i> ${result?.city?.city_name?.trim() || "Unknown"}`;
+    if (cityname.length > 2) cityname[2].textContent = result?.city?.city_name?.trim() || "Unknown";
 
     // Date and Time ID
     const dateOptions = { weekday: "long", day: "numeric", month: "long" };
@@ -53,6 +54,7 @@ async function showAllData(result) {
     for (let i = 1; i <= 6; i++) { 
         weatherIcon[i].src = getWeatherIcon(result.popularCity[i - 1].weather_desc_th);
     }
+    weatherIcon[7].src = getWeatherIcon(result.weather.weather_desc_th);
     
     // Culculate temperature for map
     const tempMode = getTemperatureMode();
@@ -77,7 +79,7 @@ async function showAllData(result) {
     // Create Weather Cards
     updateWeatherSlides(todayForecast, next5DaysForecast);
     // Create Wather Graph
-    createGraph();
+    await createGraph(todayForecast);
 
     // Update temperature when the temperature mode is changed
     document.addEventListener("temperatureModeChanged", () => {
