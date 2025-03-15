@@ -236,6 +236,13 @@ header {
     background-size: cover;
 }
 
+.forgetpass .form-details {
+    padding: 0 20px;
+    background: url("/img/signup-img.jpg");
+    background-position: center;
+    background-size: cover;
+}
+
 .form-box .form-content {
     width: 100%;
     padding: 35px;
@@ -327,11 +334,14 @@ form button:hover {
 }
 
 .form-popup .signup,
-.form-popup.show-signup .login {
+.form-popup .forgetpass,
+.form-popup.show-signup .login,
+.form-popup.show-forgetpass .login {
     display: none;
 }
 
-.form-popup.show-signup .signup {
+.form-popup.show-signup .signup,
+.form-popup.show-forgetpass .forgetpass {
     display: flex;
 }
 

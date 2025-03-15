@@ -5,5 +5,7 @@ const sendEmail = require('./sendEmail');
 const validateUser = require('./validateUsers');
 const comparePassword = require('./compareUserpass');
 const generateJWTtoken = require('./generateJWT');
+const validateResetPassword = require('./validateUserNewPassword');
 
-module.exports = { hashpassword, generateToken, sendEmail, validateUser, comparePassword, generateJWTtoken };
+module.exports = { hashpassword, generateToken, sendEmail, 
+    validateUser, comparePassword, generateJWTtoken, validateResetPassword};

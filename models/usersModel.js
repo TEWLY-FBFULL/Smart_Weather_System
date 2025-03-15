@@ -72,5 +72,32 @@ const updateLastSeenTime = (user_id,timestamp) => {
     });
 };
 
+// Update user password
+const updateUserPassword = (user_id, hashedPassword) => {
+    return new Promise((resolve, reject) => {
+        const query = 'UPDATE users SET user_password = ? WHERE user_id = ?';
+        db.query(query, [hashedPassword, user_id], (err, result) => {
+            if (err){
+                reject(err);
+            }
+            resolve(result);
+        });
+    });
+};
 
-module.exports = { checkEmailAndUsername,insertUser,checkEmailToken,updateEmailVerified,updateLastSeenTime };
+// Update new email token
+const updateEmailToken = (user_id, email_token) => {
+    return new Promise((resolve, reject) => {
+        const query = 'UPDATE users SET email_verification_token = ? WHERE user_id = ?';
+        db.query(query, [email_token, user_id], (err, result) => {
+            if (err){
+                reject(err);
+            }
+            resolve(result);
+        });
+    });
+};
+
+
+module.exports = { checkEmailAndUsername, insertUser, checkEmailToken,
+    updateEmailVerified, updateLastSeenTime, updateUserPassword, updateEmailToken };

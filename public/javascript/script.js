@@ -4,7 +4,7 @@ const hideMenuBtn = navbarMenu.querySelector(".close-btn");
 const showPopupBtn = document.querySelector(".login-btn");
 const formPopup = document.querySelector(".form-popup");
 const hidePopupBtn = formPopup.querySelector(".close-btn");
-const signupLoginLink = formPopup.querySelectorAll(".bottom-link a");
+const formLinks = formPopup.querySelectorAll(".bottom-link a, .forgot-pass-link, #login-link2");
 
 // Show mobile menu
 hamburgerBtn.addEventListener("click", () => {
@@ -22,11 +22,19 @@ showPopupBtn.addEventListener("click", () => {
 // Hide login popup
 hidePopupBtn.addEventListener("click", () => showPopupBtn.click());
 
-// Show or hide signup form
-signupLoginLink.forEach(link => {
+// Show or hide signup/forget password form
+formLinks.forEach(link => {
     link.addEventListener("click", (e) => {
         e.preventDefault();
-        formPopup.classList[link.id === 'signup-link' ? 'add' : 'remove']("show-signup");
+        if (link.id === "signup-link") {
+            formPopup.classList.add("show-signup");
+            formPopup.classList.remove("show-forgetpass");
+        } else if (link.id === "login-link" || link.id === "login-link2") {
+            formPopup.classList.remove("show-signup", "show-forgetpass");
+        } else if (link.classList.contains("forgot-pass-link")) {
+            formPopup.classList.add("show-forgetpass");
+            formPopup.classList.remove("show-signup");
+        }
     });
 });
 
@@ -35,6 +43,7 @@ const backgrounds = [
     { image: "/img/hero-bg.jpg", effect: "snow" },
     { image: "/img/sea.jpg", effect: "none" },
     { image: "/img/forest.jpg", effect: "firefly" },
+    { image: "/img/town.jpg", effect: "none" }
 ];
 
 let currentIndex = 0;
@@ -83,4 +92,5 @@ function createFireflyEffect() {
     }
 }
 
-setInterval(changeBackground, 6000);
+changeBackground();
+setInterval(changeBackground, 8000);

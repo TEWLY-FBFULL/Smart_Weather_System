@@ -64,8 +64,6 @@ async function showAllData(result) {
     await createCityMap(result.city.city_name, result.city.lat, result.city.lon, 
         result.weather.weather_desc_th, tempForMap, result.weather.rep_humidity);
 
-    // Forecast Today and 5 days
-    const showWeatherForecastSlide = document.getElementsByClassName("swiper-wrapper");
     // Forecast Today
     const today = new Date().toISOString().split("T")[0]; // Today
     const todayForecast = result.forecast.filter(item => item.local_date === today);

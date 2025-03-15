@@ -733,6 +733,7 @@ header {
 
 .city-map-container {
     margin: 0.5rem 0.5rem;
+    overflow: hidden;
 }
 
 #map {

@@ -1,5 +1,7 @@
-const { checkEmailAndUsername,insertUser,checkEmailToken,updateEmailVerified,updateLastSeenTime } = require('../models/usersModel'); // DBMS
-const { hashpassword, generateToken, sendEmail, validateUser, comparePassword, generateJWTtoken } = require('../utils'); // Utils
+const { checkEmailAndUsername, insertUser, checkEmailToken,
+    updateEmailVerified, updateLastSeenTime, updateUserPassword, updateEmailToken  } = require('../models/usersModel'); // DBMS
+const { hashpassword, generateToken, sendEmail, validateUser, 
+    comparePassword, generateJWTtoken, validateResetPassword } = require('../utils'); // Utils
 
 // Login
 exports.login = async (req,res) => {
@@ -93,8 +95,41 @@ exports.logout = (req,res) => {
 };
 
 // Forget Password
-exports.forgetPassword = (req,res) => {
-    res.json({message: 'Hello from forget password'});
+exports.forgetPassword = async (req,res) => {
+    const { email } = req.body;
+    try{
+        const user = await checkEmailAndUsername(email, email);
+        if (user.length === 0){
+            return res.status(400).json({error: 'ไม่พบอีเมลนี้ในระบบ'});
+        }
+        else if (!user[0].email_verified){
+            return res.status(400).json({error: 'กรุณายืนยันอีเมลของคุณก่อน'});
+        }
+        // Generate token and Update email_verification_token
+        const email_token = await generateToken();
+        await updateEmailToken(user[0].user_id, email_token);
+        // Send verification Email
+        const verificationLink = `http://localhost:3000/resetPassword.html?token=${email_token}`;
+        const emailSubject = 'เปลี่ยนรหัสผ่านของคุณ';
+        const emailHtml = `<p>กรุณาคลิกลิงค์ด้านล่างเพื่อเปลี่ยนรหัสผ่านของคุณ:</p>
+                            <form action="${verificationLink}" method="GET">
+                                <input type="hidden" name="token" value="${email_token}"/>
+                                <button type="submit">ยืนยันการเปลี่ยนรหัสผ่าน</button>
+                            </form>;`
+        try {
+            await sendEmail(email, emailSubject, emailHtml);
+        } catch (error) {
+            console.error("Error sending email:", error);
+            return res.status(500).json({ 
+                message: 'เกิดข้อผิดพลาดในการส่งอีเมลยืนยัน กรุณาลองอีกครั้ง' 
+            });  
+        }                      
+        // Success
+        res.status(200).json({ message: 'ส่งลิ้งการเปลี่ยนรหัสผ่านไปยังอีเมลของคุณสำเร็จ กรุณาตรวจสอบอีเมลของคุณ' });
+    }catch(error){
+        console.log(error);
+        res.status(500).json({error: 'Server error'});
+    }
 };
 
 // Verify Email
@@ -124,3 +159,39 @@ exports.verifyEmail = async (req, res) => {
         res.status(500).json({ error: 'Server error' });
     }
 };
+
+// Reset Password
+exports.resetPassword = async (req, res) => {
+    // Get token from request
+    const { token, password } = req.body;
+    try {
+        // Validate data
+        const validationError = validateResetPassword(req.body);
+        if (validationError) {
+            return res.status(400).json({ error: validationError });
+        }
+        // Check token in database
+        const checkTokenQuery = await checkEmailToken(token);
+        if (checkTokenQuery.length === 0){
+            return res.status(400).json({ error: 'ลิงก์ยืนยันไม่ถูกต้องหรือหมดอายุ' });
+        }
+        const user = checkTokenQuery[0];
+        // Hash password
+        const hash = await hashpassword(password);
+        // Update user password
+        const updateQuery = await updateUserPassword(user.user_id, hash);
+        if (updateQuery.affectedRows === 0){
+            return res.status(400).json({ error: 'ไม่สามารถเปลี่ยนรหัสผ่านของคุณได้' });
+        }
+        // Update email_verified = True and email_verification_token = NULL
+        const deleteTokenQuery = await updateEmailVerified(user.user_id);
+        if (deleteTokenQuery.affectedRows === 0){
+            return res.status(400).json({ error: 'ไม่สามารถลบ token ได้' });
+        }
+        // Success
+        res.status(200).json({ message: 'เปลี่ยนรหัสผ่านสำเร็จ' });
+    } catch (err) {
+        console.error('Server error:', err);
+        res.status(500).json({ error: 'Server error' });
+    }
+}

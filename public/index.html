@@ -17,9 +17,7 @@
             </a>
             <ul class="links">
                 <span class="close-btn material-symbols-rounded">close</span>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Portfolio</a></li>
-                <li><a href="#">Courses</a></li>
+                <li><a href="http://localhost:3000/">Home</a></li>
                 <li><a href="#">About us</a></li>
                 <li><a href="#">Contact us</a></li>
             </ul>
@@ -30,6 +28,7 @@
     <div class="blur-bg-overlay"></div>
     <div class="form-popup">
         <span class="close-btn material-symbols-rounded">close</span>
+        <!-- Login -->
         <div class="form-box login">
             <div class="form-details">
                 <h2>ยินดีต้อนรับ</h2>
@@ -56,6 +55,7 @@
                 </div>
             </div>
         </div>
+        <!-- Sign up -->
         <div class="form-box signup">
             <div class="form-details">
                 <h2>สร้างบัญชีของคุณ</h2>
@@ -84,12 +84,34 @@
                 </div>
             </div>
         </div>
+        <!-- forget password -->
+        <div class="form-box forgetpass">
+            <div class="form-details">
+                <h2>รีเซ็ตรหัสผ่าน</h2>
+                <p>ป้อนอีเมลของคุณเพื่อรับลิงก์รีเซ็ตรหัสผ่าน</p>
+            </div>
+            <div class="form-content">
+                <h2>FORGOT PASSWORD</h2>
+                <form id="forgetpassForm" action="/api/auth/forgetPassword" method="post">
+                    <div class="input-field">
+                        <input type="email" name="email" required>
+                        <label>Enter your email</label>
+                    </div>
+                    <button type="submit">Send Reset Link</button>
+                </form>
+                <div class="bottom-link">
+                    ย้อนกลับไปที่ 
+                    <a href="#" id="login-link2">Login</a>
+                </div>
+            </div>
+        </div>        
     </div>
     <!-- Sweetalert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Main-->
-    <script src="/javascript/script.js" defer></script>
+    <script defer src="/javascript/script.js"></script>
     <script src="/javascript/registerForm.js"></script>
     <script src="/javascript/loginForm.js"></script>
+    <script src="/javascript/forgetPassForm.js"></script>
 </body>
 </html>
