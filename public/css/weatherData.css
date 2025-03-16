@@ -777,6 +777,66 @@ header {
 }
 /* Main Weather Detail Containner */
 
+/* Main Youtube Video Container */
+.main-youtube-video-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 2rem;
+}
+
+.youtube-video-card {
+    background: var(--background-sec);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    transition: transform 0.2s;
+}
+
+.youtube-video-card:hover {
+    transform: scale(1.05);
+}
+
+.youtube-video-thumbnail iframe {
+    background: var(--text-color-sec);
+    width: 100%;
+    height: 300px;
+    border: none;
+}
+
+.youtube-video-card-content {
+    padding: 15px;
+}
+
+.youtube-video-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: var(--primary-color-sec);
+}
+
+.youtube-video-channel {
+    font-size: 18px;
+    color: var(--text-color);
+    margin-bottom: 5px;
+}
+
+.youtube-video-description {
+    font-size: 16px;
+    color: var(--text-color-sec);
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.youtube-video-card a {
+    text-decoration: none;
+    color: inherit;
+}
+/* Main Youtube Video Container */
+
 
 /* Responsive */
 @media screen and (max-width: 1340px) {
@@ -1191,6 +1251,22 @@ header {
     
     /* Main Weather Detail Containner */
 }
+
+/* Main Youtube Video Container */
+@media screen and (max-width: 350px) {
+    .main-youtube-video-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .youtube-video-card {
+        width: 100%;
+        min-width: 280px;
+        max-width: 320px;
+    }
+}
+/* Main Youtube Video Container */
 
 /* main-swiper-container */
 @media screen and (max-width: 320px) {

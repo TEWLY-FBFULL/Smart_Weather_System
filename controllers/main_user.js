@@ -1,8 +1,12 @@
 const path = require('path');
 const { searchCityWithName, searchCityWithFullName } = require('../models/cityModel');
-const { selectWeatherDescriptionID, insertWeatherReport, getLatestWeatherReportWithCityID } = require('../models/weatherModel');
-const { filterForecastData, processForecastEntry,getLatestWeatherForecastWithCityID } = require('../models/forecastModel');
-const { openweathermapAPI,youtubeV3API,XpostV2API } = require("../utils/allExternalAPI");
+const { selectWeatherDescriptionID, insertWeatherReport, 
+    getLatestWeatherReportWithCityID } = require('../models/weatherModel');
+const { filterForecastData, processForecastEntry,
+    getLatestWeatherForecastWithCityID } = require('../models/forecastModel');
+const { getLatestYoutubeVideos } = require('../models/youtubeModel');
+const { getLatestXposts } = require('../models/xpostModel');
+const { openweathermapAPI} = require("../utils/allExternalAPI");
 
 exports.userHome = async (req, res) => {
     res.sendFile(path.join(__dirname, '../views/user/weatherData.html'));
@@ -123,13 +127,18 @@ exports.getWeatherdataWithCityname = async (req, res) => {
             return popularCity;
         };
         const popularCity = await getPopularCities();
+        // Get new data for youtube_videos and twitter_posts
+        const youtubeVideos = await getLatestYoutubeVideos();
+        const xPosts = await getLatestXposts();
 
         // Response data
         res.json({
             city: cityData,
             weather: weatherData,
             forecast: forecastData,
-            popularCity: popularCity
+            popularCity: popularCity,
+            youtubeVideos: youtubeVideos,
+            xPosts: xPosts
         });
     } catch (error) {
         console.error("เกิดข้อผิดพลาด:", error);

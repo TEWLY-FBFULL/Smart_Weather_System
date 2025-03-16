@@ -43,5 +43,21 @@ const insertYoutubeVideos = async (keyw_id, video) => {
     }
 };
 
+// Select new videos data from youtube_videos table
+const getLatestYoutubeVideos = () => {
+    return new Promise((resolve, reject) => {
+        const query = `
+            SELECT * 
+            FROM youtube_videos 
+            ORDER BY yt_created_at DESC 
+            LIMIT 5
+        `;
+        db.query(query, (err, results) => {
+            if (err) return reject(err);
+            resolve(results);
+        });
+    });
+};
 
-module.exports = { insertYoutubeVideos }
+
+module.exports = { insertYoutubeVideos, getLatestYoutubeVideos }

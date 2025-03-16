@@ -38,7 +38,7 @@ const insertTwitterPosts = async (keyw_id, posts, tweet_username) => {
 
         return new Promise((resolve, reject) => {
             db.query(query, [posts.id, keyw_id, tweet_username,
-                posts.text, post_time_at
+            posts.text, post_time_at
             ], (err, result) => {
                 if (err) {
                     return reject(err);
@@ -52,5 +52,25 @@ const insertTwitterPosts = async (keyw_id, posts, tweet_username) => {
     }
 };
 
+// Select new X posts data from twitter_posts table
+const getLatestXposts = () => {
+    return new Promise((resolve, reject) => {
+        const query = `
+            SELECT 
+                CAST(tweet_id AS CHAR) AS tweet_id, 
+                tweet_username, 
+                tweet, 
+                post_time_at
+            FROM twitter_posts 
+            ORDER BY tweet_created_at DESC 
+            LIMIT 6
+        `;
+        db.query(query, (err, results) => {
+            if (err) return reject(err);
+            resolve(results);
+        });
+    });
+};
 
-module.exports = { insertTwitterPosts }
+
+module.exports = { insertTwitterPosts, getLatestXposts }
