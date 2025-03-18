@@ -2,6 +2,7 @@ const { checkEmailAndUsername, insertUser, checkEmailToken,
     updateEmailVerified, updateLastSeenTime, updateUserPassword, updateEmailToken  } = require('../models/usersModel'); // DBMS
 const { hashpassword, generateToken, sendEmail, validateUser, 
     comparePassword, generateJWTtoken, validateResetPassword } = require('../utils'); // Utils
+require('dotenv').config(); // import .env
 
 // Login
 exports.login = async (req,res) => {
@@ -64,6 +65,7 @@ exports.register = async (req,res) => {
         // SQL Query
         await insertUser(user_name, email, hash, email_token, ip_address);
         // Send verification Email
+        const from = process.env.EMAIL;
         const verificationLink = `http://localhost:3000/api/auth/verifyEmail?token=${email_token}`;
         const emailSubject = 'ยืนยันอีเมล์ของคุณ';
         const emailHtml = `<p>กรุณาคลิกลิงค์ด้านล่างเพื่อยืนยันอีเมลของคุณ:</p>
@@ -72,7 +74,7 @@ exports.register = async (req,res) => {
                                 <button type="submit">ยืนยันอีเมล</button>
                             </form>`;
         try {
-            await sendEmail(email, emailSubject, emailHtml);
+            await sendEmail(email, emailSubject, emailHtml, from);
         } catch (error) {
             console.error("Error sending email:", error);
             return res.status(500).json({ 
@@ -113,6 +115,7 @@ exports.forgetPassword = async (req,res) => {
         const email_token = await generateToken();
         await updateEmailToken(user[0].user_id, email_token);
         // Send verification Email
+        const from = process.env.EMAIL;
         const verificationLink = `http://localhost:3000/resetPassword.html?token=${email_token}`;
         const emailSubject = 'เปลี่ยนรหัสผ่านของคุณ';
         const emailHtml = `<p>กรุณาคลิกลิงค์ด้านล่างเพื่อเปลี่ยนรหัสผ่านของคุณ:</p>
@@ -121,7 +124,7 @@ exports.forgetPassword = async (req,res) => {
                                 <button type="submit">ยืนยันการเปลี่ยนรหัสผ่าน</button>
                             </form>;`
         try {
-            await sendEmail(email, emailSubject, emailHtml);
+            await sendEmail(email, emailSubject, emailHtml, from);
         } catch (error) {
             console.error("Error sending email:", error);
             return res.status(500).json({ 

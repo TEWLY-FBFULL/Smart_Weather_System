@@ -69,7 +69,9 @@ async function getUserProfile() {
         const result = await response.json();
         if (result.success) {
             document.getElementById("user_name").innerText = result.user.user_name;
-            document.getElementById("user_email").innerText = result.user.email;
+            const userEmail = document.getElementsByClassName("user_email");
+            userEmail[0].innerText = result.user.email;
+            userEmail[1].value = result.user.email;
         } else {
             alert("โหลดข้อมูลไม่สำเร็จ!");
         }
@@ -181,5 +183,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 });
 
+getUserProfile();
 // API
 // Navbar ----------------------------------------------------------------->

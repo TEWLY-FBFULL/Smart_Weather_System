@@ -8,13 +8,14 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
  * @param {string} to
  * @param {string} subject
  * @param {string} html
+ * @param {string} from
  */
 
-const sendEmail = async (to, subject, html) => {
+const sendEmail = async (to, subject, html, from) => {
     try {
         const msg = {
             to,
-            from: process.env.EMAIL,
+            from,
             subject,
             html,
         };

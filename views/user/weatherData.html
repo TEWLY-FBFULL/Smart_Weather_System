@@ -40,7 +40,7 @@
                 <i class="fas fa-user account-icon"></i>
                 <div class="dropdown-menu" id="account-dropdownMenu">
                     <div class="menu-header" id="user_name">John Doe</div>
-                    <div class="menu-item" id="user_email">john.doe@example.com</div>
+                    <div class="menu-item user_email">john.doe@example.com</div>
                     <div class="menu-item">Settings</div>
                     <div class="menu-item" id="logout">Log Out</div>
                 </div>
@@ -223,10 +223,10 @@
         <div class="contact-me-container">
             <div class="contact-me-text">Contact Me!</div>
             <div class="contact-me-form-container">
-                <form>
-                    <input type="text" placeholder="Your Name" required>
-                    <input type="email" placeholder="Your Email" required>
-                    <textarea placeholder="Your Message" rows="4" required></textarea>
+                <form id="contactMeForm" action="/api/user/contactMe" method="post">
+                    <input type="text" placeholder="Your Name" name="name" required>
+                    <input type="email" placeholder="Your Email" required class="user_email" name="email">
+                    <textarea placeholder="Your Message" rows="4" required name="message"></textarea>
                     <button type="submit">Submit</button>
                 </form>
             </div>
@@ -258,5 +258,6 @@
     <script defer type="module" src="/javascript/navbar.js"></script>
     <script src="/javascript/citySwiper.js"></script>
     <script src="/javascript/darkMode.js"></script>
+    <script src="/javascript/contactMeForm.js"></script>
 </body>
 </html>

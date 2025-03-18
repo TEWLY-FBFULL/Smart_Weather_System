@@ -6,7 +6,9 @@ const { filterForecastData, processForecastEntry,
     getLatestWeatherForecastWithCityID } = require('../models/forecastModel');
 const { getLatestYoutubeVideos } = require('../models/youtubeModel');
 const { getLatestXposts } = require('../models/xpostModel');
-const { openweathermapAPI} = require("../utils/allExternalAPI");
+const { sendEmail,validateUserSendEmail } = require("../utils");
+const { openweathermapAPI } = require("../utils/allExternalAPI");
+require('dotenv').config(); // import .env
 
 exports.userHome = async (req, res) => {
     res.sendFile(path.join(__dirname, '../views/user/weatherData.html'));
@@ -143,5 +145,33 @@ exports.getWeatherdataWithCityname = async (req, res) => {
     } catch (error) {
         console.error("เกิดข้อผิดพลาด:", error);
         res.status(500).json({ error: "Server error" });
+    }
+};
+
+exports.contactMe = async (req, res) => {
+    try{
+        // Validate data
+        const validationError = validateUserSendEmail(req.body);
+        if (validationError) {
+            return res.status(400).json({ error: validationError });
+        }
+        const { name, email, message } = req.body;
+        try {
+            // Send email
+            const to = process.env.RECEIVE_EMAIL;
+            const from = process.env.EMAIL;
+            const emailSubject = `ข้อความจาก ${name} (${email})`;
+            const emailHtml = `<p>${message}</p>`;
+            await sendEmail(to, emailSubject, emailHtml, from);
+            return res.status(200).json({ message: 'ส่งอีเมลสำเร็จ' });
+        } catch (error) {
+            console.error("Error sending email:", error);
+            return res.status(500).json({ 
+                message: 'เกิดข้อผิดพลาดในการส่งอีเมล' 
+            });  
+        } 
+    }catch(error){
+        console.log(error);
+        res.status(500).json({error: 'Server error'});
     }
 };
