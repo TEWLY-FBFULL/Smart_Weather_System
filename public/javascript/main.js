@@ -82,15 +82,21 @@ async function showAllData(result) {
     // Create Wather Graph
     await createGraph(todayForecast);
     // Create Xposts Cards
-    await initXPosts(result.xPosts);    
+    const xpostcontainer = document.querySelector(".x-post-articles");
+    if (xpostcontainer && xpostcontainer.children.length > 0) {
+        console.log("ข้ามการสร้าง XPosts (มีอยู่แล้ว)");
+    } else {
+        await initXPosts(result.xPosts);
+    }
     // Create Youtube Cards
     await createYoutubeVideosCard(result.youtubeVideos);
 
     // Update temperature when the temperature mode is changed
-    document.addEventListener("temperatureModeChanged", () => {
-        // Update All Data
+    document.addEventListener("temperatureModeChanged", temperatureChangeHandler, { once: true });
+
+    function temperatureChangeHandler() {
         showAllData(window.latestResult);
-    });
+    }
 }
 
 export { showAllData }; // export the function

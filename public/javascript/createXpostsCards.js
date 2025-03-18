@@ -81,13 +81,16 @@ async function displayXPosts(xPosts) {
         return;
     }
 
-    container.innerHTML = ""; // Clear the container
+    // Clear the container
+    container.replaceChildren();
 
     const visiblePosts = getVisiblePosts(xPosts);
 
     for (const post of visiblePosts) {
         const postElement = await createXpostsCard(post);
-        container.appendChild(postElement);
+        if (postElement) {
+            container.appendChild(postElement);
+        }
     }
 }
 
@@ -102,9 +105,23 @@ function debounce(func, delay = 200) {
 
 // Create Xposts cards
 async function initXPosts(xPosts) {
+    const container = document.querySelector(".x-post-articles");
+    if (!container) {
+        console.warn("ไม่พบ .x-post-articles!");
+        return;
+    }
+    if (container.children.length > 0) {
+        return;
+    }
+    container.replaceChildren();
     displayXPosts(xPosts);
-    window.addEventListener("resize", debounce(() => displayXPosts(xPosts), 300));
+    if (window.xPostsResizeHandler) {
+        window.removeEventListener("resize", window.xPostsResizeHandler);
+    }
+    window.xPostsResizeHandler = debounce(() => displayXPosts(xPosts), 300);
+    window.addEventListener("resize", window.xPostsResizeHandler);
 }
+
 
 export { initXPosts };
 

@@ -799,11 +799,12 @@ header {
     transform: scale(1.05);
 }
 
-.youtube-video-thumbnail iframe {
+.youtube-video-thumbnail img {
     background: var(--text-color-sec);
     width: 100%;
     height: 300px;
     border: none;
+    object-fit: cover;
 }
 
 .youtube-video-card-content {
@@ -836,6 +837,65 @@ header {
     color: inherit;
 }
 /* Main Youtube Video Container */
+
+/* Contact me */
+.main-contact-me-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin-top: 10rem;
+    background: url('https://cdn.pixabay.com/photo/2021/01/18/17/46/sunset-5928907_1280.jpg') no-repeat center center/cover;
+}
+
+.contact-me-container{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    max-width: 900px;
+    width: 100%;
+    padding: 20px;
+    gap: 20px;
+    color: white;
+}
+
+.contact-me-text {
+    font-size: 4rem;
+    font-weight: bold;
+    color: white;
+}
+
+.contact-me-form-container {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+}
+.contact-me-form-container input, .contact-me-form-container textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+.contact-me-form-container button {
+    width: 100%;
+    padding: 10px;
+    background: var(--primary-color-sec);
+    color: white;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.contact-me-form-container button:hover {
+    background: var(--primary-color);
+    cursor: pointer;
+}
+/* Contact me */
+
 
 
 /* Responsive */
@@ -994,6 +1054,15 @@ header {
         width: 100%;
     }
     /* Main Weather Detail Containner */
+}
+
+@media (max-width: 768px) {
+    /* Contact me */
+    .contact-me-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    /* Contact me */
 }
 
 @media screen and (max-width: 720px) {

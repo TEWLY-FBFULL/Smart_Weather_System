@@ -29,7 +29,11 @@ exports.login = async (req,res) => {
         // Success -> Send JWT token
         const token = await generateJWTtoken(dbUser.user_id,dbUser.user_name,dbUser.email,dbUser.role_id);
         res.cookie('token', token, { httpOnly: true, secure: false, sameSite: "Lax", path: "/" });
-        return res.status(200).json({ message: 'เข้าสู่ระบบสำเร็จ', role_id: dbUser.role_id});
+        if (dbUser.role_id === 1){
+            return res.status(200).json({ message: 'เข้าสู่ระบบสำเร็จ', link: "/api/admin/index" });
+        }else if (dbUser.role_id === 2){ 
+            return res.status(200).json({ message: 'เข้าสู่ระบบสำเร็จ', link: "/api/user/index" });
+        }else{ return res.status(400).json({ message: 'ไม่พบบทบาทของคุณ', link: "/"}); }   
     }catch(error){
         console.log(error);
         res.status(500).json({error: 'Server error'});

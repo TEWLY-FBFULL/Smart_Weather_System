@@ -23,14 +23,7 @@ document.querySelector("#loginForm").addEventListener("submit", async function (
                 confirmButtonText: "ตกลง",
             }).then(() => {
                 // Check role
-                if (result.role_id === 1) {
-                    window.location.href = "http://localhost:3000/api/admin/index";
-                } else if (result.role_id === 2) {
-                    window.location.href = "http://localhost:3000/api/user/index";
-                }
-                else{
-                    window.location.href = "http://localhost:3000/";
-                }
+                window.location.href = result.link;
             });
             event.target.reset();
         } else {
