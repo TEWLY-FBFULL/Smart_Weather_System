@@ -18,7 +18,7 @@ body{
     position: fixed;
     width: 300px;
     height: 100%;
-    background: #003147;
+    background: #ff7e67;
     transition: 0.5s;
     overflow: hidden;
 }
@@ -37,7 +37,7 @@ body{
     list-style: none;
 }
 .navigation ul li:hover{
-    background: #03a9f4;
+    background: #ffa99c;
 }
 .navigation ul li:nth-child(1){
    margin-bottom: 20px;
@@ -175,7 +175,7 @@ body{
 }
 .cardBox .card .iconBox{
     font-size: 2.5em;
-    color: #03a9f4;
+    color: #ffa99c;
 }
 .details{
     position: relative;
@@ -289,7 +289,7 @@ overflow: hidden;
 }
 .details .recentCustomers table tr:hover,
 .details .recentCustomers table tr:hover td span{
-    background: #03a9f4;
+    background: #ffa99c;
     color: #fff;
 
 }

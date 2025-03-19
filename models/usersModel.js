@@ -98,6 +98,21 @@ const updateEmailToken = (user_id, email_token) => {
     });
 };
 
+// Select all user
+const selectAllUser = () => {
+    return new Promise((resolve, reject) => {
+        const query = `SELECT user_id,user_name,email
+        ,email_verified ,last_seen  FROM users WHERE role_id = 2`;
+        db.query(query, (err, result) => {
+            if (err){
+                reject(err);
+            }
+            resolve(result);
+        });
+    });
+}
+
 
 module.exports = { checkEmailAndUsername, insertUser, checkEmailToken,
-    updateEmailVerified, updateLastSeenTime, updateUserPassword, updateEmailToken };
+    updateEmailVerified, updateLastSeenTime, updateUserPassword, updateEmailToken 
+    ,selectAllUser};
