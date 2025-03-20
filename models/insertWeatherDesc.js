@@ -29,7 +29,7 @@ db.connect(err => {
     console.log(`Connected to MySQL Database!`);
 });
 
-const query = `INSERT INTO weather_desc (weather_desc_th, weather_desc_en) VALUES (? , ?)`;
+const query = `INSERT INTO weather_description (weather_desc_th, weather_desc_en) VALUES (? , ?)`;
 
 for (let i = 0; i < weather_descriptions_en.length; i++) {
     db.query(query, [weather_descriptions_th[i], weather_descriptions_en[i]], (err, result) => {

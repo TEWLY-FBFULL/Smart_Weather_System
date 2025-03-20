@@ -99,7 +99,7 @@ const getLatestWeatherForecastWithCityID = (cityID) => {
             wf.fore_humidity, 
             wf.fore_wind_speed
             FROM weather_forecasts wf
-            INNER JOIN weather_desc wd ON wf.wedesc_id = wd.wedesc_id 
+            INNER JOIN weather_description wd ON wf.wedesc_id = wd.wedesc_id 
             WHERE wf.city_id = ?  
             AND DATE(CONVERT_TZ(wf.forecast_created_at, '+00:00', '+07:00')) = 
             (SELECT DATE(CONVERT_TZ(MAX(wf.forecast_created_at), '+00:00', '+07:00')) 

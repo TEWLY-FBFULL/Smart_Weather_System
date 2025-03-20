@@ -4,7 +4,7 @@ const { readdirSync } = require('fs');
 require('dotenv').config();
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const { updateWeatherForCities, updateForecastYoutubeX } = require("./utils/mainExternalAPI");
+const { updateWeatherForCities, updateForecastYoutube } = require("./utils/mainExternalAPI");
 
 const app = express();
 // setup middleware
@@ -18,7 +18,7 @@ app.use(cookieParser()); // parse cookie
 readdirSync('./routes').map((r) => app.use('/api', require('./routes/' + r)));
 // Update weather and forecast for major cities
 updateWeatherForCities(); // every 1 hour
-updateForecastYoutubeX();  // everyday
+updateForecastYoutube();  // everyday
 
 // Run server
 const PORT = process.env.PORT;

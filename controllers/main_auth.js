@@ -1,5 +1,6 @@
 const { checkEmailAndUsername, insertUser, checkEmailToken,
-    updateEmailVerified, updateLastSeenTime, updateUserPassword, updateEmailToken  } = require('../models/usersModel'); // DBMS
+    updateEmailVerified, updateUserPassword, updateEmailToken  } = require('../models/usersModel'); // DBMS
+const { insertAdminLogs } = require('../models/adminLogModel'); // DBMS
 const { hashpassword, generateToken, sendEmail, validateUser, 
     comparePassword, generateJWTtoken, validateResetPassword } = require('../utils'); // Utils
 require('dotenv').config(); // import .env
@@ -23,10 +24,8 @@ exports.login = async (req,res) => {
         else if (!dbUser.email_verified){
             return res.status(400).json({error: 'กรุณายืนยันอีเมลของคุณก่อนเข้าสู่ระบบ'});
         }
-        // Update last seen time
-        const date = new Date(); date.setHours(date.getHours() + 7); // GMT +7
-        const timestamp = date.toISOString().slice(0, 19).replace("T", " ");
-        await updateLastSeenTime(dbUser.user_id, timestamp);
+        // Insert admin log
+        await insertAdminLogs(dbUser.user_id, 'เข้าสู่ระบบ');
         // Success -> Send JWT token
         const token = await generateJWTtoken(dbUser.user_id,dbUser.user_name,dbUser.email,dbUser.role_id);
         res.cookie('token', token, { httpOnly: true, secure: false, sameSite: "Lax", path: "/" });
@@ -60,10 +59,8 @@ exports.register = async (req,res) => {
         const hash = await hashpassword(password);
         // Generate token
         const email_token = await generateToken();
-        // Get IP Address
-        const ip_address = req.ip;
         // SQL Query
-        await insertUser(user_name, email, hash, email_token, ip_address);
+        await insertUser(user_name, email, hash, email_token);
         // Send verification Email
         const from = process.env.EMAIL;
         const verificationLink = `http://localhost:3000/api/auth/verifyEmail?token=${email_token}`;
@@ -90,14 +87,28 @@ exports.register = async (req,res) => {
 };
 
 // Logout
-exports.logout = (req,res) => {
-    res.clearCookie("token", {
-        httpOnly: true,
-        secure: false,
-        sameSite: "Lax",
-        path: "/"
-    });
-    res.status(200).json({ message: "ออกจากระบบสำเร็จ" });
+exports.logout = async (req,res) => {
+    try {
+        const token = req.cookies?.token;
+        if (!token) {
+            return res.status(400).json({ error: 'คุณยังไม่ได้เข้าสู่ระบบ' });
+        }
+        // Insert admin log
+        if (req.user?.user_id) {
+            await insertAdminLogs(req.user.user_id, 'ออกจากระบบ');
+        }
+        // Clear Cookie
+        res.clearCookie("token", {
+            httpOnly: true,
+            secure: false,
+            sameSite: "Lax",
+            path: "/"
+        });
+        res.status(200).json({ message: "ออกจากระบบสำเร็จ" });
+    } catch (error) {
+        console.error("Error logging out:", error);
+        res.status(500).json({ error: "Server error" });
+    }
 };
 
 // Forget Password
@@ -196,6 +207,7 @@ exports.resetPassword = async (req, res) => {
             return res.status(400).json({ error: 'ไม่สามารถลบ token ได้' });
         }
         // Success
+        await insertAdminLogs(user.user_id, 'เปลี่ยนรหัสผ่าน');
         res.status(200).json({ message: 'เปลี่ยนรหัสผ่านสำเร็จ' });
     } catch (err) {
         console.error('Server error:', err);

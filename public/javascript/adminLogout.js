@@ -16,17 +16,19 @@ logout.addEventListener('click', () => {
 
 async function logoutUser() {
     try {
-        await fetch("http://localhost:3000/api/auth/logout", {
+        const response = await fetch("http://localhost:3000/api/auth/logout", {
             method: "POST",
-            credentials: "include", // Cookie (JWT)
-        })
-        .then(response => response.json())
-        .then(data => {
-            Swal.fire('ออกจากระบบสำเร็จ!', '', 'success').then(() => {
-                window.location.href = 'http://localhost:3000';
-            });
+            credentials: "include", // Cookie with request
+        });
+        const data = await response.json();
+        if (!response.ok) {
+            throw new Error(data.error || "เกิดข้อผิดพลาดในการออกจากระบบ");
+        }
+        Swal.fire('ออกจากระบบสำเร็จ!', '', 'success').then(() => {
+            window.location.href = 'http://localhost:3000';
         });
     } catch (error) {
-        console.error("Error fetching profile:", error);
+        console.error("Error logging out:", error);
+        Swal.fire('เกิดข้อผิดพลาด', error.message, 'error');
     }
 }

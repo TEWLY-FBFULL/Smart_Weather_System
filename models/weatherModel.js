@@ -8,7 +8,7 @@ db.query("SET time_zone = '+07:00';", (err) => {
 // Search for weather description in database
 const selectWeatherDescriptionID = (description) => {
     return new Promise((resolve, reject) => {
-        const query = 'SELECT wedesc_id FROM weather_desc WHERE weather_desc_en = ?';
+        const query = 'SELECT wedesc_id FROM weather_description WHERE weather_desc_en = ?';
         db.query(query, description, (err, result) => {
             if (err) {
                 reject(err);
@@ -52,7 +52,7 @@ const getLatestWeatherReportWithCityID = (cityID) => {
             wr.rep_wind_speed,
             wr.city_id
             FROM weather_reports wr
-            INNER JOIN weather_desc wd ON wr.wedesc_id = wd.wedesc_id 
+            INNER JOIN weather_description wd ON wr.wedesc_id = wd.wedesc_id 
             WHERE wr.city_id = ? 
             AND CONVERT_TZ(wr.report_created_at, '+00:00', '+07:00') >= NOW() - INTERVAL 1 HOUR
             ORDER BY wr.report_created_at DESC 

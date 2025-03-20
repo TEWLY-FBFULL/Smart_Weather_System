@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Posts</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,0,0">
+    <link rel="stylesheet" href="/css/insertPostForm.css">
+</head>
+<body>
+    <div id="effect-container"></div>
+    <header>
+        <nav class="navbar">
+            <span class="hamburger-btn material-symbols-rounded">menu</span>
+            <a href="#" class="logo">
+                <h2>Smart Weather System</h2>
+            </a>
+            <ul class="links">
+                <span class="close-btn material-symbols-rounded">close</span>
+                <li><a href="/api/user/index">Home</a></li>
+                <li><a href="#">About us</a></li>
+                <li><a href="#">Contact us</a></li>
+            </ul>
+            <button class="login-btn">Posts</button>
+        </nav>
+    </header>
+    <div class="blur-bg-overlay"></div>
+    <div class="form-popup">
+        <span class="close-btn material-symbols-rounded">close</span>
+        <!-- User Posts -->
+        <div class="form-box resetpass">
+            <div class="form-details">
+                <h2>โพสต์ข้อมูล</h2>
+                <p>คุณสามารถเลือกเมือง เพื่อเพิ่มข้อมูลที่เกี่ยวข้องกับสภาพอากาศได้</p>
+            </div>
+            <div class="form-content">
+                <form id="userPostsForm">
+                    <input type="hidden" id="token" name="token">
+                    <!-- Search -->
+                    <div class="input-field">
+                        <input type="text" id="postSearchInput" name="city" required>
+                        <label>City Name</label>
+                    </div>
+                    <div id="postSuggestionsdiv">
+                        <ul id="postSuggestions" class="suggestions-list"></ul>
+                    </div>
+                    <!-- text -->
+                    <div class="input-field">
+                        <textarea id="postText" name="message" required></textarea>
+                    </div>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>            
+        </div>
+    </div>
+    <!-- Sweetalert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Main-->
+    <script defer src="/javascript/script.js"></script>
+    <script src="/javascript/userPostForm.js"></script>
+</body>
+</html>

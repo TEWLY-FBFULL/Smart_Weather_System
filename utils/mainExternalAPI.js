@@ -3,8 +3,7 @@ const { filterForecastData, processForecastEntry, deleteOldForecasts } = require
 const { selectCityNameWithID } = require("../models/cityModel");
 const { selectKeywordNamewithID } = require("../models/keywordModel");
 const { insertYoutubeVideos } = require("../models/youtubeModel");
-const { insertTwitterPosts } = require("../models/xpostModel");
-const { openweathermapAPI,youtubeV3API,XpostV2API } = require("./allExternalAPI");
+const { openweathermapAPI,youtubeV3API } = require("./allExternalAPI");
 
 const majorCities = [1, 38, 66, 70, 29, 64];
 let pathapi = "";
@@ -73,31 +72,15 @@ async function updateForecastForCity(city_id) {
 }
 
 // Function to update Youtube videos with keywords
-async function updateYoutubeVideo() {
+async function updateYoutubeVideo(city_id) {
     try {
-        const keyw_id = 2;
-        // Search for keywords in database
-        const keywordResult = await selectKeywordNamewithID(keyw_id);
-        if (keywordResult.length === 0) {
-            console.error(`ไม่พบคีย์เวิร์ด ID = ${keyw_id} ในฐานข้อมูล`);
+        // Search for city in database
+        const cityResult = await selectCityNameWithID(city_id);
+        if (cityResult.length === 0) {
+            console.error(`ไม่พบเมือง ID = ${city_id} ในฐานข้อมูล`);
             return;
         }
-        const keyw_name = keywordResult[0].keyw_name;
-        // Get Youtube videos data from Youtube API
-        pathapi = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${keyw_name}&type=video&order=date&key=`;
-        const videosData = await youtubeV3API(pathapi);
-        for (const video of videosData.items) {
-            await insertYoutubeVideos(keyw_id, video);
-        }
-        console.log(`อัปเดตข้อมูล youtube สำเร็จ!`);
-    } catch (error) {
-        console.error("เกิดข้อผิดพลาด:", error);
-    }
-}
-
-// Function to update X posts with keywords
-async function updateXpost() {
-    try {
+        const city_name_th = cityResult[0].city_name_th;
         const keyw_id = 1;
         // Search for keywords in database
         const keywordResult = await selectKeywordNamewithID(keyw_id);
@@ -106,23 +89,30 @@ async function updateXpost() {
             return;
         }
         const keyw_name = keywordResult[0].keyw_name;
-        // Get X Posts data from X V2 API
-        pathapi = `https://api.twitter.com/2/tweets/search/recent?query=${keyw_name}%20ประเทศไทย%20lang:th%20-is:retweet&max_results=100&tweet.fields=created_at,author_id,text&expansions=author_id&user.fields=username`;
-        const xPostData = await XpostV2API(pathapi);
-        for (const x of xPostData.data) {
-            // Check between id and author_id
-            const user = xPostData.includes.users.find(y => y.id === x.author_id);
-            if (user) {
-                await insertTwitterPosts(keyw_id, x, user.username);
-            } else {
-                console.log(`ไม่พบ username ของบัญชี X สำหรับโพสต์ ID: ${x.id}`);
-            }
+        // Get Youtube videos data from Youtube API
+        pathapi = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${keyw_name}%20${city_name_th}&type=video&order=date&key=`;
+        let videosData = await youtubeV3API(pathapi);
+        // About 3 videos related to the city
+        let filteredVideos = videosData.items.filter(video => 
+            video.snippet.title.includes(city_name_th) || 
+            video.snippet.description.includes(city_name_th)
+        );
+        // If no videos found, use general videos
+        if (filteredVideos.length === 0) {
+            console.warn(`ไม่มีวิดีโอสำหรับ "${city_name_th}" → กำลังใช้วิดีโอทั่วไป`);
+            pathapi = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${keyw_name}%20ประเทศไทย&type=video&order=date&key=`;
+            videosData = await youtubeV3API(pathapi);
+            filteredVideos = videosData.items.slice(0, 3); // New 3 videos
         }
-        console.log(`อัปเดตข้อมูล X สำเร็จ!`);
+        for (const video of filteredVideos) {
+            await insertYoutubeVideos(keyw_id, city_id, video);
+        }
+        console.log(`อัปเดตข้อมูล YouTube สำเร็จสำหรับ "${city_name_th}"`);
     } catch (error) {
         console.error("เกิดข้อผิดพลาด:", error);
     }
 }
+
 
 // Function to update weather for all major cities every 1 hour
 function updateWeatherForCities() {
@@ -134,20 +124,18 @@ function updateWeatherForCities() {
 }
 
 // Function to update weather forecast, youtube videos, and X posts for all major cities everyday
-async function updateForecastYoutubeX() {
+async function updateForecastYoutube() {
     // Delete all old forecasts before inserting new data
     await deleteOldForecasts();
     const oneday = 86400000; // 1 day
     majorCities.forEach(city => updateForecastForCity(city));
-    // updateYoutubeVideo();
-    // updateXpost();
+    majorCities.forEach(city => updateYoutubeVideo(city));
     setInterval(() => {
         majorCities.forEach(city => updateForecastForCity(city));
-        // updateYoutubeVideo();
-        // updateXpost();
+        majorCities.forEach(city => updateYoutubeVideo(city));
     }, oneday);
 }
 
-module.exports = { updateWeatherForCities, updateForecastYoutubeX };
+module.exports = { updateWeatherForCities, updateForecastYoutube };
 
 

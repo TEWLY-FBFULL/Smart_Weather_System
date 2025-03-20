@@ -1,14 +1,16 @@
 const path = require('path');
 const { searchCityWithName, searchCityWithFullName } = require('../models/cityModel');
-const { selectWeatherDescriptionID, insertWeatherReport, 
+const { selectWeatherDescriptionID, insertWeatherReport,
     getLatestWeatherReportWithCityID } = require('../models/weatherModel');
 const { filterForecastData, processForecastEntry,
     getLatestWeatherForecastWithCityID } = require('../models/forecastModel');
 const { getLatestYoutubeVideos } = require('../models/youtubeModel');
-const { getLatestXposts } = require('../models/xpostModel');
-const { sendEmail,validateUserSendEmail } = require("../utils");
+const { insertUserPosts } = require('../models/userpostsModel');
+const { insertAdminLogs } = require('../models/adminLogModel');
+const { sendEmail, validateUserSendEmail, validatePostWeather } = require("../utils");
 const { openweathermapAPI } = require("../utils/allExternalAPI");
 require('dotenv').config(); // import .env
+
 
 exports.userHome = async (req, res) => {
     res.sendFile(path.join(__dirname, '../views/user/weatherData.html'));
@@ -131,7 +133,6 @@ exports.getWeatherdataWithCityname = async (req, res) => {
         const popularCity = await getPopularCities();
         // Get new data for youtube_videos and twitter_posts
         const youtubeVideos = await getLatestYoutubeVideos();
-        const xPosts = await getLatestXposts();
 
         // Response data
         res.json({
@@ -139,8 +140,7 @@ exports.getWeatherdataWithCityname = async (req, res) => {
             weather: weatherData,
             forecast: forecastData,
             popularCity: popularCity,
-            youtubeVideos: youtubeVideos,
-            xPosts: xPosts
+            youtubeVideos: youtubeVideos
         });
     } catch (error) {
         console.error("เกิดข้อผิดพลาด:", error);
@@ -149,7 +149,7 @@ exports.getWeatherdataWithCityname = async (req, res) => {
 };
 
 exports.contactMe = async (req, res) => {
-    try{
+    try {
         // Validate data
         const validationError = validateUserSendEmail(req.body);
         if (validationError) {
@@ -166,12 +166,48 @@ exports.contactMe = async (req, res) => {
             return res.status(200).json({ message: 'ส่งอีเมลสำเร็จ' });
         } catch (error) {
             console.error("Error sending email:", error);
-            return res.status(500).json({ 
-                message: 'เกิดข้อผิดพลาดในการส่งอีเมล' 
-            });  
-        } 
-    }catch(error){
+            return res.status(500).json({
+                message: 'เกิดข้อผิดพลาดในการส่งอีเมล'
+            });
+        }
+    } catch (error) {
         console.log(error);
-        res.status(500).json({error: 'Server error'});
+        res.status(500).json({ error: 'Server error' });
+    }
+};
+
+exports.insertPost = async (req, res) => {
+    res.sendFile(path.join(__dirname, '../views/user/insertPostForm.html'));
+};
+
+exports.postWeather = async (req, res) => {
+    try {
+        // Validate
+        const validationError = validatePostWeather(req.body);
+        if (validationError) {
+            return res.status(400).json({ error: validationError });
+        }
+        const { city, message } = req.body;
+        // Check if city exists
+        const cityQuery = await searchCityWithFullName(city);
+        if (cityQuery.length === 0) {
+            return res.status(404).json({ error: "ไม่พบชื่อเมืองในระบบ" });
+        }
+        const city_id = cityQuery[0].city_id;
+        // Get user_id from token
+        const user_id = req.user ? req.user.user_id : null;
+        if (!user_id) {
+            return res.status(401).json({ error: "กรุณาเข้าสู่ระบบก่อนโพสต์" });
+        }        
+        // Save post to database
+        const insert = await insertUserPosts(user_id, city_id, message);
+        if (!insert) {
+            return res.status(500).json({ error: "เกิดข้อผิดพลาดในการบันทึกโพสต์" });
+        }
+        await insertAdminLogs(user_id, 'โพสต์ข้อมูลสภาพอากาศ');
+        res.status(201).json({ message: "โพสต์ของคุณถูกบันทึกเรียบร้อยแล้ว" });
+    } catch (error) {
+        console.error("เกิดข้อผิดพลาด:", error);
+        res.status(500).json({ error: "Server error" });
     }
 };

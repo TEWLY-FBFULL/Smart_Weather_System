@@ -3,13 +3,12 @@ import { updateWeatherSlides } from "./containerSwiper.js";
 import { createCityMap } from "./cityMap.js";
 import { updateTemperature, getTemperatureMode, convertToFahrenheit, updatePopularCitiesTemperature } from "./temperatureMode.js"; 
 import { createGraph } from "./temperatureGraph.js";
-import { initXPosts } from "./createXpostsCards.js";
 import { createYoutubeVideosCard } from "./createYoutubeCards.js";
 
 async function showAllData(result) {
     // Check if the result is valid
     if (!result || !result.city || !result.weather || !result.popularCity 
-        || !result.forecast || !result.xPosts || !result.youtubeVideos) {
+        || !result.forecast || !result.youtubeVideos) {
         console.error("Invalid result data:", result);
         return;
     }
@@ -81,13 +80,7 @@ async function showAllData(result) {
     updateWeatherSlides(todayForecast, next5DaysForecast);
     // Create Wather Graph
     await createGraph(todayForecast);
-    // Create Xposts Cards
-    const xpostcontainer = document.querySelector(".x-post-articles");
-    if (xpostcontainer && xpostcontainer.children.length > 0) {
-        console.log("ข้ามการสร้าง XPosts (มีอยู่แล้ว)");
-    } else {
-        await initXPosts(result.xPosts);
-    }
+    
     // Create Youtube Cards
     await createYoutubeVideosCard(result.youtubeVideos);
 

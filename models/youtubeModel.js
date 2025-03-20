@@ -14,7 +14,7 @@ const checkVideoExists = (videoId) => {
 };
 
 // Insert data to youtube_videos table
-const insertYoutubeVideos = async (keyw_id, video) => {
+const insertYoutubeVideos = async (keyw_id, city_id, video) => {
     try {
         // Validate if video_id already exists
         const exists = await checkVideoExists(video.id.videoId);
@@ -24,12 +24,12 @@ const insertYoutubeVideos = async (keyw_id, video) => {
         }
         // Insert data to youtube_videos table
         const query = `INSERT INTO youtube_videos 
-            (video_id, keyw_id, description, channel_title, title) 
-            VALUES (?, ?, ?, ?, ?)`;
+            (video_id, city_id, keyw_id, description, channel_title, title, video_image) 
+            VALUES (?, ?, ?, ?, ?, ?, ?)`;
 
         return new Promise((resolve, reject) => {
-            db.query(query, [video.id.videoId, keyw_id, video.snippet.description,
-                video.snippet.channelTitle, video.snippet.title
+            db.query(query, [video.id.videoId, city_id, keyw_id, video.snippet.description,
+                video.snippet.channelTitle, video.snippet.title, video.snippet.thumbnails.high.url
             ], (err, result) => {
                 if (err) {
                     return reject(err);
