@@ -211,3 +211,28 @@ exports.postWeather = async (req, res) => {
         res.status(500).json({ error: "Server error" });
     }
 };
+
+// Logout
+exports.logout = async (req,res) => {
+    try {
+        const token = req.cookies?.token;
+        if (!token) {
+            return res.status(400).json({ error: 'คุณยังไม่ได้เข้าสู่ระบบ' });
+        }
+        // Insert admin log
+        if (req.user?.user_id) {
+            await insertAdminLogs(req.user.user_id, 'ออกจากระบบ');
+        }
+        // Clear Cookie
+        res.clearCookie("token", {
+            httpOnly: true,
+            secure: false,
+            sameSite: "Lax",
+            path: "/"
+        });
+        res.status(200).json({ message: "ออกจากระบบสำเร็จ" });
+    } catch (error) {
+        console.error("Error logging out:", error);
+        res.status(500).json({ error: "Server error" });
+    }
+};

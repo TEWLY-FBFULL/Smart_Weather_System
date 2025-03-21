@@ -16,7 +16,7 @@ logout.addEventListener('click', () => {
 
 async function logoutUser() {
     try {
-        const response = await fetch("http://localhost:3000/api/auth/logout", {
+        const response = await fetch("http://localhost:3000/api/admin/logout", {
             method: "POST",
             credentials: "include", // Cookie with request
         });
