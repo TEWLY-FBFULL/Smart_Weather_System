@@ -44,15 +44,17 @@ const insertYoutubeVideos = async (keyw_id, city_id, video) => {
 };
 
 // Select new videos data from youtube_videos table
-const getLatestYoutubeVideos = () => {
+const getLatestYoutubeVideosWithCityID = (city_id) => {
     return new Promise((resolve, reject) => {
         const query = `
             SELECT * 
             FROM youtube_videos 
+            WHERE city_id = ?  
+            AND CONVERT_TZ(yt_created_at, '+00:00', '+07:00') >= NOW() - INTERVAL 1 DAY
             ORDER BY yt_created_at DESC 
-            LIMIT 5
+            LIMIT 5;
         `;
-        db.query(query, (err, results) => {
+        db.query(query, [city_id], (err, results) => {
             if (err) return reject(err);
             resolve(results);
         });
@@ -60,4 +62,4 @@ const getLatestYoutubeVideos = () => {
 };
 
 
-module.exports = { insertYoutubeVideos, getLatestYoutubeVideos }
+module.exports = { insertYoutubeVideos, getLatestYoutubeVideosWithCityID }

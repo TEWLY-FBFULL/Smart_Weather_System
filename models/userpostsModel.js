@@ -14,4 +14,21 @@ const insertUserPosts = (user_id, city_id, post_text) => {
     });
 };
 
-module.exports = { insertUserPosts };
+// Select new posts data from user_posts table
+const getLatestUserPostsWithCityID = (city_id) => {
+    return new Promise((resolve, reject) => {
+        const query = `
+            SELECT * 
+            FROM user_posts 
+            WHERE city_id = ?  
+            AND CONVERT_TZ(post_created_at, '+00:00', '+07:00') >= NOW() - INTERVAL 1 DAY
+            ORDER BY post_created_at DESC;
+        `;
+        db.query(query, [city_id], (err, results) => {
+            if (err) return reject(err);
+            resolve(results);
+        });
+    });
+};
+
+module.exports = { insertUserPosts, getLatestUserPostsWithCityID };

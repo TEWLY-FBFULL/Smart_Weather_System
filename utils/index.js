@@ -8,7 +8,8 @@ const generateJWTtoken = require('./generateJWT');
 const validateResetPassword = require('./validateUserNewPassword');
 const validateUserSendEmail = require('./validateUserSendEmail');
 const validatePostWeather = require('./validateUserPost');
+const getPopularCities = require('./getPopularCities');
 
 module.exports = { hashpassword, generateToken, sendEmail, 
     validateUser, comparePassword, generateJWTtoken, validateResetPassword
-    , validateUserSendEmail, validatePostWeather  };
+    , validateUserSendEmail, validatePostWeather, getPopularCities  };

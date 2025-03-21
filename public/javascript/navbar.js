@@ -159,7 +159,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
             suggestionsList.appendChild(li);
         });
-        // ตรวจสอบจำนวน li ใน suggestionsList
         if (suggestionsList.children.length > 0) {
             suggestionsdiv.style.display = "block";
         } else {
