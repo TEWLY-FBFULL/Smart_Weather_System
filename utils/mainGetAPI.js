@@ -57,16 +57,29 @@ async function mainGetYoutubeVideo(city_id,city_name) {
     pathapi = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${keyw_name}%20${city_name}&type=video&order=date&key=`;
     let videosData = await youtubeV3API(pathapi);
     // About 3 videos related to the city
-    let filteredVideos = videosData.items.filter(video => 
-        video.snippet.title.includes(city_name) || 
-        video.snippet.description.includes(city_name)
-    );
+    const oneDayAgo = new Date();
+    oneDayAgo.setDate(oneDayAgo.getDate() - 1);
+    let filteredVideos = videosData.items.filter(video => {
+        const publishDate = new Date(video.snippet.publishTime);
+
+        return (
+            (video.snippet.title.includes(city_name) || 
+            video.snippet.description.includes(city_name)) &&
+            publishDate > oneDayAgo
+        );
+    });
     // If no videos found, use general videos
     if (filteredVideos.length === 0) {
-        console.warn(`ไม่มีวิดีโอสำหรับ "${city_name}" → กำลังใช้วิดีโอทั่วไป`);
+        console.warn(`ไม่มีวิดีโอสำหรับ "${city_name}" หรือวิดีโอเก่ากว่า 1 วัน → กำลังใช้วิดีโอทั่วไป`);
         pathapi = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${keyw_name}%20ประเทศไทย&type=video&order=date&key=`;
         videosData = await youtubeV3API(pathapi);
-        filteredVideos = videosData.items.slice(0, 3); // New 3 videos
+
+        filteredVideos = videosData.items.filter(video => {
+            const publishDate = new Date(video.snippet.publishTime);
+            return publishDate > oneDayAgo;
+        }).slice(0, 3);
+        city_id = 78; // Set city_id to Thailand
+        city_name = "ประเทศไทย";
     }
     for (const video of filteredVideos) {
         await insertYoutubeVideos(keyw_id, city_id, video);

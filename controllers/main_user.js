@@ -3,10 +3,11 @@ const { searchCityWithName, searchCityWithFullName } = require('../models/cityMo
 const { getLatestWeatherReportWithCityID } = require('../models/weatherModel');
 const { getLatestWeatherForecastWithCityID } = require('../models/forecastModel');
 const { getLatestYoutubeVideosWithCityID } = require('../models/youtubeModel');
-const { insertUserPosts,getLatestUserPostsWithCityID } = require('../models/userpostsModel');
+const { insertUserPosts, getLatestUserPostsWithCityID } = require('../models/userpostsModel');
 const { insertAdminLogs } = require('../models/adminLogModel');
 const { sendEmail, validateUserSendEmail, validatePostWeather, getPopularCities } = require("../utils");
 const { mainGetWeather, mainGetWeatherForeCast, mainGetYoutubeVideo } = require("../utils/mainGetAPI");
+const { getEmbedding, cosineSimilarity } = require("../utils/analysisWeather");
 
 require('dotenv').config(); // import .env
 
@@ -45,61 +46,93 @@ exports.getWeatherdataWithCityname = async (req, res) => {
     try {
         const query = req.query.q;
         if (!query) return res.status(400).json({ error: "กรุณาระบุชื่อเมือง" });
-
         // Search city from database
         const city = await searchCityWithFullName(query);
         if (city.length === 0) return res.status(404).json({ error: "ไม่พบข้อมูลเมือง" });
-        const city_id = city[0].city_id;
-        const city_name = city[0].city_name_th;
-        const lon = city[0].lon;
-        const lat = city[0].lat;
-
-        // Get current all data
-        const cityData = {city_id,city_name,lon,lat}
-        const latestWeather = await getLatestWeatherReportWithCityID(city_id);
-        const latestForecast = await getLatestWeatherForecastWithCityID(city_id);
-        const youtubeVideos = await getLatestYoutubeVideosWithCityID(city_id);
-        const userPost = await getLatestUserPostsWithCityID(city_id);
-        const popularCity = await getPopularCities();
-        console.log("latestWeather:", latestWeather);
-        console.log("latestForecast:", latestForecast);
-        console.log("youtubeVideos:", youtubeVideos);
-        console.log("userPost:", userPost);
-
-        // Check current data with time
+        const { city_id, city_name_th: city_name, lon, lat } = city[0];
+        // Get latest weather, forecast, youtube videos, user posts
+        let [latestWeather, latestForecast, youtubeVideos, userPost, popularCity] = await Promise.all([
+            getLatestWeatherReportWithCityID(city_id),
+            getLatestWeatherForecastWithCityID(city_id),
+            getLatestYoutubeVideosWithCityID(city_id),
+            getLatestUserPostsWithCityID(city_id),
+            getPopularCities()
+        ]);
+        console.log({ latestWeather, latestForecast, youtubeVideos, userPost });
+        // Check if data is outdated
         const now = new Date();
-        let weatherData = latestWeather;
-        let forecastData = latestForecast;
-        let youtubeVideosData = youtubeVideos;
-        let userPostData = userPost;
-        // Check if weather or forecast or youtube is outdated
-        const lastWeatherUpdate = latestWeather ? new Date(latestWeather.local_time) : null;
-        const lastForecastUpdate = latestForecast ? new Date(latestForecast[0].local_datetime) : null;
-        const lastYoutubeVideoUpdate = youtubeVideos ? new Date(youtubeVideos[0].yt_created_at) : null;
-        const isWeatherOutdated = !lastWeatherUpdate || (now - lastWeatherUpdate) / (1000 * 60 * 60) >= 1;
-        const isForecastOutdated = !lastForecastUpdate || (now - lastForecastUpdate) / (1000 * 60 * 60 * 24) >= 1;
-        const isYoutubeVideoOutdated = !lastYoutubeVideoUpdate || (now - lastYoutubeVideoUpdate) / (1000 * 60 * 60 * 24) >= 1;
-
+        const isOutdated = (lastUpdate, hours) => 
+            !lastUpdate || (now - new Date(lastUpdate)) / (1000 * 60 * 60) >= hours;
+        const isWeatherOutdated = isOutdated(latestWeather?.local_time, 1);
+        const isForecastOutdated = isOutdated(latestForecast?.[0]?.local_datetime, 24);
+        const isYoutubeVideoOutdated = isOutdated(youtubeVideos?.[0]?.yt_created_at, 24);
+        // Update data if outdated
         if (isWeatherOutdated) {
             await mainGetWeather(city_id, city_name);
-            weatherData = await getLatestWeatherReportWithCityID(city_id);
+            latestWeather = await getLatestWeatherReportWithCityID(city_id);
         }
         if (isForecastOutdated) {
             await mainGetWeatherForeCast(city_id, city_name);
-            forecastData = await getLatestWeatherForecastWithCityID(city_id);
+            latestForecast = await getLatestWeatherForecastWithCityID(city_id);
         }
         if (isYoutubeVideoOutdated) {
             await mainGetYoutubeVideo(city_id, city_name);
-            youtubeVideosData = await getLatestYoutubeVideosWithCityID(city_id);
+            youtubeVideos = await getLatestYoutubeVideosWithCityID(city_id);
         }
+        // Analysis weather data
+        let relevantYouTube = [], relevantUserPosts = [], analysisResults = [];
+        if (youtubeVideos.length > 0 || userPost.length > 0) {
+            const weatherVec = await getEmbedding(latestWeather.weather_desc_th);
 
-        // Response data
+            for (const video of youtubeVideos) {
+                try {
+                    const videoText = `${video.title} ${video.description}`;
+                    const youtubeVec = await getEmbedding(videoText);
+                    const similarity = await cosineSimilarity(weatherVec, youtubeVec);
+            
+                    if (!isNaN(similarity) && similarity >= 0.6) {
+                        relevantYouTube.push(video);
+                        analysisResults.push({
+                            source: "YouTube",
+                            reference: video.title,
+                            similarity: similarity.toFixed(2),
+                        });
+                    }
+                } catch (error) {
+                    console.error("Error processing YouTube video:", error);
+                }
+            }
+            for (const post of userPost) {
+                try {
+                    const postVec = await getEmbedding(post.post_text);
+                    const similarity = await cosineSimilarity(weatherVec, postVec);
+            
+                    if (!isNaN(similarity) && similarity >= 0.6) {
+                        relevantUserPosts.push(post);
+                        analysisResults.push({
+                            source: "UserPost",
+                            reference: post.post_text,
+                            similarity: similarity.toFixed(2),
+                        });
+                    }
+                } catch (error) {
+                    console.error("Error processing User Post:", error);
+                }
+            }            
+        }
+        // Limit data to 3 items
+        userPost = relevantUserPosts.length >= 1 ? relevantUserPosts : null;
+        youtubeVideos = relevantYouTube.length >= 3 ? relevantYouTube : await getLatestYoutubeVideosWithCityID(78);
+        const youtubeType = relevantYouTube.length >= 3 ? "weather_related" : "general_news";
+        // Send response
         res.json({
-            city: cityData,
-            weather: weatherData,
-            forecast: forecastData,
-            popularCity: popularCity,
-            youtubeVideos: youtubeVideosData,
+            city: { city_id, city_name, lon, lat },
+            weather: latestWeather,
+            forecast: latestForecast,
+            popularCity,
+            youtubeVideos: { type: youtubeType, videos: youtubeVideos },
+            userPosts: userPost,
+            analysis: analysisResults
         });
     } catch (error) {
         console.error("เกิดข้อผิดพลาด:", error);
@@ -157,7 +190,7 @@ exports.postWeather = async (req, res) => {
         const user_id = req.user ? req.user.user_id : null;
         if (!user_id) {
             return res.status(401).json({ error: "กรุณาเข้าสู่ระบบก่อนโพสต์" });
-        }        
+        }
         // Save post to database
         const insert = await insertUserPosts(user_id, city_id, message);
         if (!insert) {
@@ -172,7 +205,7 @@ exports.postWeather = async (req, res) => {
 };
 
 // Logout
-exports.logout = async (req,res) => {
+exports.logout = async (req, res) => {
     try {
         const token = req.cookies?.token;
         if (!token) {

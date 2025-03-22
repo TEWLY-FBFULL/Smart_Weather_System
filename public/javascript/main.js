@@ -8,7 +8,7 @@ import { createYoutubeVideosCard } from "./createYoutubeCards.js";
 async function showAllData(result) {
     // Check if the result is valid
     if (!result || !result.city || !result.weather || !result.popularCity 
-        || !result.forecast || !result.youtubeVideos) {
+        || !result.forecast || !result.youtubeVideos || !result.userPosts || !result.analysis) {
         console.error("Invalid result data:", result);
         return;
     }
@@ -81,8 +81,29 @@ async function showAllData(result) {
     // Create Wather Graph
     await createGraph(todayForecast);
     
-    // Create Youtube Cards
-    await createYoutubeVideosCard(result.youtubeVideos);
+    // Create Youtube Cards and User Posts Cards
+    const postText = document.querySelector(".x-post-text h1");
+    const postContainer = document.querySelector(".x-post-container");
+    // Check if the result is general news or weather-related
+    if (result.youtubeVideos.type === "general_news" && result.userPosts === null) {
+        postText.textContent = "วิดีโอที่เกี่ยวข้องในประเทศไทย";
+        postContainer.style.display = "none";
+        await createYoutubeVideosCard(result.youtubeVideos.videos);
+    } else if (result.youtubeVideos.type === "general_news" && result.userPosts !== null) {
+        postText.textContent = "โพสต์จากผู้ใช้เเละวิดีโอที่เกี่ยวข้องในประเทศไทย";
+        postContainer.style.display = "block";
+        await createUserPostsCard(result.userPosts);
+        await createYoutubeVideosCard(result.youtubeVideos.videos);
+    } else if (result.youtubeVideos.type === "weather_related" && result.userPosts === null) {
+        postText.textContent = "วิดีโอที่เกี่ยวข้องในจังหวัด";
+        postContainer.style.display = "none";
+        await createYoutubeVideosCard(result.youtubeVideos.videos);
+    } else if (result.youtubeVideos.type === "weather_related" && result.userPosts !== null) {
+        postText.textContent = "โพสต์จากผู้ใช้เเละวิดีโอที่เกี่ยวข้องในจังหวัด";
+        postContainer.style.display = "block";
+        await createUserPostsCard(result.userPosts);
+        await createYoutubeVideosCard(result.youtubeVideos.videos);
+    }
 
     // Update temperature when the temperature mode is changed
     document.addEventListener("temperatureModeChanged", temperatureChangeHandler, { once: true });
