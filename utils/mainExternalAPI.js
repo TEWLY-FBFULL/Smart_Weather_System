@@ -142,10 +142,10 @@ async function updateForecastYoutube() {
     await deleteOldForecasts();
     const oneday = 86400000; // 1 day
     majorCities.forEach(city => updateForecastForCity(city));
-    majorCities.forEach(city => updateYoutubeVideo(city));
+    // majorCities.forEach(city => updateYoutubeVideo(city));
     setInterval(() => {
         majorCities.forEach(city => updateForecastForCity(city));
-        majorCities.forEach(city => updateYoutubeVideo(city));
+        // majorCities.forEach(city => updateYoutubeVideo(city));
     }, oneday);
 }
 

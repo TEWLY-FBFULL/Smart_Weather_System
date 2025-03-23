@@ -18,11 +18,13 @@ const insertUserPosts = (user_id, city_id, post_text) => {
 const getLatestUserPostsWithCityID = (city_id) => {
     return new Promise((resolve, reject) => {
         const query = `
-            SELECT * 
-            FROM user_posts 
-            WHERE city_id = ?  
-            AND CONVERT_TZ(post_created_at, '+00:00', '+07:00') >= NOW() - INTERVAL 1 DAY
-            ORDER BY post_created_at DESC;
+            SELECT UP.user_id, U.user_name, UP.post_text, 
+            UP.post_created_at
+            FROM user_posts AS UP
+            INNER JOIN users AS U ON UP.user_id = U.user_id
+            WHERE UP.city_id = ?  
+            AND UP.post_created_at >= NOW() - INTERVAL 1 DAY
+            ORDER BY UP.post_created_at DESC;
         `;
         db.query(query, [city_id], (err, results) => {
             if (err) return reject(err);

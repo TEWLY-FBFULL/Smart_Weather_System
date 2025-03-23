@@ -4,11 +4,12 @@ import { createCityMap } from "./cityMap.js";
 import { updateTemperature, getTemperatureMode, convertToFahrenheit, updatePopularCitiesTemperature } from "./temperatureMode.js"; 
 import { createGraph } from "./temperatureGraph.js";
 import { createYoutubeVideosCard } from "./createYoutubeCards.js";
+import { initUserPosts } from "./createdUserPostCards.js";
 
 async function showAllData(result) {
     // Check if the result is valid
     if (!result || !result.city || !result.weather || !result.popularCity 
-        || !result.forecast || !result.youtubeVideos || !result.userPosts || !result.analysis) {
+        || !result.forecast || !result.youtubeVideos) {
         console.error("Invalid result data:", result);
         return;
     }
@@ -82,28 +83,27 @@ async function showAllData(result) {
     await createGraph(todayForecast);
     
     // Create Youtube Cards and User Posts Cards
+    const mainX = document.querySelector(".main-x-post-container");
     const postText = document.querySelector(".x-post-text h1");
-    const postContainer = document.querySelector(".x-post-container");
-    // Check if the result is general news or weather-related
-    if (result.youtubeVideos.type === "general_news" && result.userPosts === null) {
-        postText.textContent = "วิดีโอที่เกี่ยวข้องในประเทศไทย";
-        postContainer.style.display = "none";
-        await createYoutubeVideosCard(result.youtubeVideos.videos);
-    } else if (result.youtubeVideos.type === "general_news" && result.userPosts !== null) {
-        postText.textContent = "โพสต์จากผู้ใช้เเละวิดีโอที่เกี่ยวข้องในประเทศไทย";
-        postContainer.style.display = "block";
-        await createUserPostsCard(result.userPosts);
-        await createYoutubeVideosCard(result.youtubeVideos.videos);
-    } else if (result.youtubeVideos.type === "weather_related" && result.userPosts === null) {
-        postText.textContent = "วิดีโอที่เกี่ยวข้องในจังหวัด";
-        postContainer.style.display = "none";
-        await createYoutubeVideosCard(result.youtubeVideos.videos);
-    } else if (result.youtubeVideos.type === "weather_related" && result.userPosts !== null) {
-        postText.textContent = "โพสต์จากผู้ใช้เเละวิดีโอที่เกี่ยวข้องในจังหวัด";
-        postContainer.style.display = "block";
-        await createUserPostsCard(result.userPosts);
-        await createYoutubeVideosCard(result.youtubeVideos.videos);
+    const xpostcontainer = document.querySelector(".x-post-articles");
+    const isGeneralNews = result.youtubeVideos.type === "general_news";
+    const hasUserPosts = result.userPosts !== null;
+
+    postText.textContent = hasUserPosts
+        ? `โพสต์จากผู้ใช้เเละวิดีโอที่เกี่ยวข้องใน${isGeneralNews ? "ประเทศไทย" : "จังหวัด"}`
+        : `วิดีโอที่เกี่ยวข้องใน${isGeneralNews ? "ประเทศไทย" : "จังหวัด"}`;
+
+    mainX.style.minHeight = hasUserPosts ? "30rem" : "auto";
+    mainX.style.padding = hasUserPosts ? "5rem 1.5rem" : "5rem 1.5rem 0 1.5rem";
+    postText.style.marginBottom = hasUserPosts ? "3rem" : "0";
+    xpostcontainer.style.display = hasUserPosts ? "grid" : "none";
+    // User Posts 
+    if (xpostcontainer.style.display === "grid") {
+        xpostcontainer && xpostcontainer.children.length > 0 ? 
+        console.log("ข้ามการสร้าง XPosts (มีอยู่แล้ว)") : await initUserPosts(result.userPosts);
     }
+    // YouTube Card 
+    await createYoutubeVideosCard(result.youtubeVideos.videos);
 
     // Update temperature when the temperature mode is changed
     document.addEventListener("temperatureModeChanged", temperatureChangeHandler, { once: true });

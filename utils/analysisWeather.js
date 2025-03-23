@@ -1,6 +1,11 @@
+let embeddingModel = null;
+
 async function loadEmbeddingModel() {
-    const { pipeline } = await import("@xenova/transformers");
-    return await pipeline("feature-extraction", "Xenova/all-MiniLM-L6-v2");
+    if (!embeddingModel) {
+        const { pipeline } = await import("@xenova/transformers");
+        embeddingModel = await pipeline("feature-extraction", "Xenova/all-mpnet-base-v2");
+    }
+    return embeddingModel;
 }
 
 async function getEmbedding(text) {
@@ -32,7 +37,10 @@ async function cosineSimilarity(vec1, vec2) {
     const normA = Math.sqrt(vec1.reduce((sum, val) => sum + val * val, 0));
     const normB = Math.sqrt(vec2.reduce((sum, val) => sum + val * val, 0));
 
-    if (normA === 0 || normB === 0) return NaN;
+    if (normA === 0 || normB === 0 || isNaN(dotProduct)) {
+        console.error("Zero vector detected, skipping similarity calculation.");
+        return 0; 
+    }
     return dotProduct / (normA * normB);
 }
 

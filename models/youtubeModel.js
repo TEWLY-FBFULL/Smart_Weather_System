@@ -50,7 +50,7 @@ const getLatestYoutubeVideosWithCityID = (city_id) => {
             SELECT * 
             FROM youtube_videos 
             WHERE city_id = ?  
-            AND CONVERT_TZ(yt_created_at, '+00:00', '+07:00') >= NOW() - INTERVAL 1 DAY
+            AND yt_created_at >= NOW() - INTERVAL 1 DAY
             ORDER BY yt_created_at DESC 
             LIMIT 5;
         `;

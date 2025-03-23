@@ -1,10 +1,5 @@
 const db = require("./connectDB");
 
-// Set timezone to Bangkok
-db.query("SET time_zone = '+07:00';", (err) => {
-    if (err) console.error("Error setting timezone:", err);
-});
-
 // Search for weather description in database
 const selectWeatherDescriptionID = (description) => {
     return new Promise((resolve, reject) => {
@@ -43,7 +38,7 @@ const getLatestWeatherReportWithCityID = (cityID) => {
     return new Promise((resolve, reject) => {
         const query = `
             SELECT 
-            CONVERT_TZ(wr.report_created_at, '+00:00', '+07:00') AS local_time,
+            wr.report_created_at AS local_time,
             wd.weather_desc_th,
             wr.rep_temp,
             wr.rep_humidity,
@@ -54,7 +49,7 @@ const getLatestWeatherReportWithCityID = (cityID) => {
             FROM weather_reports wr
             INNER JOIN weather_description wd ON wr.wedesc_id = wd.wedesc_id 
             WHERE wr.city_id = ? 
-            AND CONVERT_TZ(wr.report_created_at, '+00:00', '+07:00') >= NOW() - INTERVAL 1 HOUR
+            AND wr.report_created_at >= NOW() - INTERVAL 1 HOUR
             ORDER BY wr.report_created_at DESC 
             LIMIT 1;
         `;

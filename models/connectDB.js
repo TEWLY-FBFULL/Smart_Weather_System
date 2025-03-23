@@ -8,7 +8,7 @@ const db = mysql.createConnection({
     user: process.env.DB_USER,
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
-    timezone: '+07:00'
+    timezone: "Z", // UTC
 });
 db.connect(err => {
     if (err) {
@@ -16,6 +16,15 @@ db.connect(err => {
         return;
     }
     console.log(`Connected to ${process.env.DB_NAME}`);
+
+    // timezone +07:00
+    db.query("SET time_zone = '+07:00';", (err) => {
+        if (err) {
+            console.error("Error setting timezone:", err);
+        } else {
+            console.log("Timezone set to +07:00");
+        }
+    });
 });
 // Export db
 module.exports = db;

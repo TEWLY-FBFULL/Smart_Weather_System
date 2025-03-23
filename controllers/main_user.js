@@ -5,6 +5,7 @@ const { getLatestWeatherForecastWithCityID } = require('../models/forecastModel'
 const { getLatestYoutubeVideosWithCityID } = require('../models/youtubeModel');
 const { insertUserPosts, getLatestUserPostsWithCityID } = require('../models/userpostsModel');
 const { insertAdminLogs } = require('../models/adminLogModel');
+const { isWeatherRelated } = require('../models/keywordModel');
 const { sendEmail, validateUserSendEmail, validatePostWeather, getPopularCities } = require("../utils");
 const { mainGetWeather, mainGetWeatherForeCast, mainGetYoutubeVideo } = require("../utils/mainGetAPI");
 const { getEmbedding, cosineSimilarity } = require("../utils/analysisWeather");
@@ -58,7 +59,7 @@ exports.getWeatherdataWithCityname = async (req, res) => {
             getLatestUserPostsWithCityID(city_id),
             getPopularCities()
         ]);
-        console.log({ latestWeather, latestForecast, youtubeVideos, userPost });
+        console.log({ latestWeather, latestForecast, youtubeVideos});
         // Check if data is outdated
         const now = new Date();
         const isOutdated = (lastUpdate, hours) => 
@@ -76,7 +77,7 @@ exports.getWeatherdataWithCityname = async (req, res) => {
             latestForecast = await getLatestWeatherForecastWithCityID(city_id);
         }
         if (isYoutubeVideoOutdated) {
-            await mainGetYoutubeVideo(city_id, city_name);
+            // await mainGetYoutubeVideo(city_id, city_name);
             youtubeVideos = await getLatestYoutubeVideosWithCityID(city_id);
         }
         // Analysis weather data
@@ -89,8 +90,10 @@ exports.getWeatherdataWithCityname = async (req, res) => {
                     const videoText = `${video.title} ${video.description}`;
                     const youtubeVec = await getEmbedding(videoText);
                     const similarity = await cosineSimilarity(weatherVec, youtubeVec);
-            
-                    if (!isNaN(similarity) && similarity >= 0.6) {
+                    console.log("Weather Vec:", weatherVec);
+                    console.log("YouTube Vec:", youtubeVec);
+
+                    if (!isNaN(similarity) && similarity >= 0.5) {
                         relevantYouTube.push(video);
                         analysisResults.push({
                             source: "YouTube",
@@ -102,12 +105,17 @@ exports.getWeatherdataWithCityname = async (req, res) => {
                     console.error("Error processing YouTube video:", error);
                 }
             }
+            console.log(relevantYouTube);
             for (const post of userPost) {
                 try {
+                    if (!(await isWeatherRelated(post.post_text))) continue;
+
                     const postVec = await getEmbedding(post.post_text);
                     const similarity = await cosineSimilarity(weatherVec, postVec);
-            
-                    if (!isNaN(similarity) && similarity >= 0.6) {
+                    console.log("Weather Vec:", weatherVec);
+                    console.log("User Post Vec:", postVec);
+
+                    if (!isNaN(similarity) && similarity >= 0.5) {
                         relevantUserPosts.push(post);
                         analysisResults.push({
                             source: "UserPost",
@@ -118,10 +126,11 @@ exports.getWeatherdataWithCityname = async (req, res) => {
                 } catch (error) {
                     console.error("Error processing User Post:", error);
                 }
-            }            
+            }     
+            console.log(relevantUserPosts);       
         }
         // Limit data to 3 items
-        userPost = relevantUserPosts.length >= 1 ? relevantUserPosts : null;
+        userPost = relevantUserPosts.length >= 2 ? relevantUserPosts : null;
         youtubeVideos = relevantYouTube.length >= 3 ? relevantYouTube : await getLatestYoutubeVideosWithCityID(78);
         const youtubeType = relevantYouTube.length >= 3 ? "weather_related" : "general_news";
         // Send response
