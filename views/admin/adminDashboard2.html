@@ -62,9 +62,6 @@
             <div class="topbar">
                 <div class="toggle"></div>
                 <div class="search">
-                    <label>
-                        <input type="text" placeholder="Search here">
-                    </label>
                 </div>
                 <div class="user">
                     <img src="/img/user.png" alt="">
@@ -112,12 +109,7 @@
                 <div class="recentOrders">
                     <div class="cardHeader">
                         <h2>ข้อมูลการใช้งาน</h2>
-                        <select id="tabledb">
-                            <option value="volvo">Volvo</option>
-                            <option value="saab">Saab</option>
-                            <option value="opel">Opel</option>
-                            <option value="audi">Audi</option>
-                        </select>
+                        <a href="/api/admin/index" class="btn">View All</a>
                     </div>
                     <table>
                         <thead>
@@ -145,6 +137,5 @@
     <!-- Main-->
     <script src="/javascript/adminLogout.js"></script>
     <script src="/javascript/adminRespon.js"></script>
-    <script defer type="module" src="/javascript/mainAdmin.js"></script>
 </body>
 </html>

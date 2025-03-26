@@ -1,7 +1,7 @@
 const path = require('path');
 const { getServerStats } = require('../utils/getServerStatus');
 const { selectAllUser } = require('../models/usersModel');
-const { insertAdminLogs } = require('../models/adminLogModel');
+const { insertAdminLogs, selectAllAdminLogs } = require('../models/adminLogModel');
 
 exports.adminHome = async (req, res) => {
     res.sendFile(path.join(__dirname, '../views/admin/adminDashboard.html'));
@@ -50,4 +50,18 @@ exports.logout = async (req,res) => {
         console.error("Error logging out:", error);
         res.status(500).json({ error: "Server error" });
     }
+};
+
+exports.adminlogs = async (req,res) => {
+    try{
+        const logs = await selectAllAdminLogs();
+        res.json(logs);
+    }catch(error){
+        console.error("Error:", error);
+        res.status(500).json({ error: "Server error" });
+    }
+}
+
+exports.adminHomeP2 = async (req, res) => {
+    res.sendFile(path.join(__dirname, '../views/admin/adminDashboard2.html'));
 };

@@ -205,7 +205,7 @@ exports.postWeather = async (req, res) => {
         if (!insert) {
             return res.status(500).json({ error: "เกิดข้อผิดพลาดในการบันทึกโพสต์" });
         }
-        await insertAdminLogs(user_id, 'โพสต์ข้อมูลสภาพอากาศ');
+        await insertAdminLogs(user_id, 'เพิ่มโพสต์');
         res.status(201).json({ message: "โพสต์ของคุณถูกบันทึกเรียบร้อยแล้ว" });
     } catch (error) {
         console.error("เกิดข้อผิดพลาด:", error);

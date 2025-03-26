@@ -5,7 +5,7 @@ async function getServerStats() {
             credentials: "include", // Cookie (JWT)
         });
         const result = await response.json();
-        console.log("result:", result);
+        console.log("ServerStatus:", result);
         if (response.ok) {
             document.getElementById("server-cpu").innerText = `${result.cpu.usage.currentLoad.toFixed(0)}%`;
             document.getElementById("server-ram").innerText =` ${Number(result.memory.usagePercent).toFixed(0)}%`;

@@ -5,7 +5,7 @@ async function getUser() {
             credentials: "include", // Cookie (JWT)
         });
         const result = await response.json();
-        console.log("result:", result);
+        console.log("UserData:", result);
         if (response.ok) {
             document.getElementById("user-num").innerText = `${result.length}`;
 
