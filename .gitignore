@@ -1,6 +1,6 @@
 .env
-echo "node_modules/" >> .gitignore
-echo "*.onnx" >> .gitignore
+node_modules/
+*.onnx
 
 
 

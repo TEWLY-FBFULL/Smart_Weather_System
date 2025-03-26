@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin data</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-    <link rel="stylesheet" type="text/css" href="/css/admin_style.css" />
+    <link rel="stylesheet" type="text/css" href="/css/admin_style2.css" />
 </head>
 <body>
     <div class="container">
@@ -21,34 +21,14 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="/api/admin/index">
                         <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
                         <span class="title">Dashboard</span>
                     </a>
                 </li>
-                <li><a href="#">
+                <li><a href="/api/admin/index2">
                         <span class="icon"><i class="fa fa-users" aria-hidden="true"></i></span>
-                        <span class="title">Customer</span>
-                    </a>
-                </li>
-                <li><a href="#">
-                        <span class="icon"><i class="fa fa-comment-o" aria-hidden="true"></i></span>
-                        <span class="title">Message</span>
-                    </a>
-                </li>
-                <li><a href="#">
-                        <span class="icon"><i class="fa fa-question-circle" aria-hidden="true"></i></span>
-                        <span class="title">Help</span>
-                    </a>
-                </li>
-                <li><a href="#">
-                        <span class="icon"><i class="fa fa-cog" aria-hidden="true"></i></span>
-                        <span class="title">Settings</span>
-                    </a>
-                </li>
-                <li><a href="#">
-                        <span class="icon"><i class="fa fa-lock" aria-hidden="true"></i></span>
-                        <span class="title">Password</span>
+                        <span class="title">Tables</span>
                     </a>
                 </li>
                 <li><a href="#" id="logout">
@@ -62,54 +42,25 @@
             <div class="topbar">
                 <div class="toggle"></div>
                 <div class="search">
+                    <label>
+                        <input type="text" placeholder="Search here">
+                    </label>
                 </div>
                 <div class="user">
                     <img src="/img/user.png" alt="">
                 </div>
             </div>
-            <div class="cardBox">
-                <div class="card">
-                    <div>
-                        <div class="numbers" id="user-num">...</div>
-                        <div class="cardName">จำนวนผู้ใช้</div>
-                    </div>
-                    <div class="iconBox">
-                        <i class="fa fa-eye" aria-hidden="true"></i>
-                    </div>
-                </div>
-                <div class="card">
-                    <div>
-                        <div class="numbers" id="server-cpu">...</div>
-                        <div class="cardName">CPU</div>
-                    </div>
-                    <div class="iconBox">
-                        <i class="fa-solid fa-microchip" aria-hidden="true"></i>
-                    </div>
-                </div>
-                <div class="card">
-                    <div>
-                        <div class="numbers" id="server-ram">...</div>
-                        <div class="cardName">RAM</div>
-                    </div>
-                    <div class="iconBox">
-                        <i class="fa-solid fa-memory" aria-hidden="true"></i>
-                    </div>
-                </div>
-                <div class="card">
-                    <div>
-                        <div class="numbers" id="server-disk">...</div>
-                        <div class="cardName">DISK</div>
-                    </div>
-                    <div class="iconBox">
-                        <i class="fa-solid fa-hard-drive" aria-hidden="true"></i>
-                    </div>
-                </div>
-            </div>
+            <div class="cardBox"></div>
             <div class="details">
                 <div class="recentOrders">
                     <div class="cardHeader">
                         <h2>ข้อมูลการใช้งาน</h2>
-                        <a href="/api/admin/index" class="btn">View All</a>
+                        <select name="dropdown" id="tabledb">
+                            <option value="roles">Roles</option>
+                            <option value="cities">Cities</option>
+                            <option value="keywords">Keywords</option>
+                            <option value="weather_description">Weather Description</option>
+                        </select>
                     </div>
                     <table>
                         <thead>
@@ -123,12 +74,6 @@
                         <tbody id="adminLogTable"></tbody>
                     </table>
                 </div>
-                <div class="recentCustomers">
-                    <div class="cardHeader">
-                        <h2>ผู้ใช้ทั้งหมด</h2>
-                    </div>
-                    <table></table>
-                </div>
             </div>
         </div>
     </div>
@@ -137,5 +82,6 @@
     <!-- Main-->
     <script src="/javascript/adminLogout.js"></script>
     <script src="/javascript/adminRespon.js"></script>
+    <script type="module" src="/javascript/mainAdmin2.js"></script>
 </body>
 </html>

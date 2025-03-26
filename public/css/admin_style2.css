@@ -182,9 +182,8 @@ body{
     width: 100%;
     padding: 20px;
     padding-top: 0px;
-    grid-gap: 20px;
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 1fr;
 }
 .details .recentOrders{
     position: relative;
@@ -207,6 +206,26 @@ body{
     text-decoration: none;
     border-radius: 6px;
 }
+select {
+    appearance: none;
+    background-color: white;
+    border: 3px solid #ff7e67;
+    padding: 8px 12px;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  }
+  
+  select:focus {
+    border-color: #ffa99c;
+    box-shadow: 0 0 5px #ffa99c;
+  }
+  
+  select:hover {
+    border-color: #ffa99c;
+  }  
 .details table{
     width: 100%;
     border-collapse: collapse;
@@ -253,57 +272,15 @@ body{
 .delivered{
     color:#36920b;
     background: #cdfbb8;
-
 }
 .Pending{
     background: #f0851b;
-
 }
 .return{
     background: #f00;
-
 }
 .inprogress{
     background: #0066aa;
-
-}
-.details .recentCustomers{
-    position: relative;
-    background: #fff;
-    padding: 20px;
-}
-.details .recentCustomers .imgBx{
-position: relative;
-width: 40px;
-height: 40px;
-border-radius: 50%;
-overflow: hidden;
-}
-.details .recentCustomers .imgBx img{
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-    object-fit: cover;
-}
-.details .recentCustomers table tr:hover,
-.details .recentCustomers table tr:hover td span{
-    background: #ffa99c;
-    color: #fff;
-
-}
-.details .recentCustomers table tr td{
-    padding: 7px 10px;
-}
-.details .recentCustomers table tr td h4{
-font-size: 16px;
-font-weight: 500;
-line-height: 1.2em;
-}
-.details .recentCustomers table tr td span{
-    font-size: 14px;
-    color: #999;
 }
 
 /* now make it responsive */

@@ -199,32 +199,14 @@ body{
 .cardHeader h2{
     font-weight: 600;
 }
-select {
-    appearance: none;
-    background-color: white;
-    border: 1px solid #ccc;
-    padding: 8px 12px;
-    font-size: 16px;
-    border-radius: 6px;
-    cursor: pointer;
-    outline: none;
-    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-}
-select:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-}
-select:hover {
-    border-color: #999;
-}
-/* .btn{
+.btn{
     position: relative;
     padding: 5px 10px;
     background: #ff7e67;
     color: #fff;
     text-decoration: none;
     border-radius: 6px;
-} */
+}
 .details table{
     width: 100%;
     border-collapse: collapse;

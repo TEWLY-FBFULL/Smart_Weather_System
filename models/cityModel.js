@@ -42,5 +42,19 @@ const searchCityWithFullName = (city_name) => {
     });
 };
 
+// Search city table
+const searchCityTable = () => {
+    return new Promise((resolve, reject) => {
+        const query = 'SELECT * FROM cities LIMIT 77';
+        db.query(query, (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        });
+    });
+};
 
-module.exports = { selectCityNameWithID,searchCityWithName,searchCityWithFullName };
+
+module.exports = { selectCityNameWithID,searchCityWithName,searchCityWithFullName,searchCityTable };

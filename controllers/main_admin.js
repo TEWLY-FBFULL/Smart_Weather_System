@@ -2,6 +2,9 @@ const path = require('path');
 const { getServerStats } = require('../utils/getServerStatus');
 const { selectAllUser } = require('../models/usersModel');
 const { insertAdminLogs, selectAllAdminLogs } = require('../models/adminLogModel');
+const { selectRolesTable } = require('../models/roleModel');
+const { searchCityTable } = require('../models/cityModel');
+
 
 exports.adminHome = async (req, res) => {
     res.sendFile(path.join(__dirname, '../views/admin/adminDashboard.html'));
@@ -65,3 +68,20 @@ exports.adminlogs = async (req,res) => {
 exports.adminHomeP2 = async (req, res) => {
     res.sendFile(path.join(__dirname, '../views/admin/adminDashboard2.html'));
 };
+
+exports.getTable = async (req, res) => {
+    try{
+        const table = req.params.table;
+        let result = null;
+        if (table === "roles"){ result = await selectRolesTable(); res.json(result);}
+        else if (table === "cities"){ result = await searchCityTable(); res.json(result);}
+        else if (table === "keywords"){ result = await searchCityTable(); res.json(result);}
+        else if (table === "weather_description"){ result = await searchCityTable(); res.json(result);}
+        else{ res.status(404).json({ error: "Table not found" });}
+    }
+    catch(error){
+        console.error("Error:", error);
+        res.status(500).json({ error: "Server error" });
+    }
+}
+
