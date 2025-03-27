@@ -60,5 +60,20 @@ const getLatestWeatherReportWithCityID = (cityID) => {
     });
 };
 
+// Search weather description table
+const selectWeatherDescriptionTable = () => {
+    return new Promise((resolve, reject) => {
+        const query = 'SELECT * FROM weather_description';
+        db.query(query, (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        });
+    });
+};
 
-module.exports = { selectWeatherDescriptionID, insertWeatherReport, getLatestWeatherReportWithCityID };
+
+module.exports = { selectWeatherDescriptionID, insertWeatherReport
+    , getLatestWeatherReportWithCityID, selectWeatherDescriptionTable };

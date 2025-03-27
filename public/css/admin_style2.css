@@ -198,13 +198,29 @@ body{
 .cardHeader h2{
     font-weight: 600;
 }
-.btn{
-    position: relative;
-    padding: 5px 10px;
-    background: #ff7e67;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 6px;
+.btn {
+    padding: 6px 12px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+.edit-btn {
+    background-color: #4caf50;
+    color: white;
+}
+.edit-btn:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+}
+.delete-btn {
+    background-color: #f44336;
+    color: white;
+}
+.delete-btn:hover {
+    background-color: #d32f2f;
+    transform: scale(1.05);
 }
 select {
     appearance: none;

@@ -36,5 +36,19 @@ async function isWeatherRelated(text) {
     return isMatch;
 }
 
+// Search keyword table
+const selectKeywordTable = () => {
+    return new Promise((resolve, reject) => {
+        const query = 'SELECT * FROM keywords';
+        db.query(query, (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        });
+    });
+};
 
-module.exports = { selectKeywordNamewithID, isWeatherRelated };
+
+module.exports = { selectKeywordNamewithID, isWeatherRelated, selectKeywordTable };

@@ -4,7 +4,9 @@ const { selectAllUser } = require('../models/usersModel');
 const { insertAdminLogs, selectAllAdminLogs } = require('../models/adminLogModel');
 const { selectRolesTable } = require('../models/roleModel');
 const { searchCityTable } = require('../models/cityModel');
-
+const {selectKeywordTable} = require('../models/keywordModel');
+const { selectWeatherDescriptionTable } = require('../models/weatherModel');
+const { deleteDataInTable } = require('../models/deleteData');
 
 exports.adminHome = async (req, res) => {
     res.sendFile(path.join(__dirname, '../views/admin/adminDashboard.html'));
@@ -72,14 +74,43 @@ exports.adminHomeP2 = async (req, res) => {
 exports.getTable = async (req, res) => {
     try{
         const table = req.params.table;
+        if (!table) {  return res.status(400).json({ error: 'Invalid table' });}
         let result = null;
-        if (table === "roles"){ result = await selectRolesTable(); res.json(result);}
-        else if (table === "cities"){ result = await searchCityTable(); res.json(result);}
-        else if (table === "keywords"){ result = await searchCityTable(); res.json(result);}
-        else if (table === "weather_description"){ result = await searchCityTable(); res.json(result);}
-        else{ res.status(404).json({ error: "Table not found" });}
+        if (table === "roles"){ result = await selectRolesTable(); }
+        else if (table === "cities"){ result = await searchCityTable(); }
+        else if (table === "keywords"){ result = await selectKeywordTable(); }
+        else if (table === "weather_description"){ result = await selectWeatherDescriptionTable(); }
+        res.json(result);
     }
     catch(error){
+        console.error("Error:", error);
+        res.status(500).json({ error: "Server error" });
+    }
+}
+
+exports.deleteDatainTable = async (req, res) => {
+    try{
+        const table = req.params.table;
+        const id = req.params.id;
+        if (!table || !id) {  return res.status(400).json({ error: 'Invalid data' });}
+        let result = null;
+        let column = null;
+        // Check table name
+        if (table === "roles") { column = "role_id"; } 
+        else if (table === "cities") { column = "city_id"; } 
+        else if (table === "keywords") { column = "keyw_id"; } 
+        else if (table === "weather_description") { column = "wedesc_id"; } 
+        else if (table === "admin_logs") { column = "log_id"; } 
+        else if (table === "youtube_videos") { column = "video_id"; } 
+        else if (table === "users") { column = "user_id"; } 
+        else if (table === "user_posts") { column = "post_id"; } 
+        else if (table === "weather_reports") { column = "report_id"; } 
+        else if (table === "weather_forecasts") { column = "forecast_id"; }
+
+        if (column) { result = await deleteDataInTable(table, id, column);
+            res.json(result);} 
+        else { res.status(400).json({ error: "Invalid table name" });}
+    }catch(error){
         console.error("Error:", error);
         res.status(500).json({ error: "Server error" });
     }
