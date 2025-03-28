@@ -45,12 +45,12 @@ const searchCityWithFullName = (city_name) => {
 // Search city table
 const searchCityTable = () => {
     return new Promise((resolve, reject) => {
-        const query = 'SELECT * FROM cities LIMIT 77';
+        const query = 'CALL get_cities();';
         db.query(query, (err, result) => {
             if (err) {
                 reject(err);
             } else {
-                resolve(result);
+                resolve(result[0]);
             }
         });
     });

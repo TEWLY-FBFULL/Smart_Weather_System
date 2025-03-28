@@ -99,7 +99,20 @@ const selectAllUser = () => {
     });
 }
 
+// Select user table
+const selectUserTable = () => {
+    return new Promise((resolve, reject) => {
+        const query = `CALL get_users_roles();`;
+        db.query(query, (err, result) => {
+            if (err){
+                reject(err);
+            }
+            resolve(result[0]);
+        });
+    });
+}
+
 
 module.exports = { checkEmailAndUsername, insertUser, checkEmailToken,
     updateEmailVerified, updateUserPassword, updateEmailToken 
-    ,selectAllUser};
+    ,selectAllUser, selectUserTable};

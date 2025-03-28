@@ -61,5 +61,18 @@ const getLatestYoutubeVideosWithCityID = (city_id) => {
     });
 };
 
+// Select youtube_videos table
+const selectYoutubeVideosTable = () => {
+    return new Promise((resolve, reject) => {
+        const query = `
+            CALL get_youtube_videos();
+        `;
+        db.query(query, (err, results) => {
+            if (err) return reject(err);
+            resolve(results[0]);
+        });
+    });
+};
 
-module.exports = { insertYoutubeVideos, getLatestYoutubeVideosWithCityID }
+
+module.exports = { insertYoutubeVideos, getLatestYoutubeVideosWithCityID, selectYoutubeVideosTable }

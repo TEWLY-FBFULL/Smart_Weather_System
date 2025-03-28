@@ -200,6 +200,10 @@ exports.postWeather = async (req, res) => {
         if (!user_id) {
             return res.status(401).json({ error: "กรุณาเข้าสู่ระบบก่อนโพสต์" });
         }
+        // Check if the message is related to weather
+        if (!(await isWeatherRelated(post.post_text))){
+            return res.status(400).json({ error: "ข้อความไม่เกี่ยวข้องกับสภาพอากาศ" });
+        }
         // Save post to database
         const insert = await insertUserPosts(user_id, city_id, message);
         if (!insert) {

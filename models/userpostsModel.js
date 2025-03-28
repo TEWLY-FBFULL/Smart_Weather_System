@@ -33,4 +33,17 @@ const getLatestUserPostsWithCityID = (city_id) => {
     });
 };
 
-module.exports = { insertUserPosts, getLatestUserPostsWithCityID };
+// Select user_posts table
+const selectUserPostsTable = () => {
+    return new Promise((resolve, reject) => {
+        const query = `CALL get_user_posts();`;
+        db.query(query, (err, result) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(result[0]);
+        });
+    });
+};
+
+module.exports = { insertUserPosts, getLatestUserPostsWithCityID, selectUserPostsTable };

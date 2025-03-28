@@ -1,11 +1,37 @@
-import { getTableWithTableName } from './adminTableDropdown.js';
+import { getTableWithTableName, getTableWithKeyword } from './adminTableDropdown.js';
+import { tableConfig } from './adminTableConfig.js';
+
+const createBtn = document.getElementById("create-btn");
+const tableSelect = document.getElementById("tabledb");
+const allowedTables = ["roles", "cities", "keywords", "weather_description"];
+const searchInput = document.querySelector(".search input");
 
 async function loadData() {
-    getTableWithTableName();
+    getTableWithTableName(tableConfig);
+    toggleCreateButton();
 }
 
-document.getElementById("tabledb").addEventListener("change", function() {
-    getTableWithTableName();
+tableSelect.addEventListener("change", function() {
+    getTableWithTableName(tableConfig);
+    toggleCreateButton();
+    searchInput.value = "";
 });
+
+searchInput.addEventListener("input", debounce(() => {
+    getTableWithKeyword(searchInput, tableConfig);
+    toggleCreateButton();
+}, 500));
+
+function toggleCreateButton() {
+    createBtn.hidden = !allowedTables.includes(tableSelect.value);
+}
+
+function debounce(func, delay) {
+    let timer;
+    return function (...args) {
+        clearTimeout(timer);
+        timer = setTimeout(() => func(...args), delay);
+    };
+}
 
 window.onload = loadData;

@@ -115,5 +115,20 @@ const getLatestWeatherForecastWithCityID = (cityID) => {
     });
 };
 
+// Select Weather Forecasts Table
+const selectWeatherForecastsTable = () => {
+    return new Promise((resolve, reject) => {
+        const query = `
+            CALL get_weather_forecasts();
+        `;
+        db.query(query, (err, results) => {
+            if (err) return reject(err);
+            resolve(results[0].length ? results[0] : null);
+        });
+    });
+};
 
-module.exports = { filterForecastData, processForecastEntry, deleteOldForecasts, getLatestWeatherForecastWithCityID };
+
+module.exports = { filterForecastData, processForecastEntry, 
+    deleteOldForecasts, getLatestWeatherForecastWithCityID
+    , selectWeatherForecastsTable };

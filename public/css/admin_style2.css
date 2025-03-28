@@ -222,6 +222,14 @@ body{
     background-color: #d32f2f;
     transform: scale(1.05);
 }
+.btn-primary{
+    background-color: #ffa99c;
+    color: white;
+}
+.btn-primary:hover{
+    background-color: #ff7e67;
+    transform: scale(1.05);
+}
 select {
     appearance: none;
     background-color: white;
