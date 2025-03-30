@@ -8,7 +8,7 @@ const { insertAdminLogs } = require('../models/adminLogModel');
 const { isWeatherRelated } = require('../models/keywordModel');
 const { sendEmail, validateUserSendEmail, validatePostWeather, getPopularCities } = require("../utils");
 const { mainGetWeather, mainGetWeatherForeCast, mainGetYoutubeVideo } = require("../utils/mainGetAPI");
-const { getEmbedding, cosineSimilarity } = require("../utils/analysisWeather");
+const { processWeatherData } = require("../utils/analysisWeather");
 
 require('dotenv').config(); // import .env
 
@@ -68,79 +68,24 @@ exports.getWeatherdataWithCityname = async (req, res) => {
         const isForecastOutdated = isOutdated(latestForecast?.[0]?.local_datetime, 24);
         const isYoutubeVideoOutdated = isOutdated(youtubeVideos?.[0]?.yt_created_at, 24);
         // Update data if outdated
-        if (isWeatherOutdated) {
-            await mainGetWeather(city_id, city_name);
-            latestWeather = await getLatestWeatherReportWithCityID(city_id);
-        }
-        if (isForecastOutdated) {
-            await mainGetWeatherForeCast(city_id, city_name);
-            latestForecast = await getLatestWeatherForecastWithCityID(city_id);
-        }
-        if (isYoutubeVideoOutdated) {
-            // await mainGetYoutubeVideo(city_id, city_name);
-            youtubeVideos = await getLatestYoutubeVideosWithCityID(city_id);
-        }
+        if (isWeatherOutdated) { await mainGetWeather(city_id, city_name);
+            latestWeather = await getLatestWeatherReportWithCityID(city_id); }
+        if (isForecastOutdated) { await mainGetWeatherForeCast(city_id, city_name);
+            latestForecast = await getLatestWeatherForecastWithCityID(city_id); }
+        if (isYoutubeVideoOutdated) { await mainGetYoutubeVideo(city_id, city_name);
+            youtubeVideos = await getLatestYoutubeVideosWithCityID(city_id); }
         // Analysis weather data
-        let relevantYouTube = [], relevantUserPosts = [], analysisResults = [];
-        if (youtubeVideos.length > 0 || userPost.length > 0) {
-            const weatherVec = await getEmbedding(latestWeather.weather_desc_th);
+        const { youtubeVideos: processedVideos, userPosts: processedPosts, analysisResults, youtubeType } =
+            await processWeatherData(latestWeather, youtubeVideos, userPost);
 
-            for (const video of youtubeVideos) {
-                try {
-                    const videoText = `${video.title} ${video.description}`;
-                    const youtubeVec = await getEmbedding(videoText);
-                    const similarity = await cosineSimilarity(weatherVec, youtubeVec);
-                    console.log("Weather Vec:", weatherVec);
-                    console.log("YouTube Vec:", youtubeVec);
-
-                    if (!isNaN(similarity) && similarity >= 0.5) {
-                        relevantYouTube.push(video);
-                        analysisResults.push({
-                            source: "YouTube",
-                            reference: video.title,
-                            similarity: similarity.toFixed(2),
-                        });
-                    }
-                } catch (error) {
-                    console.error("Error processing YouTube video:", error);
-                }
-            }
-            console.log(relevantYouTube);
-            for (const post of userPost) {
-                try {
-                    if (!(await isWeatherRelated(post.post_text))) continue;
-
-                    const postVec = await getEmbedding(post.post_text);
-                    const similarity = await cosineSimilarity(weatherVec, postVec);
-                    console.log("Weather Vec:", weatherVec);
-                    console.log("User Post Vec:", postVec);
-
-                    if (!isNaN(similarity) && similarity >= 0.5) {
-                        relevantUserPosts.push(post);
-                        analysisResults.push({
-                            source: "UserPost",
-                            reference: post.post_text,
-                            similarity: similarity.toFixed(2),
-                        });
-                    }
-                } catch (error) {
-                    console.error("Error processing User Post:", error);
-                }
-            }     
-            console.log(relevantUserPosts);       
-        }
-        // Limit data to 3 items
-        userPost = relevantUserPosts.length >= 2 ? relevantUserPosts : null;
-        youtubeVideos = relevantYouTube.length >= 3 ? relevantYouTube : await getLatestYoutubeVideosWithCityID(78);
-        const youtubeType = relevantYouTube.length >= 3 ? "weather_related" : "general_news";
         // Send response
         res.json({
             city: { city_id, city_name, lon, lat },
             weather: latestWeather,
             forecast: latestForecast,
             popularCity,
-            youtubeVideos: { type: youtubeType, videos: youtubeVideos },
-            userPosts: userPost,
+            youtubeVideos: { type: youtubeType, videos: processedVideos },
+            userPosts: processedPosts,
             analysis: analysisResults
         });
     } catch (error) {
@@ -201,7 +146,7 @@ exports.postWeather = async (req, res) => {
             return res.status(401).json({ error: "กรุณาเข้าสู่ระบบก่อนโพสต์" });
         }
         // Check if the message is related to weather
-        if (!(await isWeatherRelated(post.post_text))){
+        if (!(await isWeatherRelated(message))){
             return res.status(400).json({ error: "ข้อความไม่เกี่ยวข้องกับสภาพอากาศ" });
         }
         // Save post to database

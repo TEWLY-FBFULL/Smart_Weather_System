@@ -94,7 +94,7 @@ async function updateYoutubeVideo(city_id) {
         let videosData = await youtubeV3API(pathapi);
         // About 3 videos related to the city
         const oneDayAgo = new Date();
-        oneDayAgo.setDate(oneDayAgo.getDate() - 1);
+        oneDayAgo.setDate(oneDayAgo.getDate() - 3);
         let filteredVideos = videosData.items.filter(video => {
             const publishDate = new Date(video.snippet.publishTime);
             
@@ -142,10 +142,10 @@ async function updateForecastYoutube() {
     await deleteOldForecasts();
     const oneday = 86400000; // 1 day
     majorCities.forEach(city => updateForecastForCity(city));
-    // majorCities.forEach(city => updateYoutubeVideo(city));
+    majorCities.forEach(city => updateYoutubeVideo(city));
     setInterval(() => {
         majorCities.forEach(city => updateForecastForCity(city));
-        // majorCities.forEach(city => updateYoutubeVideo(city));
+        majorCities.forEach(city => updateYoutubeVideo(city));
     }, oneday);
 }
 

@@ -8,7 +8,7 @@ async function createUserPostCard(userPosts) {
         // <figure> and <img>
         const figure = document.createElement("figure");
         const img = document.createElement("img");
-        img.src = "https://img.freepik.com/free-vector/new-2023-twitter-logo-x-icon-design_1017-45418.jpg";
+        img.src = "https://cdn.pixabay.com/photo/2022/06/30/17/50/blog-post-7294160_1280.png";
         img.alt = "X Post Logo";
         figure.appendChild(img);
 
@@ -72,6 +72,7 @@ function formatThaiDate(isoString) {
 async function initUserPosts(userPosts) {
     const xpostContainer = document.querySelector(".x-post-articles");
     xpostContainer.innerHTML = ""; // Clear existing posts
+    if (!userPosts){ return }
     const postCards = await createUserPostCard(userPosts);
     xpostContainer.appendChild(postCards);
 }

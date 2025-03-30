@@ -58,7 +58,7 @@ async function mainGetYoutubeVideo(city_id,city_name) {
     let videosData = await youtubeV3API(pathapi);
     // About 3 videos related to the city
     const oneDayAgo = new Date();
-    oneDayAgo.setDate(oneDayAgo.getDate() - 1);
+    oneDayAgo.setDate(oneDayAgo.getDate() - 3);
     let filteredVideos = videosData.items.filter(video => {
         const publishDate = new Date(video.snippet.publishTime);
 

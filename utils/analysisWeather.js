@@ -1,47 +1,70 @@
-let embeddingModel = null;
+const axios = require("axios");
+require('dotenv').config(); // import .env
+const { getLatestYoutubeVideosWithCityID } = require('../models/youtubeModel');
+const FASTAPI_URL = process.env.FASTAPI_URL;
 
-async function loadEmbeddingModel() {
-    if (!embeddingModel) {
-        const { pipeline } = await import("@xenova/transformers");
-        embeddingModel = await pipeline("feature-extraction", "Xenova/all-mpnet-base-v2");
-    }
-    return embeddingModel;
-}
-
-async function getEmbedding(text) {
+// Analyze text using FastAPI
+async function analyzeTextWithFastAPI(text1, text2) {
     try {
-        const model = await loadEmbeddingModel();
-        const output = await model(text, { pooling: "mean", normalize: true });
-        return output.data;
+        const response = await axios.post(FASTAPI_URL, { text1, text2 });
+        return response.data.similarity; // Output from FastAPI
     } catch (error) {
-        console.error("Error in getEmbedding:", error);
-        return new Float32Array(384);
+        console.error("Error calling FastAPI:", error.message);
+        return 0; // If no response similarity = 0
     }
 }
 
-async function cosineSimilarity(vec1, vec2) {
-    if (!vec1 || !vec2) {
-        console.error("Error: One of the vectors is undefined or null.");
-        return NaN;
+async function processWeatherData(latestWeather, youtubeVideos, userPosts) {
+    let relevantYouTube = [];
+    let relevantUserPosts = [];
+    let analysisResults = [];
+    // Get the latest weather description
+    const weatherDescription = latestWeather.weather_desc_th;
+    // Loop check YouTube videos
+    for (const video of youtubeVideos) {
+        try {
+            const videoText = `${video.title} ${video.description}`;
+            const similarity = await analyzeTextWithFastAPI(weatherDescription, videoText);
+
+            if (similarity >= 0.6) {
+                relevantYouTube.push(video);
+                analysisResults.push({
+                    source: "YouTube",
+                    reference: video.title,
+                    similarity: similarity.toFixed(2),
+                });
+            }
+        } catch (error) {
+            console.error("Error processing YouTube video:", error);
+        }
     }
+    // Loop check User Posts
+    for (const post of userPosts) {
+        try {
+            const similarity = await analyzeTextWithFastAPI(weatherDescription, post.post_text);
 
-    if (vec1 instanceof Float32Array) vec1 = Array.from(vec1);
-    if (vec2 instanceof Float32Array) vec2 = Array.from(vec2);
-
-    if (!Array.isArray(vec1) || !Array.isArray(vec2) || vec1.length !== vec2.length) {
-        console.error("Invalid vectors for cosine similarity:", vec1, vec2);
-        return NaN;
+            if (similarity >= 0.6) {
+                relevantUserPosts.push(post);
+                analysisResults.push({
+                    source: "UserPost",
+                    reference: post.post_text,
+                    similarity: similarity.toFixed(2),
+                });
+            }
+        } catch (error) {
+            console.error("Error processing User Post:", error);
+        }
     }
-
-    const dotProduct = vec1.reduce((sum, val, i) => sum + val * vec2[i], 0);
-    const normA = Math.sqrt(vec1.reduce((sum, val) => sum + val * val, 0));
-    const normB = Math.sqrt(vec2.reduce((sum, val) => sum + val * val, 0));
-
-    if (normA === 0 || normB === 0 || isNaN(dotProduct)) {
-        console.error("Zero vector detected, skipping similarity calculation.");
-        return 0; 
-    }
-    return dotProduct / (normA * normB);
+    // Check if there are any relevant YouTube videos or user posts
+    userPosts = relevantUserPosts.length >= 2 ? relevantUserPosts : null;
+    youtubeVideos = relevantYouTube.length >= 3 ? relevantYouTube : await getLatestYoutubeVideosWithCityID(78);
+    const youtubeType = relevantYouTube.length >= 3 ? "weather_related" : "general_news";
+    return {
+        youtubeVideos,
+        userPosts,
+        analysisResults,
+        youtubeType,
+    };
 }
 
-module.exports = { getEmbedding, cosineSimilarity };
+module.exports = { processWeatherData };
