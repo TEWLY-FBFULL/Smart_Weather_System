@@ -2,6 +2,7 @@ const axios = require("axios");
 require('dotenv').config(); // import .env
 const { getLatestYoutubeVideosWithCityID } = require('../models/youtubeModel');
 const FASTAPI_URL = process.env.FASTAPI_URL;
+const { insertWeatherAnalysis } = require('../models/weatherAnalysis');
 
 // Analyze text using FastAPI
 async function analyzeTextWithFastAPI(text1, text2) {
@@ -33,6 +34,8 @@ async function processWeatherData(latestWeather, youtubeVideos, userPosts) {
                     reference: video.title,
                     similarity: similarity.toFixed(2),
                 });
+                // Insert into weather_analysis_results
+                insertWeatherAnalysis(latestWeather.report_id, "YouTube", video.video_id, null, similarity);
             }
         } catch (error) {
             console.error("Error processing YouTube video:", error);
@@ -50,6 +53,8 @@ async function processWeatherData(latestWeather, youtubeVideos, userPosts) {
                     reference: post.post_text,
                     similarity: similarity.toFixed(2),
                 });
+                // Insert into weather_analysis_results
+                insertWeatherAnalysis(latestWeather.report_id, "UserPost", null, post.post_id, similarity);
             }
         } catch (error) {
             console.error("Error processing User Post:", error);

@@ -14,6 +14,8 @@ const { selectDataByID } = require('../models/selectDataByID');
 const { updateDataByID } = require('../models/updateDataByID');
 const { insertData } = require('../models/insertDataInTable');
 const { selectDataByKeyword } = require('../models/selectDataByKeyword');
+const { selectWeatherAnalysisTable } = require('../models/weatherAnalysis');
+
 
 exports.adminHome = async (req, res) => {
     res.sendFile(path.join(__dirname, '../views/admin/adminDashboard.html'));
@@ -93,6 +95,7 @@ exports.getTable = async (req, res) => {
         else if (table === "youtube_videos"){ result = await selectYoutubeVideosTable(); }
         else if (table === "weather_reports"){ result = await selectWeatherReportsTable(); }
         else if (table === "weather_forecasts"){ result = await selectWeatherForecastsTable(); }
+        else if (table === "weather_analysis_results"){ result = await selectWeatherAnalysisTable(); }
         else { return res.status(400).json({ error: "Invalid table name" });}
         res.json(result);
     }

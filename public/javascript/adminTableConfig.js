@@ -118,6 +118,17 @@ const tableConfig = {
             ${actionButtons(data.post_id)}
         `,
     },
+    weather_analysis_results: {
+        columns: ["Description", "Source Type", "Youtube", "User Post", "Similarity", "Created At"],
+        renderRow: (data) => `
+            <td>${data.weather_description}</td>
+            <td>${data.source_type}</td>
+            <td>${data.youtube_title}</td>
+            <td>${data.user_post_text}</td>
+            <td>${data.similarity}</td>
+            <td>${formatDate(data.analy_created_at)}</td>
+        `,
+    },
 }; 
 
 export { tableConfig };

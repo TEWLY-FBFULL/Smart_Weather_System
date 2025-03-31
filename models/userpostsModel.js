@@ -19,7 +19,7 @@ const getLatestUserPostsWithCityID = (city_id) => {
     return new Promise((resolve, reject) => {
         const query = `
             SELECT UP.user_id, U.user_name, UP.post_text, 
-            UP.post_created_at
+            UP.post_created_at, UP.post_id
             FROM user_posts AS UP
             INNER JOIN users AS U ON UP.user_id = U.user_id
             WHERE UP.city_id = ?  

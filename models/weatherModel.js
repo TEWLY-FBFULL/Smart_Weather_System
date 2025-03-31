@@ -38,6 +38,7 @@ const getLatestWeatherReportWithCityID = (cityID) => {
     return new Promise((resolve, reject) => {
         const query = `
             SELECT 
+            wr.report_id,
             wr.report_created_at AS local_time,
             wd.weather_desc_th,
             wr.rep_temp,
