@@ -34,4 +34,9 @@
 
 <p align="center"> <img src="./screenshots/exloginpage.png" alt="Login Page 1" width="500"/> </p> <p align="center"> <img src="./screenshots/ex2loginpage.png" alt="Login Page 2" width="500"/> </p>
 
+⚙️ หน้าผู้ดูแลระบบ (Admin Page)
+ผู้ดูแลระบบสามารถจัดการข้อมูลผู้ใช้, ข้อมูลสภาพอากาศ, และตรวจสอบภาพรวมของระบบได้
+
+<p align="center"> <img src="./screenshots/exadminpage.png" alt="Admin Dashboard 1" width="500"/> </p> <p align="center"> <img src="./screenshots/ex2adminpage.png" alt="Admin Dashboard 2" width="500"/> </p>
+
 ---
